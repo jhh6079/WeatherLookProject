@@ -14,12 +14,12 @@
 <body>
 <div id="overlay"></div>
 <div class="container">
-    <!--    <nav class="navbar">-->
-    <!--        <ul class="navbar-menu">-->
-    <!--            <li><a href="{{ url_for('main.index') }}">추천</a></li>-->
-    <!--            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>-->
-    <!--        </ul>-->
-    <!--    </nav>-->
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('main.index') }}">추천</a></li>
+                <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
+            </ul>
+        </nav>
     <a href="{{ url_for('main.index') }}">
         <img src="/static/images/weatherlook_black.svg" class="logo"/>
     </a>    <form action="/result" method="post">
