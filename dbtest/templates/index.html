@@ -20,8 +20,9 @@
     <!--            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>-->
     <!--        </ul>-->
     <!--    </nav>-->
-    <img src="/static/images/weatherlook_black.svg" class="logo"/>
-    <form action="/result" method="post">
+    <a href="{{ url_for('main.index') }}">
+        <img src="/static/images/weatherlook_black.svg" class="logo"/>
+    </a>    <form action="/result" method="post">
         <select id="city" name="city" onchange="updateGu()">
             <option value="">시/도 선택</option>
         </select>
