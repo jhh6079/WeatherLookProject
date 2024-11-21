@@ -358,13 +358,14 @@ button:disabled {
     text-align: center; /* 텍스트 중앙 정렬 */
 }
 
-
+/*마진 수정*/
 .navbar-menu {
     list-style: none; /* 리스트 스타일 제거 */
     margin: 0; /* 외부 여백 제거 */
     padding: 0; /* 내부 여백 제거 */
     display: inline-flex; /* 수평 정렬 */
     gap: 100px; /* 항목 간 간격 << 수정 */
+    margin-bottom : 20px
 }
 
 .navbar-menu li {
