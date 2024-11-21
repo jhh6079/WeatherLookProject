@@ -108,7 +108,7 @@ body.blurred .container {
 
 .container {
     text-align: center;
-    background-color: rgba(247, 247, 247, 0.9);
+    background-color: #F7F7F7; /*<<수정*/
     padding: 30px;
     border-radius: 30px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -353,17 +353,18 @@ button:disabled {
 
 /* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
 .navbar {
-    background-color: #222; /* 네비게이션 바 배경색 */
+    background-color: #F7F7F7; /* 네비게이션 바 배경색  <<수정 */
     padding: 10px 0; /* 위아래 여백 */
     text-align: center; /* 텍스트 중앙 정렬 */
 }
+
 
 .navbar-menu {
     list-style: none; /* 리스트 스타일 제거 */
     margin: 0; /* 외부 여백 제거 */
     padding: 0; /* 내부 여백 제거 */
     display: inline-flex; /* 수평 정렬 */
-    gap: 20px; /* 항목 간 간격 */
+    gap: 100px; /* 항목 간 간격 << 수정 */
 }
 
 .navbar-menu li {
@@ -372,7 +373,7 @@ button:disabled {
 
 .navbar-menu a {
     text-decoration: none; /* 밑줄 제거 */
-    color: #fff; /* 글자색 */
+    color: #000; /* 글자색 */
     font-size: 16px; /* 글자 크기 */
     padding: 5px 10px; /* 텍스트 내부 여백 */
     transition: color 0.3s ease; /* 색상 변경 애니메이션 */
