@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랭킹 페이지</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        const addressData = {{ address_data | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+<div id="overlay"></div>
+<div class="container">
+    <!-- 네비게이션 바 -->
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.index') }}">추천</a></li>
+            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
+        </ul>
+    </nav>
+
+    <!-- 랭킹 페이지 내용 -->
+    <h1>랭킹 페이지</h1>
+    <div class="ranking-content">
+        <script>
+            const addressData = {{ address_data | tojson if address_data else "{}" }};
+        </script>
+        <!-- 페이지 내용을 여기에 추가 -->
+        <p>이곳에 랭킹 데이터를 표시할 수 있습니다.</p>
+    </div>
+</div>
+
+<div class="chat-sidebar" id="chatSidebar">
+    <div class="chat-container">
+        <div id="chatResponse" class="chat-response"></div>
+        <div class="chat-input">
+            <input type="text" id="userQuestion" placeholder="궁금한 점을 입력하세요">
+            <button onclick="askQuestion()">질문하기</button>
+            <button onclick="saveClothing()" id="saveClothingButton">결정하기</button>
+        </div>
+    </div>
+</div>
+
+<button class="open-chat-btn" onclick="toggleChat()"> <i class="fa fa-comments"></i></button>
+</body>
+</html>

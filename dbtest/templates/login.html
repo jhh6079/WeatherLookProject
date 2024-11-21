@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        <!-- const addressData = {{ address_data | tojson }}; -->
+    </script>
+    <script src="{{ url_for('static', filename='js/login.js') }}" defer></script>
+</head>
+<body>
+<div id="overlay"></div>
+<div class="container">
+    <h1>로그인</h1>
+    <input type="text" id="login_id" placeholder="ID">
+    <input type="text" id="login_ps" placeholder="PASSWORD">
+    <button onclick="getLogin()">로그인</button>
+    <button onclick="GoSignup()">회원가입 하러가는 버튼</button>
+    <div class="result"></div>
+</div>
+</body>
+</html>
