@@ -71,9 +71,10 @@ body.blurred .container {
     gap: 10px; /* 각 아이템 간격 */
 }
 
+/*시간별 날씨 정보 개별 박스*/
 .hourly-weather-card {
     flex: 0 0 auto;
-    background-color: #f0f8ff;
+    background-color: #F7F7F7;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
@@ -122,6 +123,12 @@ body.blurred .container {
     height: auto; /* 비율 유지 */
 }
 
+.logo-result{
+    max-width: 30%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+    padding: 10px;
+}
+
 /*텍스트 박스*/
 select, button, input[type="text"] {
     margin: 10px 0;
@@ -147,9 +154,9 @@ button:hover {
     background-color: #646464;
 }
 
-/**/
+/*버튼 클릭시 조회 중*/
 button:disabled {
-    background-color: #b0c4de;
+    background-color: #BDBDBD;
     cursor: not-allowed;
 }
 
@@ -190,8 +197,9 @@ button:disabled {
     margin-bottom: 10px;
 }
 
+/*h2에 해당하는 box의 css*/
 .box h2 {
-    color: #4682B4;
+    color: #353535;
     margin-bottom: 18px;
 }
 
@@ -202,7 +210,7 @@ button:disabled {
     right: -100%;
     width: 30%;
     height: 88%;
-    background-color: #f0f8ff;
+    background-color: #F7F7F7;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
     transition: right 0.3s ease;
@@ -211,6 +219,7 @@ button:disabled {
     z-index: 1000;
 }
 
+/*챗봇 버튼*/
 .open-chat-btn {
     position: fixed;
     bottom: 20px;
@@ -232,11 +241,13 @@ button:disabled {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/*챗봇 버튼 호버*/
 .open-chat-btn:hover {
     background-color: #646464;
     transform: scale(1.1);
 }
 
+/*챗봇 컨테이너*/
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -244,6 +255,7 @@ button:disabled {
     padding: 10px;
 }
 
+/*=====챗봇 내 질문 및 답변부분=====*/
 .chat-response {
     flex: 1;
     overflow-y: auto;
@@ -267,7 +279,7 @@ button:disabled {
 }
 
 .chat-response p.user span {
-    background-color: #87CEEB;
+    background-color: #878787;
     color: white;
     border-radius: 20px 20px 0 20px;
     padding: 12px 12px 12px 18px;
@@ -277,7 +289,7 @@ button:disabled {
 }
 
 .chat-response p.bot span {
-    background-color: #f0f8ff;
+    background-color: #E1E1E1;
     color: black;
     padding: 12px 18px 12px 12px;
     text-align: left;
@@ -286,6 +298,7 @@ button:disabled {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/*챗봇 유저 입력창*/
 .chat-input {
     display: flex;
     flex-direction: column;
@@ -293,13 +306,14 @@ button:disabled {
     margin-top: auto;
 }
 
+/*챗봇 유저 입력창*/
 .chat-input input[type="text"] {
     padding: 15px;
     font-size: 14px;
     border-radius: 15px;
     width: 90%;
     margin: 0 auto;
-    border: 1px solid #87CEEB;
+    border: 1px solid #9E9E9E;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -313,6 +327,7 @@ button:disabled {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 
 #saveClothingButton {
     display: none;
@@ -334,7 +349,9 @@ button:disabled {
     background-color: #646464;
 }
 
-/* 네비게이션 바 스타일 */
+
+
+/* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
 .navbar {
     background-color: #222; /* 네비게이션 바 배경색 */
     padding: 10px 0; /* 위아래 여백 */
@@ -365,6 +382,9 @@ button:disabled {
     color: #f39c12; /* 마우스를 올렸을 때 글자색 변경 */
 }
 
+
+
+/*======날씨 정보칸======*/
 .weather-box {
     text-align: center;
     background-color: white;
@@ -387,18 +407,21 @@ button:disabled {
     margin-right: 10px;
 }
 
+/*현재 날씨 글자 색*/
 .temperature {
     font-size: 36px;
     font-weight: bold;
-    color: #333;
+    color: #353535;
 }
 
+/*날씨 상태(흐림, 맑음 등등)*/
 .sky-status {
     font-size: 18px;
-    color: #666;
+    color: #5D5D5D;
     margin-bottom: 15px;
 }
 
+/*습도 풍속 강수확률 체감온도*/
 .weather-details {
     display: flex;
     justify-content: space-around;
@@ -406,6 +429,7 @@ button:disabled {
     color: #444;
 }
 
+/*=====습도 풍속 강수확률의 디테일 설정=====*/
 .detail {
     text-align: center;
 }

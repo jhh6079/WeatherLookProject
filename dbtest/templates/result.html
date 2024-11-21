@@ -11,16 +11,11 @@
 <div id="overlay"></div>
 
 <div class="container" style="overflow-y: auto; max-height: 80vh;">
-    <!-- 네비게이션 바 -->
-    <nav class="navbar">
-        <ul class="navbar-menu">
-            <li><a href="{{ url_for('main.index') }}">추천</a></li>
-            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
-        </ul>
-    </nav>
+
 
     <!-- 결과 제목 -->
-    <h1>날씨 및 의류 추천 결과</h1>
+    <img src="/static/images/weatherlook_black.svg" class="logo-result"/>
+    <!--    <h1>날씨 및 의류 추천 결과</h1>-->
 
     <!-- 선택된 위치 -->
     <div class="box">
@@ -82,6 +77,14 @@
         <h2>추천 의류</h2>
         <p>{{ clothing_recommendation | safe }}</p>
     </div>
+
+    <!-- 추천, 랭킹 네비게이션 바 -->
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.index') }}">추천</a></li>
+            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
+        </ul>
+    </nav>
 
 </div>
 
