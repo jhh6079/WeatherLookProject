@@ -255,6 +255,7 @@ button:disabled {
     padding: 10px;
 }
 
+/*=====챗봇 내 질문 및 답변부분=====*/
 .chat-response {
     flex: 1;
     overflow-y: auto;
@@ -278,7 +279,7 @@ button:disabled {
 }
 
 .chat-response p.user span {
-    background-color: #87CEEB;
+    background-color: #878787;
     color: white;
     border-radius: 20px 20px 0 20px;
     padding: 12px 12px 12px 18px;
@@ -288,7 +289,7 @@ button:disabled {
 }
 
 .chat-response p.bot span {
-    background-color: #f0f8ff;
+    background-color: #E1E1E1;
     color: black;
     padding: 12px 18px 12px 12px;
     text-align: left;
