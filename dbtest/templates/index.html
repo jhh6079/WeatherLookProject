@@ -14,15 +14,21 @@
 <body>
 <div id="overlay"></div>
 <div class="container">
-        <nav class="navbar">
-            <ul class="navbar-menu">
-                <li><a href="{{ url_for('main.index') }}">추천</a></li>
-                <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
-            </ul>
-        </nav>
-    <a href="{{ url_for('main.index') }}">
-        <img src="/static/images/weatherlook_black.svg" class="logo"/>
-    </a>    <form action="/result" method="post">
+
+    <!--        &lt;!&ndash; 추천, 랭킹 네비게이션 바 &ndash;&gt; 네비게이션 바 위치 수정-->
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.index') }}">추천</a></li>
+            <li>|</li>
+            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
+        </ul>
+    </nav>
+
+
+    <img src="/static/images/weatherlook_black.svg" class="logo"/>
+
+
+    <form action="/result" method="post">
         <select id="city" name="city" onchange="updateGu()">
             <option value="">시/도 선택</option>
         </select>

@@ -108,7 +108,7 @@ body.blurred .container {
 
 .container {
     text-align: center;
-    background-color: rgba(247, 247, 247, 0.9);
+    background-color: #F7F7F7; /*<<수정*/
     padding: 30px;
     border-radius: 30px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -123,7 +123,7 @@ body.blurred .container {
     height: auto; /* 비율 유지 */
 }
 
-.logo-result {
+.logo-result{
     max-width: 30%; /* 부모 요소 크기에 맞게 조정 */
     height: auto; /* 비율 유지 */
     padding: 10px;
@@ -350,20 +350,22 @@ button:disabled {
 }
 
 
+
 /* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
 .navbar {
-    background-color: rgba(247, 247, 247, 0); /* 네비게이션 바 배경색  <<수정 */
+    background-color: #F7F7F7; /* 네비게이션 바 배경색  <<수정 */
     padding: 10px 0; /* 위아래 여백 */
     text-align: center; /* 텍스트 중앙 정렬 */
 }
 
-
+/*마진 수정*/
 .navbar-menu {
     list-style: none; /* 리스트 스타일 제거 */
     margin: 0; /* 외부 여백 제거 */
     padding: 0; /* 내부 여백 제거 */
     display: inline-flex; /* 수평 정렬 */
     gap: 100px; /* 항목 간 간격 << 수정 */
+    margin-bottom : 20px
 }
 
 .navbar-menu li {
@@ -381,6 +383,8 @@ button:disabled {
 .navbar-menu a:hover {
     color: #f39c12; /* 마우스를 올렸을 때 글자색 변경 */
 }
+
+
 
 /*======날씨 정보칸======*/
 .weather-box {
