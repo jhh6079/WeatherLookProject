@@ -113,8 +113,20 @@ def result():
         # 데이터 매핑
         sky_status_map = {'1': "맑음", '3': "구름 많음", '4': "흐림"}
         precipitation_type_map = {'0': "없음", '1': "비", '2': "비/눈", '3': "눈"}
+
+        # 날씨 상태 문자열 설정
         sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
         precipitation_type_str = precipitation_type_map.get(precipitation_type, "알 수 없음")
+
+        # 최종 날씨 상태 및 아이콘 결정
+        if precipitation_type in ['1', '2', '3']:  # 강수 형태가 비, 비/눈, 눈 중 하나라면
+            final_status = precipitation_type_str
+        else:
+            final_status = sky_status_str
+
+        # 날씨 아이콘 URL 설정
+        weather_icon_url = get_weather_icon(final_status)
+        # weather_icon_url = get_weather_icon(sky_status_str)
 
         # 현재 시간 및 24시간 이후 시간 계산
         now_date = now.strftime("%Y%m%d")
@@ -123,7 +135,6 @@ def result():
         end_date = end_time.strftime("%Y%m%d")
         end_time_str = end_time.strftime("%H%M")
 
-        weather_icon_url = get_weather_icon(sky_status_str)
 
         # 시간별 데이터 필터링
         hourly_data = []
@@ -136,20 +147,32 @@ def result():
                     "sky": None,  # 기본값 설정
                     "icon": None  # 기본값 설정
                 }
-                # SKY 정보를 같은 시간대에서 검색
-                for sky_item in items:
-                    if (
-                            sky_item['category'] == 'SKY' and
-                            sky_item['fcstDate'] == item['fcstDate'] and
-                            sky_item['fcstTime'] == item['fcstTime']
-                    ):
-                        sky_status = sky_item['fcstValue']
-                        sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
-                        hourly_entry["sky"] = sky_status_str
-                        hourly_entry["icon"] = get_weather_icon(sky_status_str)
-                        break
-                hourly_data.append(hourly_entry)
+                # SKY 및 PTY 정보를 같은 시간대에서 검색
+                precipitation_type = None
+                sky_status = None
 
+                for other_item in items:
+                    if other_item['fcstDate'] == item['fcstDate'] and other_item['fcstTime'] == item['fcstTime']:
+                        if other_item['category'] == 'PTY':  # PTY는 강수 형태
+                            precipitation_type = other_item['fcstValue']
+                        elif other_item['category'] == 'SKY':  # SKY는 하늘 상태
+                            sky_status = other_item['fcstValue']
+
+                # 하늘 상태 및 강수 형태 문자열로 변환
+                sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
+                precipitation_type_str = precipitation_type_map.get(precipitation_type, "알 수 없음")
+
+
+                # 최종적으로 사용할 상태를 결정
+                final_sky_status = precipitation_type_str if precipitation_type_str in ["비", "비/눈",
+                                                                                        "눈"] else sky_status_str
+
+                # 아이콘 설정
+                hourly_entry["sky"] = final_sky_status
+                hourly_entry["icon"] = get_weather_icon(final_sky_status)
+
+                # 리스트에 추가
+                hourly_data.append(hourly_entry)
 
         # 현재 시간부터 24시간 이후까지의 데이터만 필터링
         filtered_data = [
@@ -185,7 +208,7 @@ def result():
             lon=lon,
             temperature=temp,
             wind_speed=wind_speed,
-            sky_status=sky_status_str,
+            sky_status=final_status,
             precipitation_type=precipitation_type_str,
             precipitation_probability=precipitation_probability,
             humidity=humidity,
