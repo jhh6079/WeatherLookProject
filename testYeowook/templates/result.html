@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>날씨 결과</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div id="overlay"></div>
+
+<div class="container" style="overflow-y: auto; max-height: 80vh;">
+
+
+    <!-- 결과 제목 -->
+    <img src="/static/images/weatherlook_black.svg" class="logo-result"/>
+<!--    <h1>날씨 및 의류 추천 결과</h1>-->
+
+    <!-- 선택된 위치 -->
+    <div class="box">
+        <h2>선택된 위치</h2>
+        <div class="selected-location">
+            <p>{{ city }} > {{ gu }} > {{ dong }}</p>
+        </div>
+    </div>
+
+    <!-- 날씨 정보 -->
+    <div class="weather-box">
+        <div class="weather-top">
+            <img src="{{ weather_icon_url }}" alt="날씨 아이콘" class="weather-icon">
+            <span class="temperature">{{ temperature }}°C</span>
+        </div>
+        <p class="sky-status">{{ sky_status }}</p>
+        <div class="weather-details">
+            <div class="detail">
+                <span>습도</span>
+                <span>{{ humidity }}%</span>
+            </div>
+            <div class="detail">
+                <span>풍속</span>
+                <span>{{ wind_speed }} m/s</span>
+            </div>
+            <div class="detail">
+                <span>강수확률</span>
+                <span>{{ precipitation_probability }}%</span>
+            </div>
+            <div class="detail">
+                <span>체감온도</span>
+                <span>{{ perceived_temp }}°C</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 시간별 날씨 정보 -->
+    <div class="box">
+        <h2>시간별 날씨 정보</h2>
+        {% if hourly_data %}
+        <div class="hourly-weather-row">
+            {% for hour in hourly_data %}
+            <div class="hourly-weather-card">
+                <img src="{{ hour.icon }}" alt="날씨 아이콘" class="weather-info-icon">
+                <p><strong>{{ hour.time[:2] }}:{{ hour.time[2:] }}</strong></p>
+                <p>{{ hour.temperature }}°C</p>
+                <p>{{ hour.sky }}</p> <!-- 시간별 날씨 상태 -->
+
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>시간별 데이터가 없습니다.</p>
+        {% endif %}
+    </div>
+
+    <!-- 추천 의류 -->
+    <div class="box">
+        <h2>추천 의류</h2>
+        <p>{{ clothing_recommendation | safe }}</p>
+    </div>
+
+        <!-- 추천, 랭킹 네비게이션 바 -->
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.index') }}">추천</a></li>
+            <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
+        </ul>
+    </nav>
+
+</div>
+
+<!-- 채팅 사이드바 -->
+<div class="chat-sidebar" id="chatSidebar">
+    <div class="chat-container">
+        <div id="chatResponse" class="chat-response"></div>
+        <div class="chat-input">
+            <input type="text" id="userQuestion" placeholder="궁금한 점을 입력하세요">
+            <button onclick="askQuestion()">질문하기</button>
+            <button onclick="saveClothing()" id="saveClothingButton">결정하기</button>
+        </div>
+    </div>
+</div>
+
+<button class="open-chat-btn" onclick="toggleChat()"><i class="fa fa-comments"></i></button>
+
+<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>

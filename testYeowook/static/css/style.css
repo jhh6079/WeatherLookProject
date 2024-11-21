@@ -1,0 +1,446 @@
+/*전체 배경*/
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: #C2C2C2;
+}
+
+body.blurred .container {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+    transition: opacity 0.3s ease;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative; /* 내부 요소의 위치를 조정하기 위한 기준 설정 */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 10px; /* 박스 안쪽 위에서 10px */
+    right: 10px; /* 박스 안쪽 오른쪽에서 10px */
+    cursor: pointer;
+    font-size: 24px;
+    color: #555; /* 닫기 버튼 색상 */
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ff0000; /* 호버 시 색상 */
+}
+
+.hourly-weather-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 10px; /* 각 아이템 간격 */
+}
+
+/*시간별 날씨 정보 개별 박스*/
+.hourly-weather-card {
+    flex: 0 0 auto;
+    background-color: #F7F7F7;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    min-width: 120px; /* 카드 최소 너비 */
+    text-align: center;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.hourly-weather-card:hover {
+    transform: scale(1.05);
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column; /* 세로 방향 정렬 */
+    align-items: center; /* 중앙 정렬 */
+    gap: 5px; /* 텍스트와 아이콘 간격 */
+    margin: 10px 0; /* 상하 여백 */
+}
+
+.weather-info-icon {
+    width: 30px; /* 아이콘 크기 */
+    height: 30px; /* 아이콘 크기 */
+}
+
+.hourly-weather-card p {
+    margin: 5px 0;
+}
+
+
+.container {
+    text-align: center;
+    background-color: rgba(247, 247, 247, 0.9);
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    width: 600px;
+    transition: transform 0.3s ease-in-out;
+    animation: slideIn 0.5s ease-out;
+}
+
+/*로고 사이즈*/
+.logo {
+    max-width: 40%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+}
+
+.logo-result{
+    max-width: 30%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+    padding: 10px;
+}
+
+/*텍스트 박스*/
+select, button, input[type="text"] {
+    margin: 10px 0;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 15px;
+    border: 1px solid #9E9E9E;
+    transition: box-shadow 0.3s ease;
+}
+
+/*버튼*/
+button {
+    background-color: #787878;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/*버튼 위에 커서*/
+button:hover {
+    background-color: #646464;
+}
+
+/*버튼 클릭시 조회 중*/
+button:disabled {
+    background-color: #BDBDBD;
+    cursor: not-allowed;
+}
+
+/*2024-11-20 추가 수정함*/
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s ease infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/*여기까지*/
+.result {
+    max-height: 80vh;
+    overflow: auto;
+    margin-top: 20px;
+    display: none;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+.box {
+    text-align: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+/*h2에 해당하는 box의 css*/
+.box h2 {
+    color: #353535;
+    margin-bottom: 18px;
+}
+
+/* Chat Sidebar CSS */
+.chat-sidebar {
+    position: fixed;
+    top: 5%;
+    right: -100%;
+    width: 30%;
+    height: 88%;
+    background-color: #F7F7F7;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    transition: right 0.3s ease;
+    padding: 15px;
+    display: block;
+    z-index: 1000;
+}
+
+/*챗봇 버튼*/
+.open-chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #787878;
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001;
+    width: 60px;
+    height: 60px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/*챗봇 버튼 호버*/
+.open-chat-btn:hover {
+    background-color: #646464;
+    transform: scale(1.1);
+}
+
+/*챗봇 컨테이너*/
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+}
+
+.chat-response {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-response p {
+    margin: 10px 0;
+    display: flex;
+    align-items: flex-start;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.chat-response p.user {
+    justify-content: flex-end;
+}
+
+.chat-response p.user span {
+    background-color: #87CEEB;
+    color: white;
+    border-radius: 20px 20px 0 20px;
+    padding: 12px 12px 12px 18px;
+    text-align: left;
+    margin-left: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-response p.bot span {
+    background-color: #f0f8ff;
+    color: black;
+    padding: 12px 18px 12px 12px;
+    text-align: left;
+    border-radius: 20px 20px 20px 0;
+    margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/*챗봇 유저 입력창*/
+.chat-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+/*챗봇 유저 입력창*/
+.chat-input input[type="text"] {
+    padding: 15px;
+    font-size: 14px;
+    border-radius: 15px;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #9E9E9E;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input button {
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    background-color: #787878;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+#saveClothingButton {
+    display: none;
+    background-color: #DDA0DD; /* 연보라색 */
+    color: white; /* 텍스트 색상 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 클릭 가능하도록 커서 변경 */
+    padding: 12px 15px; /* 여백 */
+    font-size: 16px; /* 글자 크기 */
+    border-radius: 20px; /* 둥근 모서리 */
+    transition: background-color 0.3s ease; /* 색상 변경 애니메이션 */
+}
+
+#saveClothingButton:hover {
+    background-color: #BA55D3; /* 호버 시 더 진한 연보라색 */
+}
+
+.chat-input button:hover {
+    background-color: #646464;
+}
+
+
+
+/* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
+.navbar {
+    background-color: #222; /* 네비게이션 바 배경색 */
+    padding: 10px 0; /* 위아래 여백 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.navbar-menu {
+    list-style: none; /* 리스트 스타일 제거 */
+    margin: 0; /* 외부 여백 제거 */
+    padding: 0; /* 내부 여백 제거 */
+    display: inline-flex; /* 수평 정렬 */
+    gap: 20px; /* 항목 간 간격 */
+}
+
+.navbar-menu li {
+    display: inline; /* 리스트 항목을 한 줄로 */
+}
+
+.navbar-menu a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #fff; /* 글자색 */
+    font-size: 16px; /* 글자 크기 */
+    padding: 5px 10px; /* 텍스트 내부 여백 */
+    transition: color 0.3s ease; /* 색상 변경 애니메이션 */
+}
+
+.navbar-menu a:hover {
+    color: #f39c12; /* 마우스를 올렸을 때 글자색 변경 */
+}
+
+
+
+/*======날씨 정보칸======*/
+.weather-box {
+    text-align: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.weather-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+/*현재 날씨 글자 색*/
+.temperature {
+    font-size: 36px;
+    font-weight: bold;
+    color: #353535;
+}
+
+/*날씨 상태(흐림, 맑음 등등)*/
+.sky-status {
+    font-size: 18px;
+    color: #5D5D5D;
+    margin-bottom: 15px;
+}
+
+/*습도 풍속 강수확률 체감온도*/
+.weather-details {
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    color: #444;
+}
+
+/*=====습도 풍속 강수확률의 디테일 설정=====*/
+.detail {
+    text-align: center;
+}
+
+.detail span:first-child {
+    display: block;
+    font-weight: bold;
+    color: #888;
+}
+
+.detail span:last-child {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #333;
+}
