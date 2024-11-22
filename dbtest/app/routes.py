@@ -184,6 +184,26 @@ def result():
             temp, wind_speed, sky_status_str, precipitation_probability,
             current_app.config['OPENAI_API_KEY'], perceived_temp
         )
+        global weather_info  # 전역 변수 접근
+
+        # 데이터를 전역 변수에 저장
+        weather_info = {
+            "city": city,
+            "gu": gu,
+            "dong": dong,
+            "lat": lat,
+            "lon": lon,
+            "temperature": temp,
+            "wind_speed": wind_speed,
+            "sky_status": final_status,
+            "precipitation_type": precipitation_type_str,
+            "precipitation_probability": precipitation_probability,
+            "humidity": humidity,
+            "clothing_recommendation": recommendation,
+            "hourly_data": filtered_data,
+            "weather_icon_url": weather_icon_url,
+            "perceived_temp": perceived_temp
+        }
 
         return render_template(
             'result.html',
