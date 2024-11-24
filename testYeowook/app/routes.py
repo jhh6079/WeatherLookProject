@@ -1,4 +1,6 @@
 # app/routes.py
+from typing import final
+
 import openai
 from flask import Blueprint, render_template, request, jsonify, current_app, redirect, url_for
 import requests
@@ -112,9 +114,18 @@ def result():
 
         # 데이터 매핑
         sky_status_map = {'1': "맑음", '3': "구름 많음", '4': "흐림"}
-        precipitation_type_map = {'0': "없음", '1': "비", '2': "비/눈", '3': "눈"}
+        precipitation_type_map = {'0': "없음", '1': "비", '2': "비/눈", '3': "눈", '4': "소나기"}
+
         sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
         precipitation_type_str = precipitation_type_map.get(precipitation_type, "알 수 없음")
+
+        # 최종 날씨 상태 및 아이콘 결정
+        if precipitation_type in ['1', '2', '3', '4']:
+            final_status = precipitation_type_str
+        else:
+            final_status = sky_status_str
+
+        weather_icon_url = get_weather_icon(final_status)
 
         # 현재 시간 및 24시간 이후 시간 계산
         now_date = now.strftime("%Y%m%d")
@@ -123,59 +134,77 @@ def result():
         end_date = end_time.strftime("%Y%m%d")
         end_time_str = end_time.strftime("%H%M")
 
-        weather_icon_url = get_weather_icon(sky_status_str)
-
         # 시간별 데이터 필터링
         hourly_data = []
         for item in items:
-            if item['category'] == 'TMP':  # TMP는 기온 데이터
+            if item['category'] == 'TMP':
                 hourly_entry = {
                     "date": item['fcstDate'],
                     "time": item['fcstTime'],
                     "temperature": item['fcstValue'],
-                    "sky": None,  # 기본값 설정
-                    "icon": None  # 기본값 설정
+                    "sky": None,
+                    "icon": None
                 }
-                # SKY 정보를 같은 시간대에서 검색
-                for sky_item in items:
-                    if (
-                            sky_item['category'] == 'SKY' and
-                            sky_item['fcstDate'] == item['fcstDate'] and
-                            sky_item['fcstTime'] == item['fcstTime']
-                    ):
-                        sky_status = sky_item['fcstValue']
-                        sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
-                        hourly_entry["sky"] = sky_status_str
-                        hourly_entry["icon"] = get_weather_icon(sky_status_str)
-                        break
+
+                precipitation_type = None
+                sky_status = None
+
+                for other_item in items:
+                    if other_item['fcstDate'] == item['fcstDate'] and other_item['fcstTime'] == item['fcstTime']:
+                        if other_item['category'] == 'PTY':
+                            precipitation_type = other_item['fcstValue']
+                        elif other_item['category'] == 'SKY':
+                            sky_status = other_item['fcstValue']
+
+                sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
+                precipitation_type_str = precipitation_type_map.get(precipitation_type, "알 수 없음")
+                if precipitation_type in ['1', '2', '3', '4']:
+                    final_sky_status = precipitation_type_str
+                else:
+                    final_sky_status = sky_status_str
+
+                hourly_entry["sky"] = final_sky_status
+                hourly_entry["icon"] = get_weather_icon(final_sky_status)
                 hourly_data.append(hourly_entry)
 
-
-        # 현재 시간부터 24시간 이후까지의 데이터만 필터링
         filtered_data = [
             data for data in hourly_data
             if (data['date'] > now_date or (data['date'] == now_date and int(data['time']) >= int(current_time))) and
                (data['date'] < end_date or (data['date'] == end_date and int(data['time']) <= int(end_time_str)))
         ]
 
-        # 데이터 정렬
         filtered_data.sort(key=lambda x: (x['date'], x['time']))
 
-        # 날씨 아이콘 URL 결정
-        
-        # 체감 온도 생성
         perceived_temp = perceived_temperature(
             temp, wind_speed, sky_status_str, precipitation_probability,
             current_app.config['OPENAI_API_KEY']
         )
 
-        # 의류 추천 생성
         recommendation = get_clothing_recommendation(
             temp, wind_speed, sky_status_str, precipitation_probability,
             current_app.config['OPENAI_API_KEY'], perceived_temp
         )
+        global weather_info  # 전역 변수 접근
 
-        # HTML 페이지로 데이터 전달
+        # 데이터를 전역 변수에 저장
+        weather_info = {
+            "city": city,
+            "gu": gu,
+            "dong": dong,
+            "lat": lat,
+            "lon": lon,
+            "temperature": temp,
+            "wind_speed": wind_speed,
+            "sky_status": final_status,
+            "precipitation_type": precipitation_type_str,
+            "precipitation_probability": precipitation_probability,
+            "humidity": humidity,
+            "clothing_recommendation": recommendation,
+            "hourly_data": filtered_data,
+            "weather_icon_url": weather_icon_url,
+            "perceived_temp": perceived_temp
+        }
+
         return render_template(
             'result.html',
             city=city,
@@ -185,7 +214,7 @@ def result():
             lon=lon,
             temperature=temp,
             wind_speed=wind_speed,
-            sky_status=sky_status_str,
+            sky_status=final_status,
             precipitation_type=precipitation_type_str,
             precipitation_probability=precipitation_probability,
             humidity=humidity,
@@ -198,6 +227,7 @@ def result():
     except Exception as e:
         print(f"오류 발생: {e}")
         return render_template('error.html', message="서버 오류가 발생했습니다."), 500
+
 
 @bp.route('/register', methods=['POST'])
 def get_register():

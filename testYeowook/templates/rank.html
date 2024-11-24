@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <a href="{{ url_for('main.index') }}">
+        <img src="/static/images/weatherlook_black.svg" class="logo-result"/>
+    </a>
     <title>랭킹 페이지</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script>
@@ -18,10 +21,13 @@
     <nav class="navbar">
         <ul class="navbar-menu">
             <li><a href="{{ url_for('main.index') }}">추천</a></li>
+            <li>|</li>
             <li><a href="{{ url_for('main.rank') }}">랭킹</a></li>
         </ul>
     </nav>
-
+    <a href="{{ url_for('main.index') }}">
+        <img src="/static/images/weatherlook_black.svg" class="logo"/>
+    </a>
     <!-- 랭킹 페이지 내용 -->
     <h1>랭킹 페이지</h1>
     <div class="ranking-content">

@@ -12,7 +12,7 @@
 
 <div class="container" style="overflow-y: auto; max-height: 80vh;">
 
-<!--        &lt;!&ndash; 추천, 랭킹 네비게이션 바 &ndash;&gt; 네비게이션 바 위치 수정-->
+    <!--        &lt;!&ndash; 추천, 랭킹 네비게이션 바 &ndash;&gt; 네비게이션 바 위치 수정-->
     <nav class="navbar">
         <ul class="navbar-menu">
             <li><a href="{{ url_for('main.index') }}">추천</a></li>
@@ -22,8 +22,9 @@
     </nav>
 
     <!-- 결과 제목 -->
-    <img src="/static/images/weatherlook_black.svg" class="logo-result"/>
-<!--    <h1>날씨 및 의류 추천 결과</h1>-->
+    <a href="{{ url_for('main.index') }}">
+        <img src="/static/images/weatherlook_black.svg" class="logo-result"/>
+    </a>        <!--    <h1>날씨 및 의류 추천 결과</h1>-->
 
     <!-- 선택된 위치 -->
     <div class="box">
