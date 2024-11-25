@@ -2,7 +2,7 @@
 from typing import final
 
 import openai
-from flask import Blueprint, render_template, request, jsonify, current_app, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, current_app, redirect, url_for, session, Flask
 import requests
 from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, \
     perceived_temperature
@@ -15,7 +15,6 @@ import pymysql
 # Blueprint 생성
 bp = Blueprint('main', __name__)
 weather_info = {}
-
 
 @bp.route('/')  # 루트 경로
 def index():
@@ -229,36 +228,93 @@ def result():
         return render_template('error.html', message="서버 오류가 발생했습니다."), 500
 
 
-@bp.route('/register', methods=['POST'])
+@bp.route('/login', methods=['GET', 'POST'])
+def get_login():
+    if request.method == 'GET':
+        address_data = load_address_data()
+        return render_template('login.html', address_data=address_data)
+    
+    if request.method == 'POST':
+        data = request.get_json()
+        login_id = data.get('login_id')
+        login_ps = data.get('login_ps')
+
+        if not login_id or not login_ps:
+            return jsonify({"message":"ID 또는 비밀번호가 입력되지 않음"}), 400
+        
+        try:  # 데이터베이스 연결합니다
+            conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
+                                password="20020414", database="weatherlookdb")
+            cursor = conn.cursor()
+
+            cursor.execute("select username, password, nickname from weatherlookdb_user where username = %s AND password = %s", (login_id, login_ps))
+            user = cursor.fetchone()
+
+            if user:
+                username, password, nickname = user
+                #세션에 사용자 정보 저장
+                session['username'] = username
+                session['password'] = password
+                session['nickname'] = nickname
+                return jsonify({"message" : f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
+            else:
+                return jsonify({"message" : "ID와 비밀번호를 확인바랍니다"}), 401
+            
+        except pymysql.MySQLError as err:
+            print(f"DB 에러: {err}")
+            return jsonify({"message": "데이터베이스 오류 발생"}), 500
+
+#사용자 확인 특정 라우트에서 사용자가 로그인했는지 확인하려면 session 데이터를 참조
+@bp.route('/dashboard')
+def dashboard():
+    if 'username' in session:
+        return f"안녕하세요, {session['nickname']} 님! 대시보드에 오신 것을 환영합니다."
+    else:
+        return "로그인이 필요합니다.", 401
+
+# 로그아웃 처리 사용자가 로그아웃할 때 session 데이터를 삭제
+@bp.route('/logout')
+def logout():
+    session.clear()  # 모든 세션 데이터 삭제
+    return jsonify({"message": "로그아웃 성공!"}), 200
+
+@bp.route('/register', methods=['GET', 'POST'])
 def get_register():
-    data = request.get_json()
-    signup_id = data.get('signup_id')
-    signup_ps = data.get('signup_ps')
-    signup_name = data.get('signup_name')
+    if request.method == 'GET':
+        # GET 요청 시 회원가입 양식 페이지 렌더링
+        address_data = load_address_data()
+        return render_template('signup.html', address_data=address_data)
+    
+    if request.method == 'POST':
+        # POST 요청 시 데이터 처리
+        data = request.get_json()
+        signup_id = data.get('signup_id')
+        signup_ps = data.get('signup_ps')
+        signup_name = data.get('signup_name')
 
-    if not signup_id or not signup_ps or not signup_name:
-        return jsonify({"message": "ID, PS, 이름 전부 입력바람"}), 400
+        if not signup_id or not signup_ps or not signup_name:
+            return jsonify({"message": "ID, PS, 이름 전부 입력바람"}), 400
 
-    try:  # 데이터베이스 연결합니다
-        conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                               password="20020414", database="weatherlookdb")
-        cursor = conn.cursor()
+        try:  # 데이터베이스 연결합니다
+            conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
+                                password="20020414", database="weatherlookdb")
+            cursor = conn.cursor()
 
-        # 중복체크
-        cursor.execute("select username from weatherlookdb_user where username = %s", (signup_id,))
-        if cursor.fetchone():
-            return jsonify({'message': '아이디가 이미 존재하게되...'}), 409
+            # 중복체크
+            cursor.execute("select username from weatherlookdb_user where username = %s", (signup_id,))
+            if cursor.fetchone():
+                return jsonify({'message': '아이디가 이미 존재...'}), 409
 
-        # 회원가입 데이터 삽입부분
-        cursor.execute("INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
-                       (signup_id, signup_ps, signup_name))
-        conn.commit()
+            # 회원가입 데이터 삽입부분
+            cursor.execute("INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
+                        (signup_id, signup_ps, signup_name))
+            conn.commit()
 
-        return jsonify({'message': '회원가입 성공! 축하티비'}), 201
+            return jsonify({'message': '회원가입 성공! 축하'}), 201
 
-    except pymysql.connect.Error as err:
-        print(f'아이 X발 에러났어: {err}')
-        return jsonify({'message': 'db 오류났다능... 킹받는당'}), 500
+        except pymysql.connect.Error as err:
+            print(f'아이 X발 에러났어: {err}')
+            return jsonify({'message': 'db 오류났다능... 킹받는당'}), 500
 
 
 @bp.route('/get_coords', methods=['POST'])
