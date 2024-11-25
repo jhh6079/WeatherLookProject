@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        <!-- const addressData = {{ address_data | tojson }}; -->
+        async function getSignup() { //회원가입 함수
+            const signup_id = document.getElementById("signup_id").value;
+            const signup_ps = document.getElementById("signup_ps").value;
+            const signup_name = document.getElementById("signup_name").value;
+            //플라스크 요청 보내는부분
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body: JSON.stringify({signup_id, signup_ps, signup_name})
+            });
+            //결과출력
+            const result = await response.json();
+            document.getElementById("result").innerText=result.message;
+        }
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+<div id="overlay"></div>
+<div class="container">
+    <h1>회원가입</h1>
+    <input type="text" id="signup_id" placeholder="ID">
+    <input type="text" id="signup_ps" placeholder="PASSWORD">
+    <input type="text" id="signup_name" placeholder="NAME">
+    <button onclick="getSignup()">회원가입</button>
+    <div id="result"></div>
+</div>
+</body>
+</html>
