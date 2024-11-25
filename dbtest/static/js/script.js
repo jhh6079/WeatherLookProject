@@ -305,3 +305,18 @@ function saveClothing() {
         .then(data => alert(data.message))
         .catch(error => console.error('오류 발생:', error));
 }
+
+async function getLogin(){
+    const login_id = document.getElementById("login_id").value;
+    const login_ps = document.getElementById("login_ps").value;
+
+    const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-type' : 'application/json'
+        },
+        body: JSON.stringify({login_id, login_ps})
+    });
+    const result = await response.json();
+    document.getElementById("result").innerText=result.message;
+}

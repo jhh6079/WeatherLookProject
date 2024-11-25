@@ -33,8 +33,15 @@ def main():
 def rank():
     # address_data 로드
     address_data = load_address_data()
+    return render_template('signup.html', address_data=address_data)
+
+@bp.route('/signup', methods=['GET'])
+def signup():
+    # address_data 로드
+    address_data = load_address_data()
     # rank.html 렌더링과 함께 address_data 전달
-    return render_template('rank.html', address_data=address_data)
+    return render_template('signup.html', address_data=address_data)
+
 
 
 @bp.route('/result', methods=['POST'])

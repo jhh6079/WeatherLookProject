@@ -6,23 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script>
-        async function getLogin(){
-            const login_id = document.getElementById("login_id").value;
-            const login_ps = document.getElementById("login_ps").value;
-
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-type' : 'application/json'
-                },
-                body: JSON.stringify({login_id, login_ps})
-            });
-            const result = await response.json();
-            document.getElementById("result").innerText=result.message;
-        }
-    </script>
-    <!-- <script src="{{ url_for('static', filename='js/script.js') }}" defer></script> -->
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
 <div id="overlay"></div>
@@ -31,7 +15,7 @@
     <input type="text" id="login_id" placeholder="ID">
     <input type="text" id="login_ps" placeholder="PASSWORD">
     <button onclick="getLogin()">로그인</button>
-    <button onclick="GoSignup()">회원가입 하러가는 버튼</button>
+    <button onclick="location.href='{{ url_for('main.signup') }}'">회원가입 하러가는 버튼</button>
     <button onclick="Non_Login()">비회원 홈페이지 이용</button>
     <div id="result"></div>
 </div>
