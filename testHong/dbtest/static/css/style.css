@@ -492,40 +492,54 @@ button:disabled {
     color: #333;
 }
 
-
 .snapshot-container {
     position: relative;
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    overflow: hidden;
+    overflow: hidden; /* 슬라이더 영역을 넘어간 이미지를 숨김 */
     display: flex;
     align-items: center;
 }
 
+.snapshot-images {
+    display: flex;
+    transition: transform 0.3s ease-in-out; /* 슬라이더 애니메이션 */
+    will-change: transform; /* 성능 최적화 */
+}
+
 .snapshot-slider {
     display: flex;
-    overflow: hidden;
     width: 100%;
+    position: relative; /* 위치 상대 설정 */
 }
 
 .snapshot-images {
     display: flex;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out; /* 부드러운 이동 */
+    will-change: transform; /* 성능 최적화 */
+    user-select: none; /* 드래그 방지 */
 }
 
 .snapshot-image {
     width: 150px;
     height: 150px;
-    margin: 0 5px;
+    margin: 0 10px; /* 이미지 간격 약간 확대 */
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px; /* 둥근 모서리 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* 이미지에 그림자 추가 */
+    transition: transform 0.2s ease-in-out; /* hover 효과 부드럽게 적용 */
+}
+
+.snapshot-image:hover {
+    transform: scale(1.1); /* 확대 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* hover 시 그림자 확대 */
 }
 
 .scroll-button {
-    background-color: #f7f7f7;
-    border: 1px solid #ccc;
-    color: #333;
+    background-color: #f0f0f0; /* 버튼 기본 배경색 */
+    border: none; /* 테두리 제거 */
+    color: #333; /* 텍스트 색상 */
     padding: 10px;
     cursor: pointer;
     position: absolute;
@@ -539,24 +553,24 @@ button:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 버튼 그림자 */
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scroll-button:hover {
-    background-color: #eee;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: #e0e0e0; /* hover 시 밝은 배경 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* hover 시 그림자 확대 */
 }
 
 .scroll-button.left {
     left: 10px;
-    padding-left: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-left: 9px;
     padding-top: 11px;
 }
 
 .scroll-button.right {
     right: 10px;
-    padding-right: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-right: 9px;
     padding-top: 11px;
 }
 

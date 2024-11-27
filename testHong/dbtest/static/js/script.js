@@ -338,37 +338,74 @@ document.addEventListener("DOMContentLoaded", () => {
     const snapshotImagesContainer = document.getElementById("snapshotImages");
     const jsonFilePath = "/static/images/image_urls.json"; // JSON 파일 경로
 
-    // JSON 파일에서 데이터 가져오기
+    // 배열 섞기 함수 (Fisher-Yates 알고리즘)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // 무한 스크롤 구현
     fetch(jsonFilePath)
         .then(response => response.json())
         .then(data => {
-            const imageUrls = data.images;
-            imageUrls.forEach(url => {
-                // 이미지 요소 생성 및 추가
+            let imageUrls = data.images;
+
+            // 이미지 순서 섞기
+            imageUrls = shuffleArray(imageUrls);
+
+            // 원본 배열 앞뒤에 복제 이미지 추가
+            const extendedImages = [...imageUrls.slice(-3), ...imageUrls, ...imageUrls.slice(0, 3)];
+
+            // 이미지 요소 생성 및 추가
+            extendedImages.forEach(url => {
                 const imgElement = document.createElement("img");
                 imgElement.src = url;
                 imgElement.className = "snapshot-image";
                 snapshotImagesContainer.appendChild(imgElement);
             });
+
+            // 슬라이더 초기화
+            initInfiniteScroll(imageUrls.length);
         })
         .catch(error => console.error("Error loading JSON:", error));
 });
 
-let currentIndex = 0;
-
-function scrollSnapshot(direction) {
+function initInfiniteScroll(originalLength) {
     const slider = document.getElementById("snapshotImages");
     const images = document.querySelectorAll(".snapshot-image");
 
-    // 이미지가 로드되었는지 확인
-    if (!images.length) return;
-
+    let currentIndex = 3; // 중간의 첫 번째 원본 이미지 인덱스
     const imageWidth = images[0].clientWidth + 10; // 이미지 너비 + 간격
-    const maxIndex = images.length - Math.floor(slider.parentElement.clientWidth / imageWidth);
-
-    // 슬라이더 인덱스 조정
-    currentIndex = Math.min(Math.max(currentIndex + direction, 0), maxIndex);
-
-    // 슬라이더 이동
     slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+
+    // 슬라이더 이동 함수
+    function scrollSnapshot(direction) {
+        currentIndex += direction;
+
+        // 슬라이더 이동
+        slider.style.transition = "transform 0.3s ease-in-out";
+        slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+    }
+
+    // `transitionend` 이벤트로 위치 조정
+    slider.addEventListener("transitionend", () => {
+        if (currentIndex < 3) {
+            // 앞쪽으로 이동 시 복제된 끝으로 점프
+            slider.style.transition = "none"; // 애니메이션 제거
+            currentIndex += originalLength; // 뒤쪽으로 이동
+            slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+        } else if (currentIndex >= 3 + originalLength) {
+            // 뒤쪽으로 이동 시 복제된 앞쪽으로 점프
+            slider.style.transition = "none"; // 애니메이션 제거
+            currentIndex -= originalLength; // 앞쪽으로 이동
+            slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+        }
+    });
+
+    // 버튼 클릭 이벤트 연결
+    document.querySelector(".scroll-button.left").onclick = () => scrollSnapshot(-1);
+    document.querySelector(".scroll-button.right").onclick = () => scrollSnapshot(1);
 }
