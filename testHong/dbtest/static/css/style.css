@@ -175,6 +175,14 @@ body.blurred .container {
     padding: 10px;
 }
 
+/*로고 사이즈*/
+.logo-rank {
+    max-width: 40%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+    padding-bottom: 30px;
+
+}
+
 /*텍스트 박스*/
 select, button, input[type="text"] {
     margin: 10px 0;
