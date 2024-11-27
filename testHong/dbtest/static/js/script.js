@@ -295,6 +295,7 @@ window.onload = function () {
     document.getElementById("gu").addEventListener("change", updateDong);
 };
 
+// 의류 저장 함수
 function saveClothing() {
     fetch('/save_clothing', {
         method: 'POST',
@@ -304,4 +305,70 @@ function saveClothing() {
         .then(response => response.json())
         .then(data => alert(data.message))
         .catch(error => console.error('오류 발생:', error));
+}
+
+// 로그인 함수
+async function getLogin() {
+    const login_id = document.getElementById("login_id").value;
+    const login_ps = document.getElementById("login_ps").value;
+
+    const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({login_id, login_ps})
+    });
+    const result = await response.json();
+    document.getElementById("result").innerText = result.message;
+}
+
+// 시간별 날씨 스크롤 함수
+function scrollHourly(direction) {
+    const row = document.querySelector('.hourly-weather-row');
+    const scrollAmount = 200; // 스크롤 이동 픽셀 수
+    row.scrollBy({
+        left: scrollAmount * direction,
+        behavior: 'smooth',
+    });
+}
+
+// 스냅샷 이미지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    const snapshotImagesContainer = document.getElementById("snapshotImages");
+    const jsonFilePath = "/static/images/image_urls.json"; // JSON 파일 경로
+
+    // JSON 파일에서 데이터 가져오기
+    fetch(jsonFilePath)
+        .then(response => response.json())
+        .then(data => {
+            const imageUrls = data.images;
+            imageUrls.forEach(url => {
+                // 이미지 요소 생성 및 추가
+                const imgElement = document.createElement("img");
+                imgElement.src = url;
+                imgElement.className = "snapshot-image";
+                snapshotImagesContainer.appendChild(imgElement);
+            });
+        })
+        .catch(error => console.error("Error loading JSON:", error));
+});
+
+let currentIndex = 0;
+
+function scrollSnapshot(direction) {
+    const slider = document.getElementById("snapshotImages");
+    const images = document.querySelectorAll(".snapshot-image");
+
+    // 이미지가 로드되었는지 확인
+    if (!images.length) return;
+
+    const imageWidth = images[0].clientWidth + 10; // 이미지 너비 + 간격
+    const maxIndex = images.length - Math.floor(slider.parentElement.clientWidth / imageWidth);
+
+    // 슬라이더 인덱스 조정
+    currentIndex = Math.min(Math.max(currentIndex + direction, 0), maxIndex);
+
+    // 슬라이더 이동
+    slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
 }

@@ -29,13 +29,21 @@
         <img src="/static/images/weatherlook_black.svg" class="logo"/>
     </a>
     <!-- 랭킹 페이지 내용 -->
-    <h1>랭킹 페이지</h1>
     <div class="ranking-content">
         <script>
             const addressData = {{ address_data | tojson if address_data else "{}" }};
         </script>
         <!-- 페이지 내용을 여기에 추가 -->
-        <p>이곳에 랭킹 데이터를 표시할 수 있습니다.</p>
+        <!--스냅샷 컨테이너 -->
+        <div class="snapshot-container">
+            <button class="scroll-button left" onclick="scrollSnapshot(-1)">&#9664;</button>
+            <div class="snapshot-slider">
+                <div class="snapshot-images" id="snapshotImages">
+                    <!-- JSON 파일에서 동적으로 이미지 추가 -->
+                </div>
+            </div>
+            <button class="scroll-button right" onclick="scrollSnapshot(1)">&#9654;</button>
+        </div>
     </div>
 </div>
 

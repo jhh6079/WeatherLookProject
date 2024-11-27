@@ -65,16 +65,19 @@
     <div class="box">
         <h2>시간별 날씨 정보</h2>
         {% if hourly_data %}
-        <div class="hourly-weather-row">
-            {% for hour in hourly_data %}
-            <div class="hourly-weather-card">
-                <img src="{{ hour.icon }}" alt="날씨 아이콘" class="weather-info-icon">
-                <p><strong>{{ hour.time[:2] }}:{{ hour.time[2:] }}</strong></p>
-                <p>{{ hour.temperature }}°C</p>
-                <p>{{ hour.sky }}</p> <!-- 시간별 날씨 상태 -->
-
+        <div class="hourly-weather-wrapper">
+            <button class="scroll-button left" onclick="scrollHourly(-1)">&#9664;</button> <!-- 왼쪽 버튼 -->
+            <div class="hourly-weather-row">
+                {% for hour in hourly_data %}
+                <div class="hourly-weather-card">
+                    <img src="{{ hour.icon }}" alt="날씨 아이콘" class="weather-info-icon">
+                    <p><strong>{{ hour.time[:2] }}:{{ hour.time[2:] }}</strong></p>
+                    <p>{{ hour.temperature }}°C</p>
+                    <p>{{ hour.sky }}</p>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <button class="scroll-button right" onclick="scrollHourly(1)">&#9654;</button> <!-- 오른쪽 버튼 -->
         </div>
         {% else %}
         <p>시간별 데이터가 없습니다.</p>

@@ -5,6 +5,9 @@ def create_app():
     # 명시적으로 template_folder 설정
     app = Flask(__name__, template_folder='../templates',static_folder='../static')
 
+    # 세션 비밀 키 설정
+    app.secret_key = 'secret_session'
+
     # API 키 및 설정 값 추가
     from key import KAKAO_API_KEY, OPENAI_API_KEY, WEATHER_API_KEY
     app.config['KAKAO_API_KEY'] = KAKAO_API_KEY

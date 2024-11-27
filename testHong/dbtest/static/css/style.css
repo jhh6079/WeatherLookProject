@@ -62,16 +62,24 @@ body.blurred .container {
     color: #ff0000; /* 호버 시 색상 */
 }
 
+
+.hourly-weather-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative; /* 버튼 위치를 잡기 위해 상대 위치 지정 */
+    overflow: hidden; /* 버튼 외부로 내용이 넘치지 않도록 설정 */
+}
+
 .hourly-weather-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     overflow-x: auto;
+    scroll-behavior: smooth; /* 부드러운 스크롤 */
     padding: 10px;
     gap: 10px; /* 각 아이템 간격 */
 }
 
-/*시간별 날씨 정보 개별 박스*/
 .hourly-weather-card {
     flex: 0 0 auto;
     background-color: #F7F7F7;
@@ -86,6 +94,44 @@ body.blurred .container {
 
 .hourly-weather-card:hover {
     transform: scale(1.05);
+}
+
+.scroll-button {
+    background-color: #f7f7f7; /* 버튼 배경색 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    color: #333; /* 화살표 색상 */
+    padding: 10px; /* 버튼 안쪽 여백 */
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 1.2rem; /* 화살표 크기 */
+    border-radius: 50%; /* 둥근 버튼 */
+    width: 40px; /* 버튼 너비 */
+    height: 40px; /* 버튼 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-button:hover {
+    background-color: #eee; /* 호버 시 버튼 배경색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 */
+}
+
+.scroll-button.left {
+    left: 5px; /* 왼쪽 버튼 위치 */
+    padding-left: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-top: 11px;
+}
+
+.scroll-button.right {
+    right: 5px; /* 오른쪽 버튼 위치 */
+    padding-right: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-top: 11px;
 }
 
 .weather-info {
@@ -123,7 +169,7 @@ body.blurred .container {
     height: auto; /* 비율 유지 */
 }
 
-.logo-result{
+.logo-result {
     max-width: 30%; /* 부모 요소 크기에 맞게 조정 */
     height: auto; /* 비율 유지 */
     padding: 10px;
@@ -350,7 +396,6 @@ button:disabled {
 }
 
 
-
 /* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
 .navbar {
     background-color: #F7F7F7; /* 네비게이션 바 배경색  <<수정 */
@@ -365,7 +410,7 @@ button:disabled {
     padding: 0; /* 내부 여백 제거 */
     display: inline-flex; /* 수평 정렬 */
     gap: 100px; /* 항목 간 간격 << 수정 */
-    margin-bottom : 20px
+    margin-bottom: 20px
 }
 
 .navbar-menu li {
@@ -383,7 +428,6 @@ button:disabled {
 .navbar-menu a:hover {
     color: #f39c12; /* 마우스를 올렸을 때 글자색 변경 */
 }
-
 
 
 /*======날씨 정보칸======*/
@@ -447,3 +491,83 @@ button:disabled {
     font-size: 16px;
     color: #333;
 }
+
+
+.snapshot-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.snapshot-slider {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+}
+
+.snapshot-images {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.snapshot-image {
+    width: 150px;
+    height: 150px;
+    margin: 0 5px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.scroll-button {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-button:hover {
+    background-color: #eee;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-button.left {
+    left: 10px;
+    padding-left: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-top: 11px;
+}
+
+.scroll-button.right {
+    right: 10px;
+    padding-right: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-top: 11px;
+}
+
+/*.scroll-button.left {*/
+/*    left: 10px;*/
+/*    padding-left: 9px; !* 텍스트를 약간 왼쪽으로 이동 *!*/
+/*    padding-top: 11px;*/
+/*}*/
+
+/*.scroll-button.right {*/
+/*    right: 10px;*/
+/*    padding-right: 9px; !* 텍스트를 약간 왼쪽으로 이동 *!*/
+/*    padding-top: 11px;*/
+/*}*/
