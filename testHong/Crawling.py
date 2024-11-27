@@ -29,30 +29,30 @@ def get_image_urls():
 time.sleep(2)
 
 # 이미지 크롤링
-img_dict = {}  # 딕셔너리에 이미지 저장
+img_list = []  # 이미지 URL을 리스트에 저장
 scroll_limit = 0  # 스크롤 최대 횟수
 current_scroll = 0
 
 while current_scroll <= scroll_limit:
     # 현재 페이지의 이미지 수집
     new_img_urls = get_image_urls()
-    for index, img_url in enumerate(new_img_urls):
-        # 각 URL을 딕셔너리에 저장 (키: 현재 스크롤 횟수와 인덱스 결합)
-        unique_key = f"img_{index + 1}"
-        img_dict[unique_key] = img_url
+    for img_url in new_img_urls:
+        # 중복 제거
+        if img_url not in img_list:
+            img_list.append(img_url)
 
     print(f"{current_scroll + 1}번째 스크롤에서 {len(new_img_urls)}개의 이미지 URL을 수집했습니다.")
     load_more_content()
     current_scroll += 1
 
-# 딕셔너리 출력 및 저장
-print(f"총 {len(img_dict)}개의 이미지를 딕셔너리에 저장했습니다.")
+# 딕셔너리 형태로 저장
+result = {"images": img_list}
 
 # JSON 파일로 저장
 output_file = "image_urls.json"
 with open(output_file, "w") as file:
-    json.dump(img_dict, file, indent=4)
-print(f"이미지 URL이 '{output_file}' 파일에 딕셔너리 형태로 저장되었습니다.")
+    json.dump(result, file, indent=4)
+print(f"이미지 URL이 '{output_file}' 파일에 저장되었습니다.")
 
 # 브라우저 종료
 driver.quit()
