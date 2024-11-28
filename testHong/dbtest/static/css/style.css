@@ -584,52 +584,116 @@ button:disabled {
 
 /*11월 28일 수정*/
 
-/* 상위 카테고리 버튼 */
-.main-category .filter-button {
-    padding: 5px 15px; /* 버튼 안쪽 여백 */
-    margin: 0 5px;
-    border: 1px solid #ccc;
-    background-color: #e7e7e7; /* 기본 배경색 */
+/* ===== 공통 카테고리 버튼 스타일 ===== */
+.filter-button {
+    padding: 5px 15px; /* 기본 버튼 여백 */
+    margin: 5px; /* 버튼들 간 간격 추가 */
+    border: 1px solid #ccc; /* 테두리 기본 색상 */
+    background-color: #e7e7e7; /* 기본 배경색 (밝은 회색) */
     color: #888888; /* 기본 글자색 (회색) */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14px; /* 글자 크기 */
     transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
-    border-radius: 20px; /* 둥근 버튼 */
+    border-radius: 20px; /* 둥근 모서리 */
     width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
 }
 
+/* ===== 성별 카테고리 버튼 ===== */
+.gender-category {
+    margin-bottom: 15px; /* 성별 버튼 그룹과 다음 그룹 간 간격 */
+}
+
+.gender-category .filter-button {
+    margin: 0px 10px; /* 버튼들 간의 여백 추가 */
+}
+
+.gender-category .filter-button.active {
+    background-color: #d0d0d0; /* 클릭 시 약간 어두운 회색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #bfbfbf; /* 클릭 시 테두리색 */
+}
+
+.gender-category .filter-button:hover {
+    background-color: #c7c7c7; /* 호버 시 약간 더 어두운 회색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 공통 버튼 스타일 ===== */
+.filter-button {
+    padding: 5px 15px; /* 버튼 안쪽 여백 */
+    margin: 0 4px; /* 좌우 간격 추가 */
+    border: 1px solid #ccc; /* 테두리 기본 색상 */
+    background-color: #e7e7e7; /* 기본 배경색 (밝은 회색) */
+    color: #888888; /* 기본 글자색 (회색) */
+    cursor: pointer;
+    font-size: 14px; /* 글자 크기 */
+    transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
+    border-radius: 20px; /* 둥근 모서리 */
+    width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
+    display: inline-block; /* 버튼을 가로로 정렬 */
+}
+
+/* ===== 공통 버튼 그룹 스타일 ===== */
+.gender-category,
+.main-category,
+.sub-category {
+    display: flex; /* 버튼 그룹을 수평 정렬 */
+    justify-content: center; /* 버튼을 중앙 정렬 */
+    align-items: center; /* 버튼 세로 정렬 */
+    flex-wrap: wrap; /* 버튼이 화면 너비를 넘어가면 다음 줄로 이동 */
+    gap: 5px; /* 버튼 간 간격 */
+    margin-bottom: 5px; /* 버튼 그룹 간 간격 */
+}
+
+/* ===== 성별 카테고리 버튼 ===== */
+.gender-category .filter-button {
+    padding: 7px 15px; /* 성별 버튼에 넉넉한 여백 */
+}
+
+.gender-category .filter-button.active {
+    background-color: #d0d0d0; /* 클릭 시 약간 어두운 회색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #bfbfbf; /* 클릭 시 테두리색 */
+}
+
+.gender-category .filter-button:hover {
+    background-color: #c7c7c7; /* 호버 시 약간 더 어두운 회색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 상위 카테고리 버튼 ===== */
+.main-category .filter-button {
+    padding: 7px 15px; /* 상위 카테고리 버튼 여백 */
+}
+
 .main-category .filter-button.active {
-    background-color: #d0d0d0; /* 클릭 시 배경색을 회색 쪽으로 변경 */
-    color: #000000; /* 클릭 시 글자색을 검정색으로 변경 */
-    border-color: #bfbfbf; /* 클릭 시 테두리색 변경 */
+    background-color: #d8e8d8; /* 클릭 시 연한 초록색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #c0d0c0; /* 클릭 시 테두리색 */
 }
 
 .main-category .filter-button:hover {
-    background-color: #c7c7c7; /* 호버 시 약간 더 어두운 회색 */
-    color: #000000; /* 호버 시 글자색을 검정색으로 변경 */
+    background-color: #c8d8c8; /* 호버 시 약간 더 어두운 초록색 */
+    color: #000000; /* 호버 시 글자색 검정 */
 }
 
-/* 하위 카테고리 버튼 */
+/* ===== 하위 카테고리 버튼 ===== */
 .sub-category .filter-button {
-    padding: 5px 15px;
-    margin: 0 5px;
-    border: 1px solid #ccc;
-    background-color: #e7e7e7; /* 기본 배경색 */
-    color: #888888; /* 기본 글자색 (회색) */
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 20px;
-    width: auto;
+    padding: 5px 15px; /* 하위 카테고리 기본 여백 */
 }
 
 .sub-category .filter-button.active {
-    background-color: #d8e8d8; /* 클릭 시 배경색을 연한 초록색으로 변경 */
-    color: #000000; /* 클릭 시 글자색을 검정색으로 변경 */
-    border-color: #c0d0c0; /* 클릭 시 테두리색 변경 */
+    background-color: #e0d8d8; /* 클릭 시 연한 분홍빛 회색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #d0c0c0; /* 클릭 시 테두리색 */
 }
 
 .sub-category .filter-button:hover {
-    background-color: #c8d8c8; /* 호버 시 약간 더 어두운 초록색 */
-    color: #000000; /* 호버 시 글자색을 검정색으로 변경 */
+    background-color: #d8c8c8; /* 호버 시 약간 더 어두운 분홍빛 회색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 공통 활성화 상태 ===== */
+.filter-button.active {
+    font-weight: bold; /* 활성화된 버튼 글씨를 굵게 표시 */
 }

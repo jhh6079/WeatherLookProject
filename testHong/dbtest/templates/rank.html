@@ -30,7 +30,13 @@
     </a>
     <!-- 랭킹 페이지 내용 -->
     <div class="ranking-content">
-        <!-- 선택 버튼 추가 -->
+        <!-- 성별 카테고리 버튼 -->
+        <div class="filter-buttons gender-category">
+            <button class="filter-button active" onclick="changeGenderCategory('전체')">전체</button>
+            <button class="filter-button" onclick="changeGenderCategory('남자')">남자</button>
+            <button class="filter-button" onclick="changeGenderCategory('여자')">여자</button>
+        </div>
+
         <!-- 상위 카테고리 버튼 -->
         <div class="filter-buttons main-category">
             <button class="filter-button active" onclick="changeMainCategory('전체')">전체</button>

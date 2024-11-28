@@ -378,7 +378,7 @@ function initInfiniteScroll(originalLength) {
     const images = document.querySelectorAll(".snapshot-image");
 
     let currentIndex = 3; // 중간의 첫 번째 원본 이미지 인덱스
-    const imageWidth = images[0].clientWidth + 10; // 이미지 너비 + 간격
+    const imageWidth = images[0].clientWidth + 20; // 이미지 너비 + 간격
     slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
 
     // 슬라이더 이동 함수
@@ -392,12 +392,12 @@ function initInfiniteScroll(originalLength) {
 
     // `transitionend` 이벤트로 위치 조정
     slider.addEventListener("transitionend", () => {
-        if (currentIndex < 3) {
+        if (currentIndex < 2) {
             // 앞쪽으로 이동 시 복제된 끝으로 점프
             slider.style.transition = "none"; // 애니메이션 제거
             currentIndex += originalLength; // 뒤쪽으로 이동
             slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
-        } else if (currentIndex >= 3 + originalLength) {
+        } else if (currentIndex >= 2 + originalLength) {
             // 뒤쪽으로 이동 시 복제된 앞쪽으로 점프
             slider.style.transition = "none"; // 애니메이션 제거
             currentIndex -= originalLength; // 앞쪽으로 이동
@@ -411,6 +411,20 @@ function initInfiniteScroll(originalLength) {
 }
 
 // 11월 28일 수정
+// 성별 카테고리 변경
+function changeGenderCategory(gender) {
+    const genderButtons = document.querySelectorAll('.gender-category .filter-button');
+
+    // 성별 버튼 활성화
+    genderButtons.forEach(btn => btn.classList.remove('active'));
+    genderButtons.forEach(btn => {
+        if (btn.textContent === gender) {
+            btn.classList.add('active');
+        }
+    });
+
+    console.log(`Gender category changed to: ${gender}`);
+}
 
 // 상위 카테고리 변경
 function changeMainCategory(category) {
@@ -444,6 +458,7 @@ function selectSubCategory(subCategory) {
 
     console.log(`Sub category selected: ${subCategory}`);
 }
+
 
 // // 스냅샷 스크롤 버튼 (추가적인 동작을 여기에 구현)
 // function scrollSnapshot(direction) {
