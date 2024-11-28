@@ -30,7 +30,7 @@ time.sleep(2)
 
 # 이미지 크롤링
 img_list = []  # 이미지 URL을 리스트에 저장
-scroll_limit = 0  # 스크롤 최대 횟수
+scroll_limit = 10  # 스크롤 최대 횟수
 current_scroll = 0
 
 while current_scroll <= scroll_limit:

@@ -409,3 +409,52 @@ function initInfiniteScroll(originalLength) {
     document.querySelector(".scroll-button.left").onclick = () => scrollSnapshot(-1);
     document.querySelector(".scroll-button.right").onclick = () => scrollSnapshot(1);
 }
+
+// 11월 28일 수정
+
+// 상위 카테고리 변경
+function changeMainCategory(category) {
+    const mainButtons = document.querySelectorAll('.main-category .filter-button');
+    const subButtons = document.querySelectorAll('.sub-category .filter-button');
+
+    // 상위 버튼 활성화
+    mainButtons.forEach(btn => btn.classList.remove('active'));
+    mainButtons.forEach(btn => {
+        if (btn.textContent === category) {
+            btn.classList.add('active');
+        }
+    });
+
+    // 하위 버튼 초기화
+    subButtons.forEach(btn => btn.classList.remove('active'));
+    console.log(`Main category changed to: ${category}`);
+}
+
+// 하위 카테고리 선택
+function selectSubCategory(subCategory) {
+    const subButtons = document.querySelectorAll('.sub-category .filter-button');
+
+    // 하위 버튼 활성화
+    subButtons.forEach(btn => btn.classList.remove('active'));
+    subButtons.forEach(btn => {
+        if (btn.textContent === subCategory) {
+            btn.classList.add('active');
+        }
+    });
+
+    console.log(`Sub category selected: ${subCategory}`);
+}
+
+// // 스냅샷 스크롤 버튼 (추가적인 동작을 여기에 구현)
+// function scrollSnapshot(direction) {
+//     const slider = document.getElementById('snapshotImages');
+//     const slideWidth = slider.firstElementChild?.offsetWidth || 300;
+//
+//     const currentTransform = getComputedStyle(slider).transform;
+//     const matrix = new DOMMatrix(currentTransform);
+//     const currentTranslateX = matrix.m41;
+//
+//     slider.style.transform = `translateX(${currentTranslateX + direction * slideWidth}px)`;
+//     console.log(`Scrolled ${direction > 0 ? 'right' : 'left'}`);
+// }
+//

@@ -582,14 +582,54 @@ button:disabled {
     padding-top: 11px;
 }
 
-/*.scroll-button.left {*/
-/*    left: 10px;*/
-/*    padding-left: 9px; !* 텍스트를 약간 왼쪽으로 이동 *!*/
-/*    padding-top: 11px;*/
-/*}*/
+/*11월 28일 수정*/
 
-/*.scroll-button.right {*/
-/*    right: 10px;*/
-/*    padding-right: 9px; !* 텍스트를 약간 왼쪽으로 이동 *!*/
-/*    padding-top: 11px;*/
-/*}*/
+/* 상위 카테고리 버튼 */
+.main-category .filter-button {
+    padding: 5px 15px; /* 버튼 안쪽 여백 */
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    background-color: #e7e7e7; /* 기본 배경색 */
+    color: #888888; /* 기본 글자색 (회색) */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
+    border-radius: 20px; /* 둥근 버튼 */
+    width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
+}
+
+.main-category .filter-button.active {
+    background-color: #d0d0d0; /* 클릭 시 배경색을 회색 쪽으로 변경 */
+    color: #000000; /* 클릭 시 글자색을 검정색으로 변경 */
+    border-color: #bfbfbf; /* 클릭 시 테두리색 변경 */
+}
+
+.main-category .filter-button:hover {
+    background-color: #c7c7c7; /* 호버 시 약간 더 어두운 회색 */
+    color: #000000; /* 호버 시 글자색을 검정색으로 변경 */
+}
+
+/* 하위 카테고리 버튼 */
+.sub-category .filter-button {
+    padding: 5px 15px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    background-color: #e7e7e7; /* 기본 배경색 */
+    color: #888888; /* 기본 글자색 (회색) */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 20px;
+    width: auto;
+}
+
+.sub-category .filter-button.active {
+    background-color: #d8e8d8; /* 클릭 시 배경색을 연한 초록색으로 변경 */
+    color: #000000; /* 클릭 시 글자색을 검정색으로 변경 */
+    border-color: #c0d0c0; /* 클릭 시 테두리색 변경 */
+}
+
+.sub-category .filter-button:hover {
+    background-color: #c8d8c8; /* 호버 시 약간 더 어두운 초록색 */
+    color: #000000; /* 호버 시 글자색을 검정색으로 변경 */
+}

@@ -30,6 +30,20 @@
     </a>
     <!-- 랭킹 페이지 내용 -->
     <div class="ranking-content">
+        <!-- 선택 버튼 추가 -->
+        <!-- 상위 카테고리 버튼 -->
+        <div class="filter-buttons main-category">
+            <button class="filter-button active" onclick="changeMainCategory('전체')">전체</button>
+            <button class="filter-button" onclick="changeMainCategory('스트릿')">스트릿</button>
+            <button class="filter-button" onclick="changeMainCategory('캐주얼')">캐주얼</button>
+        </div>
+
+        <!-- 하위 카테고리 버튼 -->
+        <div class="filter-buttons sub-category">
+            <button class="filter-button" onclick="selectSubCategory('상의')">상의</button>
+            <button class="filter-button" onclick="selectSubCategory('바지')">바지</button>
+        </div>
+
         <script>
             const addressData = {{ address_data | tojson if address_data else "{}" }};
         </script>
