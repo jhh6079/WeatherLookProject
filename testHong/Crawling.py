@@ -20,9 +20,22 @@ def load_more_content():
 
 # 이미지 추출 및 출력
 def get_image_urls():
-    """ 현재 페이지의 모든 이미지 URL 추출 """
+    """ 현재 페이지의 모든 이미지 URL 추출 (광고 제외) """
     img_elements = driver.find_elements(By.CSS_SELECTOR, ".sc-6fd591d8-0 img")  # 이미지 CSS 선택자
-    img_urls = [img.get_attribute("src") for img in img_elements if img.get_attribute("src")]
+    img_urls = []
+
+    for img in img_elements:
+        try:
+            # 광고 요소 필터링: 'hpPCle.gtm' 클래스 포함 여부 확인
+            img.find_element(By.XPATH, "./ancestor::div[contains(@class, 'hpPCle.gtm')]")
+            # 부모 요소에 'hpPCle.gtm' 클래스가 있으면 광고로 간주하고 제외
+            continue
+        except Exception:
+            # 부모 요소가 없거나 광고가 아닌 경우
+            img_src = img.get_attribute("src")
+            if img_src:  # 유효한 URL만 추가
+                img_urls.append(img_src)
+
     return img_urls
 
 # 초기 로딩 대기
@@ -30,7 +43,7 @@ time.sleep(2)
 
 # 이미지 크롤링
 img_list = []  # 이미지 URL을 리스트에 저장
-scroll_limit = 10  # 스크롤 최대 횟수
+scroll_limit = 5  # 스크롤 최대 횟수
 current_scroll = 0
 
 while current_scroll <= scroll_limit:
