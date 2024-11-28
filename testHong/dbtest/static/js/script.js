@@ -386,7 +386,7 @@ function initInfiniteScroll(originalLength) {
         currentIndex += direction;
 
         // 슬라이더 이동
-        slider.style.transition = "transform 0.3s ease-in-out";
+        slider.style.transition = "transform 0.35s ease-in-out";
         slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
     }
 
