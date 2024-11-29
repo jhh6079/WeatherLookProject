@@ -268,14 +268,14 @@ async function askQuestion() {
 
         const botBubble = document.createElement("p");
         botBubble.className = "bot";
-        botBubble.innerHTML = `<span>${data.answer}</span>`;
+        botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
         chatResponse.appendChild(botBubble);
 
     } catch (error) {
         console.error("오류 발생:", error);
         const errorBubble = document.createElement("p");
         errorBubble.className = "bot";
-        errorBubble.innerHTML = `<span>오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+        errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
         chatResponse.appendChild(errorBubble);
     }
     chatResponse.scrollTop = chatResponse.scrollHeight;
@@ -355,14 +355,14 @@ function requestHourlyRecommendation() {
         .then(data => {
             const botBubble = document.createElement("p");
             botBubble.className = "bot";
-            botBubble.innerHTML = `<span>${data.answer}</span>`;
+            botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
             chatResponse.appendChild(botBubble);
         })
         .catch(error => {
             console.error("오류 발생:", error);
             const errorBubble = document.createElement("p");
             errorBubble.className = "bot";
-            errorBubble.innerHTML = `<span>오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+            errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
             chatResponse.appendChild(errorBubble);
         });
 }
@@ -383,14 +383,14 @@ function requestCurrentRecommendation() {
         .then(data => {
             const botBubble = document.createElement("p");
             botBubble.className = "bot";
-            botBubble.innerHTML = `<span>${data.answer}</span>`;
+            botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
             chatResponse.appendChild(botBubble);
         })
         .catch(error => {
             console.error("오류 발생:", error);
             const errorBubble = document.createElement("p");
             errorBubble.className = "bot";
-            errorBubble.innerHTML = `<span>오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+            errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
             chatResponse.appendChild(errorBubble);
         });
 }
