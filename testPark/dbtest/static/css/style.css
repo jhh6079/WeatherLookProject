@@ -1,0 +1,768 @@
+/*전체 배경*/
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: #C2C2C2;
+}
+
+body.blurred .container {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+    transition: opacity 0.3s ease;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative; /* 내부 요소의 위치를 조정하기 위한 기준 설정 */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 10px; /* 박스 안쪽 위에서 10px */
+    right: 10px; /* 박스 안쪽 오른쪽에서 10px */
+    cursor: pointer;
+    font-size: 24px;
+    color: #555; /* 닫기 버튼 색상 */
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #ff0000; /* 호버 시 색상 */
+}
+
+
+.hourly-weather-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative; /* 버튼 위치를 잡기 위해 상대 위치 지정 */
+    overflow: hidden; /* 버튼 외부로 내용이 넘치지 않도록 설정 */
+}
+
+.hourly-weather-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* 부드러운 스크롤 */
+    padding: 10px;
+    gap: 10px; /* 각 아이템 간격 */
+}
+
+.hourly-weather-card {
+    flex: 0 0 auto;
+    background-color: #F7F7F7;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    min-width: 120px; /* 카드 최소 너비 */
+    text-align: center;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.hourly-weather-card:hover {
+    transform: scale(1.05);
+}
+
+.scroll-button {
+    background-color: #f7f7f7; /* 버튼 배경색 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    color: #333; /* 화살표 색상 */
+    padding: 10px; /* 버튼 안쪽 여백 */
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 1.2rem; /* 화살표 크기 */
+    border-radius: 50%; /* 둥근 버튼 */
+    width: 40px; /* 버튼 너비 */
+    height: 40px; /* 버튼 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-button:hover {
+    background-color: #eee; /* 호버 시 버튼 배경색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 */
+}
+
+.scroll-button.left {
+    left: 5px; /* 왼쪽 버튼 위치 */
+    padding-left: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-top: 11px;
+}
+
+.scroll-button.right {
+    right: 5px; /* 오른쪽 버튼 위치 */
+    padding-right: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    padding-top: 11px;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column; /* 세로 방향 정렬 */
+    align-items: center; /* 중앙 정렬 */
+    gap: 5px; /* 텍스트와 아이콘 간격 */
+    margin: 10px 0; /* 상하 여백 */
+}
+
+.weather-info-icon {
+    width: 30px; /* 아이콘 크기 */
+    height: 30px; /* 아이콘 크기 */
+}
+
+.hourly-weather-card p {
+    margin: 5px 0;
+}
+
+
+.container {
+    text-align: center;
+    background-color: #F7F7F7; /*<<수정*/
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    width: 600px;
+    transition: transform 0.3s ease-in-out;
+    animation: slideIn 0.5s ease-out;
+}
+
+/*로고 사이즈*/
+.logo {
+    max-width: 40%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+}
+
+.logo-result {
+    max-width: 30%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+    padding: 10px;
+}
+
+/*로고 사이즈*/
+.logo-rank {
+    max-width: 40%; /* 부모 요소 크기에 맞게 조정 */
+    height: auto; /* 비율 유지 */
+    padding-bottom: 30px;
+
+}
+
+/*텍스트 박스*/
+select, button, input[type="text"] {
+    margin: 10px 0;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 15px;
+    border: 1px solid #9E9E9E;
+    transition: box-shadow 0.3s ease;
+}
+
+/*버튼*/
+button {
+    background-color: #787878;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/*버튼 위에 커서*/
+button:hover {
+    background-color: #646464;
+}
+
+/*버튼 클릭시 조회 중*/
+button:disabled {
+    background-color: #BDBDBD;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s ease infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/*여기까지*/
+.result {
+    max-height: 80vh;
+    overflow: auto;
+    margin-top: 20px;
+    display: none;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+.box {
+    text-align: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+/*h2에 해당하는 box의 css*/
+.box h2 {
+    color: #353535;
+    margin-bottom: 18px;
+}
+
+/* Chat Sidebar CSS */
+.chat-sidebar {
+    position: fixed;
+    top: 5%;
+    right: -100%;
+    width: 30%;
+    height: 88%;
+    background-color: #F7F7F7;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    transition: right 0.3s ease;
+    padding: 15px;
+    display: block;
+    z-index: 1000;
+}
+
+/*챗봇 버튼*/
+.open-chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #787878;
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001;
+    width: 60px;
+    height: 60px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/*챗봇 버튼 호버*/
+.open-chat-btn:hover {
+    background-color: #646464;
+    transform: scale(1.1);
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*!*챗봇 컨테이너*!2024-11-28 추가 수정!!*/
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+}
+
+/*=====챗봇 내 질문 및 답변부분=====*/
+.chat-response {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding: 5px 15px 15px 15px; /* 상단 패딩을 5px로 줄임 */
+    background-color: #f9f9f9;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.chat-response p {
+    margin: 10px 0;
+    display: flex;
+    align-items: flex-start;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.chat-response p.user {
+    justify-content: flex-end;
+}
+
+.chat-response p.user span {
+    background-color: #878787;
+    color: white;
+    border-radius: 20px 20px 0 20px;
+    padding: 12px 12px 12px 18px;
+    text-align: left;
+    margin-left: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-response p.bot span {
+    background-color: #E1E1E1;
+    color: black;
+    padding: 12px 18px 12px 12px;
+    text-align: left;
+    border-radius: 20px 20px 20px 0;
+    margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-response p.bot span {
+    background-color: #E1E1E1;
+    color: black;
+    padding: 12px 18px 12px 12px;
+    text-align: left;
+    border-radius: 20px 20px 20px 0;
+    margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 컨테이너 설정 */
+#responseButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    margin-top: -50px;
+}
+
+/* 공통 버튼 스타일 */
+#responseButtons button {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 2px solid rgba(200, 200, 200, 0.3);
+    background-color: rgba(200, 200, 200, 0.3);
+    color: rgba(80, 80, 80, 1);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    opacity: 1;
+}
+
+/* 호버 시 효과 */
+#responseButtons button:hover {
+    background-color: rgba(120, 120, 120, 0.2);
+    border: 2px solid rgba(120, 120, 120, 0.2);
+    color: rgba(60, 60, 60, 1);
+    transform: scale(1.05);
+}
+
+/*/////여기까지!!!/////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*2024-11-28 추가 수정*/
+/*챗봇 유저 입력창*/
+.chat-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+/* 채팅박스 안의 버튼 스타일 */
+.chat-input button {
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    background-color: #787878;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.chat-input button:hover {
+    background-color: #646464;
+}
+
+/* 버튼 간의 간격 조정 */
+.chat-input button:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+/*챗봇 유저 입력창*/
+.chat-input input[type="text"] {
+    padding: 15px;
+    font-size: 14px;
+    border-radius: 15px;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #9E9E9E;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input button {
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    background-color: #787878;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/*//////여기까지!!!!!!!////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+#saveClothingButton {
+    display: none;
+    background-color: #DDA0DD; /* 연보라색 */
+    color: white; /* 텍스트 색상 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 클릭 가능하도록 커서 변경 */
+    padding: 12px 15px; /* 여백 */
+    font-size: 16px; /* 글자 크기 */
+    border-radius: 20px; /* 둥근 모서리 */
+    transition: background-color 0.3s ease; /* 색상 변경 애니메이션 */
+}
+
+#saveClothingButton:hover {
+    background-color: #BA55D3; /* 호버 시 더 진한 연보라색 */
+}
+
+.chat-input button:hover {
+    background-color: #646464;
+}
+
+
+/* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
+.navbar {
+    background-color: #F7F7F7; /* 네비게이션 바 배경색  <<수정 */
+    padding: 10px 0; /* 위아래 여백 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/*마진 수정*/
+.navbar-menu {
+    list-style: none; /* 리스트 스타일 제거 */
+    margin: 0; /* 외부 여백 제거 */
+    padding: 0; /* 내부 여백 제거 */
+    display: inline-flex; /* 수평 정렬 */
+    gap: 100px; /* 항목 간 간격 << 수정 */
+    margin-bottom: 20px
+}
+
+.navbar-menu li {
+    display: inline; /* 리스트 항목을 한 줄로 */
+}
+
+.navbar-menu a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #000; /* 글자색 */
+    font-size: 16px; /* 글자 크기 */
+    padding: 5px 10px; /* 텍스트 내부 여백 */
+    transition: color 0.3s ease; /* 색상 변경 애니메이션 */
+}
+
+.navbar-menu a:hover {
+    color: #f39c12; /* 마우스를 올렸을 때 글자색 변경 */
+}
+
+
+/*======날씨 정보칸======*/
+.weather-box {
+    text-align: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.weather-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+/*현재 날씨 글자 색*/
+.temperature {
+    font-size: 36px;
+    font-weight: bold;
+    color: #353535;
+}
+
+/*날씨 상태(흐림, 맑음 등등)*/
+.sky-status {
+    font-size: 18px;
+    color: #5D5D5D;
+    margin-bottom: 15px;
+}
+
+/*습도 풍속 강수확률 체감온도*/
+.weather-details {
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    color: #444;
+}
+
+/*=====습도 풍속 강수확률의 디테일 설정=====*/
+.detail {
+    text-align: center;
+}
+
+.detail span:first-child {
+    display: block;
+    font-weight: bold;
+    color: #888;
+}
+
+.detail span:last-child {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.snapshot-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden; /* 슬라이더 영역을 넘어간 이미지를 숨김 */
+    display: flex;
+    align-items: center;
+}
+
+.snapshot-images {
+    display: flex;
+    transition: transform 0.3s ease-in-out; /* 슬라이더 애니메이션 */
+    will-change: transform; /* 성능 최적화 */
+}
+
+.snapshot-slider {
+    display: flex;
+    width: 100%;
+    position: relative; /* 위치 상대 설정 */
+}
+
+.snapshot-images {
+    display: flex;
+    transition: transform 0.3s ease-in-out; /* 부드러운 이동 */
+    will-change: transform; /* 성능 최적화 */
+    user-select: none; /* 드래그 방지 */
+}
+
+.snapshot-image {
+    width: 150px;
+    height: 150px;
+    margin: 0 10px; /* 이미지 간격 약간 확대 */
+    object-fit: cover;
+    border-radius: 10px; /* 둥근 모서리 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* 이미지에 그림자 추가 */
+    transition: transform 0.2s ease-in-out; /* hover 효과 부드럽게 적용 */
+}
+
+.snapshot-image:hover {
+    transform: scale(1.1); /* 확대 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* hover 시 그림자 확대 */
+}
+
+.scroll-button {
+    background-color: #f0f0f0; /* 버튼 기본 배경색 */
+    border: none; /* 테두리 제거 */
+    color: #333; /* 텍스트 색상 */
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 버튼 그림자 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-button:hover {
+    background-color: #e0e0e0; /* hover 시 밝은 배경 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* hover 시 그림자 확대 */
+}
+
+.scroll-button.left {
+    left: 10px;
+    padding-left: 9px;
+    padding-top: 11px;
+}
+
+.scroll-button.right {
+    right: 10px;
+    padding-right: 9px;
+    padding-top: 11px;
+}
+
+/*11월 28일 수정*/
+
+/* ===== 공통 카테고리 버튼 스타일 ===== */
+.filter-button {
+    padding: 5px 15px; /* 기본 버튼 여백 */
+    margin: 5px; /* 버튼들 간 간격 추가 */
+    border: 1px solid #ccc; /* 테두리 기본 색상 */
+    background-color: #e7e7e7; /* 기본 배경색 (밝은 회색) */
+    color: #888888; /* 기본 글자색 (회색) */
+    cursor: pointer;
+    font-size: 14px; /* 글자 크기 */
+    transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
+    border-radius: 20px; /* 둥근 모서리 */
+    width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
+}
+
+/* ===== 성별 카테고리 버튼 ===== */
+.gender-category {
+    margin-bottom: 15px; /* 성별 버튼 그룹과 다음 그룹 간 간격 */
+}
+
+.gender-category .filter-button {
+    margin: 0px 10px; /* 버튼들 간의 여백 추가 */
+}
+
+.gender-category .filter-button.active {
+    background-color: #d0d0d0; /* 클릭 시 약간 어두운 회색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #bfbfbf; /* 클릭 시 테두리색 */
+}
+
+.gender-category .filter-button:hover {
+    background-color: #c7c7c7; /* 호버 시 약간 더 어두운 회색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 공통 버튼 스타일 ===== */
+.filter-button {
+    padding: 5px 15px; /* 버튼 안쪽 여백 */
+    margin: 0 4px; /* 좌우 간격 추가 */
+    border: 1px solid #ccc; /* 테두리 기본 색상 */
+    background-color: #e7e7e7; /* 기본 배경색 (밝은 회색) */
+    color: #888888; /* 기본 글자색 (회색) */
+    cursor: pointer;
+    font-size: 14px; /* 글자 크기 */
+    transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
+    border-radius: 20px; /* 둥근 모서리 */
+    width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
+    display: inline-block; /* 버튼을 가로로 정렬 */
+}
+
+/* ===== 공통 버튼 그룹 스타일 ===== */
+.gender-category,
+.main-category,
+.sub-category {
+    display: flex; /* 버튼 그룹을 수평 정렬 */
+    justify-content: center; /* 버튼을 중앙 정렬 */
+    align-items: center; /* 버튼 세로 정렬 */
+    flex-wrap: wrap; /* 버튼이 화면 너비를 넘어가면 다음 줄로 이동 */
+    gap: 5px; /* 버튼 간 간격 */
+    margin-bottom: 5px; /* 버튼 그룹 간 간격 */
+}
+
+/* ===== 성별 카테고리 버튼 ===== */
+.gender-category .filter-button {
+    padding: 7px 15px; /* 성별 버튼에 넉넉한 여백 */
+}
+
+.gender-category .filter-button.active {
+    background-color: #d0d0d0; /* 클릭 시 약간 어두운 회색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #bfbfbf; /* 클릭 시 테두리색 */
+}
+
+.gender-category .filter-button:hover {
+    background-color: #c7c7c7; /* 호버 시 약간 더 어두운 회색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 상위 카테고리 버튼 ===== */
+.main-category .filter-button {
+    padding: 7px 15px; /* 상위 카테고리 버튼 여백 */
+}
+
+.main-category .filter-button.active {
+    background-color: #d8e8d8; /* 클릭 시 연한 초록색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #c0d0c0; /* 클릭 시 테두리색 */
+}
+
+.main-category .filter-button:hover {
+    background-color: #c8d8c8; /* 호버 시 약간 더 어두운 초록색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 하위 카테고리 버튼 ===== */
+.sub-category .filter-button {
+    padding: 5px 15px; /* 하위 카테고리 기본 여백 */
+}
+
+.sub-category .filter-button.active {
+    background-color: #e0d8d8; /* 클릭 시 연한 분홍빛 회색 */
+    color: #000000; /* 클릭 시 글자색 검정 */
+    border-color: #d0c0c0; /* 클릭 시 테두리색 */
+}
+
+.sub-category .filter-button:hover {
+    background-color: #d8c8c8; /* 호버 시 약간 더 어두운 분홍빛 회색 */
+    color: #000000; /* 호버 시 글자색 검정 */
+}
+
+/* ===== 공통 활성화 상태 ===== */
+.filter-button.active {
+    font-weight: bold; /* 활성화된 버튼 글씨를 굵게 표시 */
+}
