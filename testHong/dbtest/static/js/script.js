@@ -460,16 +460,70 @@ function selectSubCategory(subCategory) {
 }
 
 
-// // 스냅샷 스크롤 버튼 (추가적인 동작을 여기에 구현)
-// function scrollSnapshot(direction) {
-//     const slider = document.getElementById('snapshotImages');
-//     const slideWidth = slider.firstElementChild?.offsetWidth || 300;
-//
-//     const currentTransform = getComputedStyle(slider).transform;
-//     const matrix = new DOMMatrix(currentTransform);
-//     const currentTranslateX = matrix.m41;
-//
-//     slider.style.transform = `translateX(${currentTranslateX + direction * slideWidth}px)`;
-//     console.log(`Scrolled ${direction > 0 ? 'right' : 'left'}`);
-// }
-//
+// URL 매핑 객체
+const categoryUrls = {
+    "전체 상의": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=001000",
+    "전체 바지": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=003000",
+    "스트릿 상의": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=203&categoryCode=001",
+    "스트릿 바지": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=203&categoryCode=003",
+    "캐주얼 상의": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=202&categoryCode=001",
+    "캐주얼 바지": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=202&categoryCode=003"
+};
+
+// 성별 매핑 객체
+const genderSuffix = {
+    "전체": "A",
+    "남자": "M",
+    "여자": "F"
+};
+
+// 버튼 활성화 상태 토글 함수
+function toggleCategory(button) {
+    const isActive = button.classList.contains('active');
+    const parentCategory = button.parentElement;
+
+    // 성별 및 메인 카테고리는 단일 선택
+    if (parentCategory.classList.contains('gender-category') ||
+        parentCategory.classList.contains('main-category')) {
+        parentCategory.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+    }
+
+    // 선택된 버튼 활성화/비활성화 토글
+    if (!isActive) {
+        button.classList.add('active');
+    }
+}
+
+// 검색 함수
+function search() {
+    // 선택된 성별, 메인 카테고리, 하위 카테고리 가져오기
+    const gender = document.querySelector('.gender-category .filter-button.active')?.textContent.trim();
+    const mainCategory = document.querySelector('.main-category .filter-button.active')?.textContent.trim();
+    const subCategory = document.querySelector('.sub-category .filter-button.active')?.textContent.trim();
+
+    // 하위 카테고리 필수 체크
+    if (!subCategory) {
+        alert('하위 카테고리(상의 또는 하의)를 선택해주세요.');
+        return; // 검색 중단
+    }
+
+    // 카테고리 키 생성
+    const categoryKey = `${mainCategory} ${subCategory}`;
+    const baseUrl = categoryUrls[categoryKey];
+
+    // 해당 키에 매핑된 URL이 없으면 알림
+    if (!baseUrl) {
+        alert('선택된 카테고리에 대한 링크가 없습니다.');
+        return;
+    }
+
+    // 성별에 따른 URL 생성
+    const genderKey = genderSuffix[gender || "전체"]; // 성별이 없으면 "전체"로 처리
+    const finalUrl = `${baseUrl}&gf=${genderKey}`;
+
+    // 링크 출력 (혹은 다른 처리)
+    console.log('생성된 URL:', finalUrl);
+    alert(`생성된 URL: ${finalUrl}`);
+    // 실제 이동하려면 아래 코드 사용
+    // window.location.href = finalUrl;
+}
