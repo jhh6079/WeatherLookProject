@@ -74,23 +74,38 @@ def result():
         # 좌표를 기상청 격자로 변환
         nx, ny = convert_to_grid(lat, lon)
 
+        # 문제였던 부분 욕나오는 nodata
         # 현재 시간 계산
         from datetime import datetime, timedelta
+
         now = datetime.now()
         base_date = now.strftime("%Y%m%d")
-        if now.hour < 5:
+
+        # 기상청 API 제공 시간 기준으로 base_time 계산
+        if now.hour < 2 or (now.hour == 2 and now.minute < 10):
             base_time = "2300"
             base_date = (now - timedelta(days=1)).strftime("%Y%m%d")
-        elif now.hour < 11:
+        elif now.hour < 5 or (now.hour == 5 and now.minute < 10):
+            base_time = "0200"
+        elif now.hour < 8 or (now.hour == 8 and now.minute < 10):
             base_time = "0500"
-        elif now.hour < 17:
+        elif now.hour < 11 or (now.hour == 11 and now.minute < 10):
+            base_time = "0800"
+        elif now.hour < 14 or (now.hour == 14 and now.minute < 10):
             base_time = "1100"
-        elif now.hour < 23:
+        elif now.hour < 17 or (now.hour == 17 and now.minute < 10):
+            base_time = "1400"
+        elif now.hour < 20 or (now.hour == 20 and now.minute < 10):
             base_time = "1700"
+        elif now.hour < 23 or (now.hour == 23 and now.minute < 10):
+            base_time = "2000"
         else:
             base_time = "2300"
 
-        # 기상청 API 호출
+#여기까지
+
+
+    # 기상청 API 호출
         weather_url = f"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
         params = {
             "serviceKey": current_app.config['WEATHER_API_KEY'],
@@ -240,7 +255,7 @@ def get_login():
     if request.method == 'GET':
         address_data = load_address_data()
         return render_template('login.html', address_data=address_data)
-    
+
     if request.method == 'POST':
         data = request.get_json()
         login_id = data.get('login_id')
@@ -248,10 +263,10 @@ def get_login():
 
         if not login_id or not login_ps:
             return jsonify({"message":"ID 또는 비밀번호가 입력되지 않음"}), 400
-        
+
         try:  # 데이터베이스 연결합니다
             conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                                password="20020414", database="weatherlookdb")
+                                   password="20020414", database="weatherlookdb")
             cursor = conn.cursor()
 
             cursor.execute("select username, password, nickname from weatherlookdb_user where username = %s AND password = %s", (login_id, login_ps))
@@ -266,7 +281,7 @@ def get_login():
                 return jsonify({"message" : f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
             else:
                 return jsonify({"message" : "ID와 비밀번호를 확인바랍니다"}), 401
-            
+
         except pymysql.MySQLError as err:
             print(f"DB 에러: {err}")
             return jsonify({"message": "데이터베이스 오류 발생"}), 500
@@ -291,7 +306,7 @@ def get_register():
         # GET 요청 시 회원가입 양식 페이지 렌더링
         address_data = load_address_data()
         return render_template('signup.html', address_data=address_data)
-    
+
     if request.method == 'POST':
         # POST 요청 시 데이터 처리
         data = request.get_json()
@@ -304,7 +319,7 @@ def get_register():
 
         try:  # 데이터베이스 연결합니다
             conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                                password="20020414", database="weatherlookdb")
+                                   password="20020414", database="weatherlookdb")
             cursor = conn.cursor()
 
             # 중복체크
@@ -314,7 +329,7 @@ def get_register():
 
             # 회원가입 데이터 삽입부분
             cursor.execute("INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
-                        (signup_id, signup_ps, signup_name))
+                           (signup_id, signup_ps, signup_name))
             conn.commit()
 
             return jsonify({'message': '회원가입 성공! 축하'}), 201
