@@ -352,6 +352,37 @@ button:disabled {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 버튼 컨테이너 설정 */
+#responseButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    margin-top: -50px;
+}
+
+/* 공통 버튼 스타일 */
+#responseButtons button {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 2px solid rgba(200, 200, 200, 0.3);
+    background-color: rgba(200, 200, 200, 0.3);
+    color: rgba(80, 80, 80, 1);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    opacity: 1;
+}
+
+/* 호버 시 효과 */
+#responseButtons button:hover {
+    background-color: rgba(120, 120, 120, 0.2);
+    border: 2px solid rgba(120, 120, 120, 0.2);
+    color: rgba(60, 60, 60, 1);
+    transform: scale(1.05);
+}
 /*챗봇 유저 입력창*/
 .chat-input {
     display: flex;
