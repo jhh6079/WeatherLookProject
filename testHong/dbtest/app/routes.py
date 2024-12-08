@@ -361,36 +361,63 @@ def get_coords():
         print(f"오류 발생: {e}")
         return jsonify({'error': '서버 오류가 발생했습니다.'}), 500
 
-
 @bp.route('/ask_question', methods=['POST'])
 def ask_question():
-    global weather_info  # 전역 변수 사용
+    global weather_info
     try:
         data = request.json
         question = data['question']
-        # 날씨 정보와 관련된 질문 처리
+
         additional_info = ""
+        hourly_data = weather_info.get("hourly_data", [])
+
+        if hourly_data:
+            hourly_summaries = [
+                f"{hour['time'][:2]}:{hour['time'][2:]}: {hour['temperature']}°C, {hour['sky']}"
+                for hour in hourly_data[:5]
+            ]
+            hourly_summary_text = "<br>".join(hourly_summaries)  # HTML 줄바꿈
+            additional_info += f"시간별 요약:<br>{hourly_summary_text}.<br>"
+
         if weather_info:
             temperature = weather_info['temperature']
             description = weather_info['sky_status']
             wind_speed = weather_info['wind_speed']
             clothing_recommendation = weather_info['clothing_recommendation']
 
-            # 날씨 정보를 추가 정보로 생성
-            additional_info = f"현재 기온은 {temperature}°C, 날씨는 {description}, 바람 속도는 {wind_speed}m/s, 추천 의류: {clothing_recommendation}."
-            print(question)
-        # OpenAI ChatGPT API 호출하여 질문에 대한 응답 생성
+            additional_info += (
+                f"현재 기온은 {temperature}°C<br>"
+                f"날씨는 {description}<br>"
+                f"바람 속도는 {wind_speed}m/s<br>"
+                f"추천 의류: {clothing_recommendation}.<br>"
+            )
+
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system",
-                 "content": f"당신은 날씨 전문가입니다. {additional_info} 날씨에 따른 적절한 의류를 추천하지만, 이외의 다른 날씨와 관련없는 질문에는 대답하지마.  "},
+                {
+                    "role": "system",
+                    "content": (
+                        "당신은 날씨 및 의류 전문가입니다. "
+                        f"{additional_info} 시간별 데이터와 현재 날씨를 참고하여 "
+                        "질문에 정확하고 적절한 설명을 제시해주세요."
+                        "\n\n"
+                        "예시는 다음과 같은 형식으로 작성해주세요:"
+                        "\n12시(7°C, 비)"
+                        "\n상의: [추천 내용]"
+                        "\n하의: [추천 내용]"
+                        "\n신발: [추천 내용]"
+                        "\n기타: [추천 내용]"
+                        "\n"
+                        "각 의류 항목 앞에는 반드시 줄바꿈을 추가하세요. "
+                        "사용자가 더 쉽게 읽을 수 있도록 줄바꿈을 명확히 포함하여 작성해주세요."
+                    ),
+                },
                 {"role": "user", "content": question},
             ]
         )
 
         answer = response.choices[0].message['content'].strip()
-        # response.choices[0].message['content']
         return jsonify({"answer": answer})
 
     except Exception as e:

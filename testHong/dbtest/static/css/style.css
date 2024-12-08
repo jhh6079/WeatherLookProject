@@ -314,7 +314,7 @@ button:disabled {
     flex: 1;
     overflow-y: auto;
     margin-bottom: 25px;
-    padding: 15px;
+    padding: 5px 15px 15px 15px; /* 상단 패딩을 5px로 줄임 */
     background-color: #f9f9f9;
     border-radius: 30px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -358,6 +358,28 @@ button:disabled {
     flex-direction: column;
     gap: 10px;
     margin-top: auto;
+}
+
+/* 채팅박스 안의 버튼 스타일 */
+.chat-input button {
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    background-color: #787878;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.chat-input button:hover {
+    background-color: #646464;
+}
+
+/* 버튼 간의 간격 조정 */
+.chat-input button:not(:last-child) {
+    margin-bottom: 5px;
 }
 
 /*챗봇 유저 입력창*/

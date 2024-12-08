@@ -1,3 +1,5 @@
+from threading import local, Event, Thread
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -6,85 +8,190 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-# 실행 시간 측정을 위한 시작 시간 기록
-start_time = time.time()
+# 스레드별 WebDriver를 유지하기 위한 thread-local 객체
+thread_local = local()
 
-# Selenium WebDriver 설정
-options = webdriver.ChromeOptions()
-options.add_argument("--headless")  # 필요시 주석 처리 (headless 모드 비활성화)
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
 
-# WebDriver 초기화
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+def get_webdriver():
+    """
+    스레드별 WebDriver 인스턴스를 생성 또는 가져오기
+    """
+    if not hasattr(thread_local, "driver"):
+        options = webdriver.ChromeOptions()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        thread_local.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    return thread_local.driver
 
-# Musinsa 페이지 URL
-url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=001000&gf=A"
-driver.get(url)
 
-# 링크 추출 범위 설정
-start_div = 2
-end_div = 35
-results = []
+def extract_main_data(driver, url, start_div, end_div, shared_data, data_ready_event):
+    """
+    메인 데이터 (이름, 링크, 이미지) 추출
+    """
+    driver.get(url)
+    time.sleep(0.1)  # 페이지 로드 대기
 
-for parent_index in range(start_div, end_div + 1):
-    for child_index in range(1, 4):  # div:nth-child(1), div:nth-child(2), div:nth-child(3)
+    for parent_index in range(start_div, end_div + 1):
+        for child_index in range(1, 4):
+            try:
+                link_xpath = f"//*[@id='commonLayoutContents']/article/div[{parent_index}]/div[{child_index}]/div[@class='sc-1m4cyao-1 dYjLwF']/a"
+                link_element = WebDriverWait(driver, 0.1).until(
+                    EC.presence_of_element_located((By.XPATH, link_xpath))
+                )
+                link = link_element.get_attribute("href")
+                image_xpath = f"{link_xpath}/div/img"
+
+                # 이미지 로드 확인 및 스크롤 시도
+                for attempt in range(3):
+                    try:
+                        image_element = driver.find_element(By.XPATH, image_xpath)
+                        name = image_element.get_attribute("alt")
+                        image_src = image_element.get_attribute("src")
+
+                        if image_src is None:
+                            raise ValueError("Image not loaded")
+
+                        shared_data.append({
+                            "name": name,
+                            "link": link,
+                            "image": image_src,
+                            "category": None  # 카테고리 정보를 나중에 추가
+                        })
+                        break
+                    except Exception:
+                        driver.execute_script("window.scrollBy(0, 1000);")
+                        time.sleep(0.01)
+                else:
+                    print(f"Image not loaded for parent {parent_index}, child {child_index}")
+
+            except Exception as e:
+                print(f"Error in main data extraction (parent: {parent_index}, child: {child_index}): {e}")
+                continue
+
+    print("Main data extraction complete. Notifying second thread.")
+    data_ready_event.set()
+
+
+def fetch_category(item, css_selector, alternative_css_selector):
+    """
+    단일 링크에서 카테고리 데이터를 추출
+    """
+    driver = get_webdriver()
+    try:
+        driver.get(item['link'])
+
+        # 첫 번째 CSS Selector 시도
         try:
-            # 링크 XPath
-            link_xpath = f"//*[@id='commonLayoutContents']/article/div[{parent_index}]/div[{child_index}]/div[@class='sc-1m4cyao-1 dYjLwF']/a"
-            link_element = WebDriverWait(driver, 0.1).until(
-                EC.presence_of_element_located((By.XPATH, link_xpath))
+            element = WebDriverWait(driver, 2).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
             )
-            link = link_element.get_attribute("href")
+            category_name = element.get_attribute("data-category-name")
+            if category_name:
+                return category_name
+        except Exception:
+            print(f"First CSS Selector failed for {item['name']}.")
 
-            # 이미지 및 이름 XPath
-            image_xpath = f"{link_xpath}/div/img"
-
-            # 이미지 로드 확인 및 스크롤 시도
-            for attempt in range(3):  # 3번까지 재시도
-                try:
-                    image_element = driver.find_element(By.XPATH, image_xpath)
-                    name = image_element.get_attribute("alt")
-                    image_src = image_element.get_attribute("src")
-
-                    # 이미지가 None일 경우 예외 처리
-                    if image_src is None:
-                        raise ValueError("Image not loaded")
-
-                    # 결과 저장
-                    results.append({
-                        "name": name,
-                        "link": link,
-                        "image": image_src
-                    })
-                    break  # 성공하면 루프 탈출
-                except Exception:
-                    print(f"Attempt {attempt + 1}: Scrolling to load image...")
-                    driver.execute_script("window.scrollBy(0, 1000);")  # 스크롤 다운
-                    time.sleep(0.01)  # 잠시 대기
-            else:
-                print(f"Image not loaded for parent {parent_index}, child {child_index}")
-
+        # 대체 CSS Selector 사용
+        try:
+            element = WebDriverWait(driver, 2).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, alternative_css_selector))
+            )
+            category_name = element.get_attribute("data-category-name")
+            if category_name:
+                return category_name
         except Exception as e:
-            print(f"Error at parent {parent_index}, child {child_index}: {e}")
-            continue
+            print(f"Alternative CSS Selector also failed for {item['name']}: {e}")
 
-# WebDriver 종료
-driver.quit()
+        return None
+    except Exception as e:
+        print(f"Error fetching category for {item['name']}: {e}")
+        return None
 
-# 실행 시간 측정을 위한 종료 시간 기록
-end_time = time.time()
 
-# 결과 출력
-print("Extracted Data:")
-for result in results:
-    print(f"Name: {result['name']}")
-    print(f"Link: {result['link']}")
-    print(f"Image: {result['image']}\n")
+def parallel_category_extraction(shared_data, css_selector, alternative_css_selector, data_ready_event):
+    """
+    병렬로 카테고리 데이터를 추출
+    """
+    print("Waiting for main data to be ready...")
+    data_ready_event.wait()
+    print("Main data is ready. Starting parallel category extraction.")
 
-# 총 개수 출력
-print(f"Total items extracted: {len(results)}")
+    with ThreadPoolExecutor(max_workers=5) as executor:  # 병렬 작업 개수 제한
+        futures = [
+            executor.submit(fetch_category, item, css_selector, alternative_css_selector)
+            for item in shared_data
+        ]
 
-# 실행 시간 출력
-elapsed_time = end_time - start_time
-print(f"Time taken: {elapsed_time:.2f} seconds")
+        for future, item in zip(as_completed(futures), shared_data):
+            try:
+                category_name = future.result()
+                item['category'] = category_name
+                if category_name:
+                    print(f"Extracted category: {category_name} for {item['name']}")
+                else:
+                    print(f"Failed to extract category for {item['name']}")
+            except Exception as e:
+                print(f"Error during parallel category extraction for {item['name']}: {e}")
+
+
+def cleanup_webdrivers():
+    """
+    모든 스레드의 WebDriver를 종료
+    """
+    if hasattr(thread_local, "driver"):
+        thread_local.driver.quit()
+        del thread_local.driver
+
+
+def main(R_url):
+
+    url = R_url
+    start_div = 2
+    end_div = 12
+    css_selector = "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(3) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button"
+    alternative_css_selector = "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(4) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button"
+
+    # WebDriver 초기화
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    driver1 = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    shared_data = []
+    data_ready_event = Event()
+
+    # 메인 데이터 추출 스레드
+    thread1 = Thread(target=extract_main_data, args=(driver1, url, start_div, end_div, shared_data, data_ready_event))
+
+    start_time = time.time()
+    thread1.start()
+
+    # 카테고리 병렬 추출
+    parallel_category_extraction(shared_data, css_selector, alternative_css_selector, data_ready_event)
+
+    thread1.join()
+
+    driver1.quit()
+
+    # 모든 WebDriver 종료
+    cleanup_webdrivers()
+
+    end_time = time.time()
+    print("Extracted Data:")
+    for item in shared_data:
+        print(f"Name: {item['name']}")
+        print(f"Link: {item['link']}")
+        print(f"Image: {item['image']}")
+        print(f"Category: {item['category']}\n")
+
+    print(f"Total items extracted: {len(shared_data)}")
+    print(f"Time taken: {end_time - start_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=001000&gf=A"
+
+    main(url)

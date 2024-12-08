@@ -64,19 +64,23 @@ def convert_to_grid(lat, lon):
 
 
 # 의류 추천 함수
-def get_clothing_recommendation(temp, wind_speed, sky_status, precipitation_probability, openai_api_key, perceived_temp):
+def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_probability, openai_api_key, perceived_temp):
     prompt = (
-        f"현재 온도는 {temp}도이고, 풍속은 {wind_speed} m/s, 날씨는 {sky_status}, 강수확률은 {precipitation_probability}%, 체감온도는 {perceived_temp} 입니다. , "
-        "설명 없이 체감 온도만 보여주고 체감온도에 맞는 적절한 의류를 추천해줘"
+        f"현재 온도는 {temp}도이고, 풍속은 {wind_speed} m/s, 날씨는 {final_status}, 강수확률은 {precipitation_probability}%, 체감온도는 {perceived_temp} 입니다."
+        "체감온도와 날씨 상태에 따라 아래 형식으로 간결하게 추천해주세요.:\n"
+        f"체감온도는 {perceived_temp}°C,\n"
+        f"날씨: {final_status}\n"
+        "상의: 하의: 신발: 기타:"
     )
     openai.api_key = openai_api_key
     response = openai.ChatCompletion.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "당신은 날씨 전문가입니다. 날씨에 따른 적절한 의류를 추천합니다."},
+            {"role": "system", "content": "당신은 날씨 전문가입니다. 날씨에 따른 적절한 의류를 상의, 하의, 신발, 기타로 간결하게 추천합니다."},
             {"role": "user", "content": prompt}
         ]
     )
+    recommendation = response.choices[0].message['content'].replace("\n", "<br>")
     return response.choices[0].message['content']
 
 
@@ -90,6 +94,7 @@ def perceived_temperature(temp, wind_speed, sky_status, precipitation_probabilit
         예시 답안: 13
         
         답변은 반드시 숫자만 포함해야 합니다.
+        모르는 정보는 대답하지마.
         """
 
     )

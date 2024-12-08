@@ -267,17 +267,132 @@ async function askQuestion() {
 
         const botBubble = document.createElement("p");
         botBubble.className = "bot";
-        botBubble.innerHTML = `<span>${data.answer}</span>`;
+        botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
         chatResponse.appendChild(botBubble);
 
     } catch (error) {
         console.error("오류 발생:", error);
         const errorBubble = document.createElement("p");
         errorBubble.className = "bot";
-        errorBubble.innerHTML = `<span>오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+        errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
         chatResponse.appendChild(errorBubble);
     }
     chatResponse.scrollTop = chatResponse.scrollHeight;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 2024-11-28 추가 수정
+
+function createRecommendationButtons() {
+    const chatResponse = document.getElementById("chatResponse");
+
+    // 버튼 컨테이너 생성
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.display = "flex";
+    buttonContainer.style.justifyContent = "center";
+    buttonContainer.style.gap = "10px";
+    buttonContainer.style.marginTop = "10px";
+
+    // 시간별 추천 보기 버튼
+    const hourlyButton = document.createElement("button");
+    hourlyButton.textContent = "시간별 추천 보기";
+    hourlyButton.onclick = requestHourlyRecommendation;
+    hourlyButton.style.padding = "10px 15px";
+    hourlyButton.style.fontSize = "14px";
+    hourlyButton.style.borderRadius = "10px";
+    hourlyButton.style.border = "none";
+    hourlyButton.style.backgroundColor = "#787878";
+    hourlyButton.style.color = "white";
+    hourlyButton.style.cursor = "pointer";
+    hourlyButton.onmouseover = () => (hourlyButton.style.backgroundColor = "#646464");
+    hourlyButton.onmouseout = () => (hourlyButton.style.backgroundColor = "#787878");
+
+    // 현재 날씨 추천 보기 버튼
+    const currentButton = document.createElement("button");
+    currentButton.textContent = "현재 날씨 추천 보기";
+    currentButton.onclick = requestCurrentRecommendation;
+    currentButton.style.padding = "10px 15px";
+    currentButton.style.fontSize = "14px";
+    currentButton.style.borderRadius = "10px";
+    currentButton.style.border = "none";
+    currentButton.style.backgroundColor = "#787878";
+    currentButton.style.color = "white";
+    currentButton.style.cursor = "pointer";
+    currentButton.onmouseover = () => (currentButton.style.backgroundColor = "#646464");
+    currentButton.onmouseout = () => (currentButton.style.backgroundColor = "#787878");
+
+    // 버튼을 컨테이너에 추가
+    buttonContainer.appendChild(hourlyButton);
+    buttonContainer.appendChild(currentButton);
+
+    // 버튼 컨테이너를 응답 영역에 추가
+    chatResponse.appendChild(buttonContainer);
+}
+
+// 채팅 박스가 로드될 때 버튼 생성
+window.onload = function () {
+    createRecommendationButtons();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function requestHourlyRecommendation() {
+    const chatResponse = document.getElementById("chatResponse");
+    const userBubble = document.createElement("p");
+    userBubble.className = "user";
+    userBubble.innerHTML = `<span>시간별 의류 추천을 보여줘.</span>`;
+    chatResponse.appendChild(userBubble);
+
+    fetch('/ask_question', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: "시간별 의류 추천을 보여줘."})
+    })
+        .then(response => response.json())
+        .then(data => {
+            const botBubble = document.createElement("p");
+            botBubble.className = "bot";
+            botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
+            chatResponse.appendChild(botBubble);
+        })
+        .catch(error => {
+            console.error("오류 발생:", error);
+            const errorBubble = document.createElement("p");
+            errorBubble.className = "bot";
+            errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+            chatResponse.appendChild(errorBubble);
+        });
+}
+
+function requestCurrentRecommendation() {
+    const chatResponse = document.getElementById("chatResponse");
+    const userBubble = document.createElement("p");
+    userBubble.className = "user";
+    userBubble.innerHTML = `<span>현재 날씨에 따른 의류 추천을 보여줘.</span>`;
+    chatResponse.appendChild(userBubble);
+
+    fetch('/ask_question', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: "현재 날씨에 따른 의류 추천을 보여줘."})
+    })
+        .then(response => response.json())
+        .then(data => {
+            const botBubble = document.createElement("p");
+            botBubble.className = "bot";
+            botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
+            chatResponse.appendChild(botBubble);
+        })
+        .catch(error => {
+            console.error("오류 발생:", error);
+            const errorBubble = document.createElement("p");
+            errorBubble.className = "bot";
+            errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+            chatResponse.appendChild(errorBubble);
+        });
 }
 
 window.onload = function () {
@@ -294,18 +409,6 @@ window.onload = function () {
     citySelect.addEventListener("change", updateGu);
     document.getElementById("gu").addEventListener("change", updateDong);
 };
-
-// 의류 저장 함수
-function saveClothing() {
-    fetch('/save_clothing', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({clothing: lastAnswer})
-    })
-        .then(response => response.json())
-        .then(data => alert(data.message))
-        .catch(error => console.error('오류 발생:', error));
-}
 
 // 로그인 함수
 async function getLogin() {
