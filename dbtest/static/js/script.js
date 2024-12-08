@@ -267,17 +267,132 @@ async function askQuestion() {
 
         const botBubble = document.createElement("p");
         botBubble.className = "bot";
-        botBubble.innerHTML = `<span>${data.answer}</span>`;
+        botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
         chatResponse.appendChild(botBubble);
 
     } catch (error) {
         console.error("오류 발생:", error);
         const errorBubble = document.createElement("p");
         errorBubble.className = "bot";
-        errorBubble.innerHTML = `<span>오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+        errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
         chatResponse.appendChild(errorBubble);
     }
     chatResponse.scrollTop = chatResponse.scrollHeight;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 2024-11-28 추가 수정
+
+function createRecommendationButtons() {
+    const chatResponse = document.getElementById("chatResponse");
+
+    // 버튼 컨테이너 생성
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.display = "flex";
+    buttonContainer.style.justifyContent = "center";
+    buttonContainer.style.gap = "10px";
+    buttonContainer.style.marginTop = "10px";
+
+    // 시간별 추천 보기 버튼
+    const hourlyButton = document.createElement("button");
+    hourlyButton.textContent = "시간별 추천 보기";
+    hourlyButton.onclick = requestHourlyRecommendation;
+    hourlyButton.style.padding = "10px 15px";
+    hourlyButton.style.fontSize = "14px";
+    hourlyButton.style.borderRadius = "10px";
+    hourlyButton.style.border = "none";
+    hourlyButton.style.backgroundColor = "#787878";
+    hourlyButton.style.color = "white";
+    hourlyButton.style.cursor = "pointer";
+    hourlyButton.onmouseover = () => (hourlyButton.style.backgroundColor = "#646464");
+    hourlyButton.onmouseout = () => (hourlyButton.style.backgroundColor = "#787878");
+
+    // 현재 날씨 추천 보기 버튼
+    const currentButton = document.createElement("button");
+    currentButton.textContent = "현재 날씨 추천 보기";
+    currentButton.onclick = requestCurrentRecommendation;
+    currentButton.style.padding = "10px 15px";
+    currentButton.style.fontSize = "14px";
+    currentButton.style.borderRadius = "10px";
+    currentButton.style.border = "none";
+    currentButton.style.backgroundColor = "#787878";
+    currentButton.style.color = "white";
+    currentButton.style.cursor = "pointer";
+    currentButton.onmouseover = () => (currentButton.style.backgroundColor = "#646464");
+    currentButton.onmouseout = () => (currentButton.style.backgroundColor = "#787878");
+
+    // 버튼을 컨테이너에 추가
+    buttonContainer.appendChild(hourlyButton);
+    buttonContainer.appendChild(currentButton);
+
+    // 버튼 컨테이너를 응답 영역에 추가
+    chatResponse.appendChild(buttonContainer);
+}
+
+// 채팅 박스가 로드될 때 버튼 생성
+window.onload = function () {
+    createRecommendationButtons();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function requestHourlyRecommendation() {
+    const chatResponse = document.getElementById("chatResponse");
+    const userBubble = document.createElement("p");
+    userBubble.className = "user";
+    userBubble.innerHTML = `<span>시간별 의류 추천을 보여줘.</span>`;
+    chatResponse.appendChild(userBubble);
+
+    fetch('/ask_question', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: "시간별 의류 추천을 보여줘."})
+    })
+        .then(response => response.json())
+        .then(data => {
+            const botBubble = document.createElement("p");
+            botBubble.className = "bot";
+            botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
+            chatResponse.appendChild(botBubble);
+        })
+        .catch(error => {
+            console.error("오류 발생:", error);
+            const errorBubble = document.createElement("p");
+            errorBubble.className = "bot";
+            errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+            chatResponse.appendChild(errorBubble);
+        });
+}
+
+function requestCurrentRecommendation() {
+    const chatResponse = document.getElementById("chatResponse");
+    const userBubble = document.createElement("p");
+    userBubble.className = "user";
+    userBubble.innerHTML = `<span>현재 날씨에 따른 의류 추천을 보여줘.</span>`;
+    chatResponse.appendChild(userBubble);
+
+    fetch('/ask_question', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: "현재 날씨에 따른 의류 추천을 보여줘."})
+    })
+        .then(response => response.json())
+        .then(data => {
+            const botBubble = document.createElement("p");
+            botBubble.className = "bot";
+            botBubble.innerHTML = `<span style="white-space: pre-line;">${data.answer}</span>`;
+            chatResponse.appendChild(botBubble);
+        })
+        .catch(error => {
+            console.error("오류 발생:", error);
+            const errorBubble = document.createElement("p");
+            errorBubble.className = "bot";
+            errorBubble.innerHTML = `<span style="white-space: pre-line;">오류가 발생했습니다. 다시 시도해 주세요.</span>`;
+            chatResponse.appendChild(errorBubble);
+        });
 }
 
 window.onload = function () {
@@ -295,28 +410,223 @@ window.onload = function () {
     document.getElementById("gu").addEventListener("change", updateDong);
 };
 
-function saveClothing() {
-    fetch('/save_clothing', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({clothing: lastAnswer})
-    })
-        .then(response => response.json())
-        .then(data => alert(data.message))
-        .catch(error => console.error('오류 발생:', error));
-}
-
-async function getLogin(){
+// 로그인 함수
+async function getLogin() {
     const login_id = document.getElementById("login_id").value;
     const login_ps = document.getElementById("login_ps").value;
 
     const response = await fetch('/login', {
         method: 'POST',
         headers: {
-            'Content-type' : 'application/json'
+            'Content-type': 'application/json'
         },
         body: JSON.stringify({login_id, login_ps})
     });
     const result = await response.json();
-    document.getElementById("result").innerText=result.message;
+    document.getElementById("result").innerText = result.message;
+}
+
+// 시간별 날씨 스크롤 함수
+function scrollHourly(direction) {
+    const row = document.querySelector('.hourly-weather-row');
+    const scrollAmount = 200; // 스크롤 이동 픽셀 수
+    row.scrollBy({
+        left: scrollAmount * direction,
+        behavior: 'smooth',
+    });
+}
+
+// 스냅샷 이미지 로드
+document.addEventListener("DOMContentLoaded", () => {
+    const snapshotImagesContainer = document.getElementById("snapshotImages");
+    const jsonFilePath = "/static/images/image_urls.json"; // JSON 파일 경로
+
+    // 배열 섞기 함수 (Fisher-Yates 알고리즘)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // 무한 스크롤 구현
+    fetch(jsonFilePath)
+        .then(response => response.json())
+        .then(data => {
+            let imageUrls = data.images;
+
+            // 이미지 순서 섞기
+            imageUrls = shuffleArray(imageUrls);
+
+            // 원본 배열 앞뒤에 복제 이미지 추가
+            const extendedImages = [...imageUrls.slice(-3), ...imageUrls, ...imageUrls.slice(0, 3)];
+
+            // 이미지 요소 생성 및 추가
+            extendedImages.forEach(url => {
+                const imgElement = document.createElement("img");
+                imgElement.src = url;
+                imgElement.className = "snapshot-image";
+                snapshotImagesContainer.appendChild(imgElement);
+            });
+
+            // 슬라이더 초기화
+            initInfiniteScroll(imageUrls.length);
+        })
+        .catch(error => console.error("Error loading JSON:", error));
+});
+
+function initInfiniteScroll(originalLength) {
+    const slider = document.getElementById("snapshotImages");
+    const images = document.querySelectorAll(".snapshot-image");
+
+    let currentIndex = 3; // 중간의 첫 번째 원본 이미지 인덱스
+    const imageWidth = images[0].clientWidth + 20; // 이미지 너비 + 간격
+    slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+
+    // 슬라이더 이동 함수
+    function scrollSnapshot(direction) {
+        currentIndex += direction;
+
+        // 슬라이더 이동
+        slider.style.transition = "transform 0.35s ease-in-out";
+        slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+    }
+
+    // `transitionend` 이벤트로 위치 조정
+    slider.addEventListener("transitionend", () => {
+        if (currentIndex < 2) {
+            // 앞쪽으로 이동 시 복제된 끝으로 점프
+            slider.style.transition = "none"; // 애니메이션 제거
+            currentIndex += originalLength; // 뒤쪽으로 이동
+            slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+        } else if (currentIndex >= 2 + originalLength) {
+            // 뒤쪽으로 이동 시 복제된 앞쪽으로 점프
+            slider.style.transition = "none"; // 애니메이션 제거
+            currentIndex -= originalLength; // 앞쪽으로 이동
+            slider.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+        }
+    });
+
+    // 버튼 클릭 이벤트 연결
+    document.querySelector(".scroll-button.left").onclick = () => scrollSnapshot(-1);
+    document.querySelector(".scroll-button.right").onclick = () => scrollSnapshot(1);
+}
+
+// 11월 28일 수정
+// 성별 카테고리 변경
+function changeGenderCategory(gender) {
+    const genderButtons = document.querySelectorAll('.gender-category .filter-button');
+
+    // 성별 버튼 활성화
+    genderButtons.forEach(btn => btn.classList.remove('active'));
+    genderButtons.forEach(btn => {
+        if (btn.textContent === gender) {
+            btn.classList.add('active');
+        }
+    });
+
+    console.log(`Gender category changed to: ${gender}`);
+}
+
+// 상위 카테고리 변경
+function changeMainCategory(category) {
+    const mainButtons = document.querySelectorAll('.main-category .filter-button');
+    const subButtons = document.querySelectorAll('.sub-category .filter-button');
+
+    // 상위 버튼 활성화
+    mainButtons.forEach(btn => btn.classList.remove('active'));
+    mainButtons.forEach(btn => {
+        if (btn.textContent === category) {
+            btn.classList.add('active');
+        }
+    });
+
+    // 하위 버튼 초기화
+    subButtons.forEach(btn => btn.classList.remove('active'));
+    console.log(`Main category changed to: ${category}`);
+}
+
+// 하위 카테고리 선택
+function selectSubCategory(subCategory) {
+    const subButtons = document.querySelectorAll('.sub-category .filter-button');
+
+    // 하위 버튼 활성화
+    subButtons.forEach(btn => btn.classList.remove('active'));
+    subButtons.forEach(btn => {
+        if (btn.textContent === subCategory) {
+            btn.classList.add('active');
+        }
+    });
+
+    console.log(`Sub category selected: ${subCategory}`);
+}
+
+
+// URL 매핑 객체
+const categoryUrls = {
+    "전체 상의": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=001000",
+    "전체 바지": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=003000",
+    "스트릿 상의": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=203&categoryCode=001",
+    "스트릿 바지": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=203&categoryCode=003",
+    "캐주얼 상의": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=202&categoryCode=001",
+    "캐주얼 바지": "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=202&categoryCode=003"
+};
+
+// 성별 매핑 객체
+const genderSuffix = {
+    "전체": "A",
+    "남자": "M",
+    "여자": "F"
+};
+
+// 버튼 활성화 상태 토글 함수
+function toggleCategory(button) {
+    const isActive = button.classList.contains('active');
+    const parentCategory = button.parentElement;
+
+    // 성별 및 메인 카테고리는 단일 선택
+    if (parentCategory.classList.contains('gender-category') ||
+        parentCategory.classList.contains('main-category')) {
+        parentCategory.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+    }
+
+    // 선택된 버튼 활성화/비활성화 토글
+    if (!isActive) {
+        button.classList.add('active');
+    }
+}
+
+// 검색 함수
+function search() {
+    // 선택된 성별, 메인 카테고리, 하위 카테고리 가져오기
+    const gender = document.querySelector('.gender-category .filter-button.active')?.textContent.trim();
+    const mainCategory = document.querySelector('.main-category .filter-button.active')?.textContent.trim();
+    const subCategory = document.querySelector('.sub-category .filter-button.active')?.textContent.trim();
+
+    // 하위 카테고리 필수 체크
+    if (!subCategory) {
+        alert('하위 카테고리(상의 또는 하의)를 선택해주세요.');
+        return; // 검색 중단
+    }
+
+    // 카테고리 키 생성
+    const categoryKey = `${mainCategory} ${subCategory}`;
+    const baseUrl = categoryUrls[categoryKey];
+
+    // 해당 키에 매핑된 URL이 없으면 알림
+    if (!baseUrl) {
+        alert('선택된 카테고리에 대한 링크가 없습니다.');
+        return;
+    }
+
+    // 성별에 따른 URL 생성
+    const genderKey = genderSuffix[gender || "전체"]; // 성별이 없으면 "전체"로 처리
+    const finalUrl = `${baseUrl}&gf=${genderKey}`;
+
+    // 링크 출력 (혹은 다른 처리)
+    console.log('생성된 URL:', finalUrl);
+    alert(`생성된 URL: ${finalUrl}`);
+    // 실제 이동하려면 아래 코드 사용
+    // window.location.href = finalUrl;
 }

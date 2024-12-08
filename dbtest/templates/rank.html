@@ -26,16 +26,45 @@
         </ul>
     </nav>
     <a href="{{ url_for('main.index') }}">
-        <img src="/static/images/weatherlook_black.svg" class="logo"/>
+        <img src="/static/images/weatherlook_black.svg" class="logo-rank"/>
     </a>
     <!-- 랭킹 페이지 내용 -->
-    <h1>랭킹 페이지</h1>
     <div class="ranking-content">
+        <!-- 성별 카테고리 버튼 -->
+        <div class="filter-buttons gender-category">
+            <button class="filter-button active" onclick="changeGenderCategory('전체')">전체</button>
+            <button class="filter-button" onclick="changeGenderCategory('남자')">남자</button>
+            <button class="filter-button" onclick="changeGenderCategory('여자')">여자</button>
+        </div>
+
+        <!-- 상위 카테고리 버튼 -->
+        <div class="filter-buttons main-category">
+            <button class="filter-button active" onclick="changeMainCategory('전체')">전체</button>
+            <button class="filter-button" onclick="changeMainCategory('스트릿')">스트릿</button>
+            <button class="filter-button" onclick="changeMainCategory('캐주얼')">캐주얼</button>
+        </div>
+
+        <!-- 하위 카테고리 버튼 -->
+        <div class="filter-buttons sub-category">
+            <button class="filter-button" onclick="selectSubCategory('상의')">상의</button>
+            <button class="filter-button" onclick="selectSubCategory('바지')">바지</button>
+            <button class="search-button" onclick="search()">검색</button>
+        </div>
+
         <script>
             const addressData = {{ address_data | tojson if address_data else "{}" }};
         </script>
         <!-- 페이지 내용을 여기에 추가 -->
-        <p>이곳에 랭킹 데이터를 표시할 수 있습니다.</p>
+        <!--스냅샷 컨테이너 -->
+        <div class="snapshot-container">
+            <button class="scroll-button left" onclick="scrollSnapshot(-1)">&#9664;</button>
+            <div class="snapshot-slider">
+                <div class="snapshot-images" id="snapshotImages">
+                    <!-- JSON 파일에서 동적으로 이미지 추가 -->
+                </div>
+            </div>
+            <button class="scroll-button right" onclick="scrollSnapshot(1)">&#9654;</button>
+        </div>
     </div>
 </div>
 

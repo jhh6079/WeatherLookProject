@@ -65,16 +65,19 @@
     <div class="box">
         <h2>시간별 날씨 정보</h2>
         {% if hourly_data %}
-        <div class="hourly-weather-row">
-            {% for hour in hourly_data %}
-            <div class="hourly-weather-card">
-                <img src="{{ hour.icon }}" alt="날씨 아이콘" class="weather-info-icon">
-                <p><strong>{{ hour.time[:2] }}:{{ hour.time[2:] }}</strong></p>
-                <p>{{ hour.temperature }}°C</p>
-                <p>{{ hour.sky }}</p> <!-- 시간별 날씨 상태 -->
-
+        <div class="hourly-weather-wrapper">
+            <button class="scroll-button left" onclick="scrollHourly(-1)">&#9664;</button> <!-- 왼쪽 버튼 -->
+            <div class="hourly-weather-row">
+                {% for hour in hourly_data %}
+                <div class="hourly-weather-card">
+                    <img src="{{ hour.icon }}" alt="날씨 아이콘" class="weather-info-icon">
+                    <p><strong>{{ hour.time[:2] }}:{{ hour.time[2:] }}</strong></p>
+                    <p>{{ hour.temperature }}°C</p>
+                    <p>{{ hour.sky }}</p>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <button class="scroll-button right" onclick="scrollHourly(1)">&#9654;</button> <!-- 오른쪽 버튼 -->
         </div>
         {% else %}
         <p>시간별 데이터가 없습니다.</p>
@@ -84,7 +87,8 @@
     <!-- 추천 의류 -->
     <div class="box">
         <h2>추천 의류</h2>
-        <p>{{ clothing_recommendation | safe }}</p>
+        <!--        2024-11-28 추가 수정-->
+        <p style="white-space: pre-line;">{{ clothing_recommendation | safe }}</p>
     </div>
 
 
@@ -94,7 +98,15 @@
 <!-- 채팅 사이드바 -->
 <div class="chat-sidebar" id="chatSidebar">
     <div class="chat-container">
-        <div id="chatResponse" class="chat-response"></div>
+        <!-- 채팅 응답 영역 -->
+        <div id="chatResponse" class="chat-response">
+            <div id="responseButtons" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <button onclick="requestHourlyRecommendation()" id="hourlyButton"># 시간별 추천 보기</button>
+                <button onclick="requestCurrentRecommendation()" id="currentButton"># 현재 날씨 추천 보기</button>
+            </div>
+        </div>
+
+        <!-- 입력 영역 -->
         <div class="chat-input">
             <input type="text" id="userQuestion" placeholder="궁금한 점을 입력하세요">
             <button onclick="askQuestion()">질문하기</button>
