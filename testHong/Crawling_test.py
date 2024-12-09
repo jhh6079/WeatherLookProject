@@ -7,6 +7,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+import json
+
 
 # 스레드별 WebDriver를 유지하기 위한 thread-local 객체
 thread_local = local()
@@ -144,11 +146,19 @@ def cleanup_webdrivers():
         del thread_local.driver
 
 
-def main(R_url):
+def save_data_to_json_file(data, filename="str_top.json"):
+    """
+    추출된 데이터를 JSON 파일로 저장
+    """
+    with open(filename, "w", encoding="utf-8") as json_file:
+        json.dump(data, json_file, ensure_ascii=False, indent=4)
+    print(f"Data saved to {filename}")
 
+
+def main(R_url):
     url = R_url
     start_div = 2
-    end_div = 12
+    end_div = 30
     css_selector = "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(3) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button"
     alternative_css_selector = "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(4) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button"
 
@@ -187,11 +197,14 @@ def main(R_url):
         print(f"Image: {item['image']}")
         print(f"Category: {item['category']}\n")
 
+    # JSON 파일로 저장
+    save_data_to_json_file(shared_data)
+
     print(f"Total items extracted: {len(shared_data)}")
     print(f"Time taken: {end_time - start_time:.2f} seconds")
 
 
 if __name__ == "__main__":
-    url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=199&categoryCode=001000&gf=A"
+    url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=203&categoryCode=001&gf=A"
 
     main(url)

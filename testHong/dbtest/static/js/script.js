@@ -597,7 +597,17 @@ function toggleCategory(button) {
     }
 }
 
-// 검색 함수
+
+
+//1209수정
+
+// JSON 파일 경로를 관리하는 객체
+const jsonFilePaths = {
+    str_top: '/static/rank_json/str_top.json', // 상위 카테고리 JSON 경로
+    str_bot: '/static/rank_json/str_bot.json'  // 하위 카테고리 JSON 경로
+};
+
+// 검색 버튼 클릭 시 호출
 function search() {
     // 선택된 성별, 메인 카테고리, 하위 카테고리 가져오기
     const gender = document.querySelector('.gender-category .filter-button.active')?.textContent.trim();
@@ -607,26 +617,97 @@ function search() {
     // 하위 카테고리 필수 체크
     if (!subCategory) {
         alert('하위 카테고리(상의 또는 하의)를 선택해주세요.');
+        mainCategoryContainer.style.display = 'none'; // 카테고리 섹션 숨기기
         return; // 검색 중단
     }
 
-    // 카테고리 키 생성
-    const categoryKey = `${mainCategory} ${subCategory}`;
-    const baseUrl = categoryUrls[categoryKey];
+    // 카테고리 키 생성 (상위, 하위 조건 조합)
+    const categoryKey = `${gender || "전체"} ${mainCategory || "스트릿"} ${subCategory}`;
+    let resultKey;
 
-    // 해당 키에 매핑된 URL이 없으면 알림
-    if (!baseUrl) {
-        alert('선택된 카테고리에 대한 링크가 없습니다.');
+    // 조건에 따른 JSON 파일 결정
+    if (categoryKey === '전체 스트릿 상의') {
+        resultKey = 'str_top';
+    } else if (categoryKey === '전체 스트릿 바지') {
+        resultKey = 'str_bot';
+    } else {
+        alert('선택된 조건에 맞는 데이터를 찾을 수 없습니다.');
+        mainCategoryContainer.style.display = 'none'; // 카테고리 섹션 숨기기
         return;
     }
 
-    // 성별에 따른 URL 생성
-    const genderKey = genderSuffix[gender || "전체"]; // 성별이 없으면 "전체"로 처리
-    const finalUrl = `${baseUrl}&gf=${genderKey}`;
+    // 해당 JSON 파일 경로 가져오기
+    const jsonFilePath = jsonFilePaths[resultKey];
 
-    // 링크 출력 (혹은 다른 처리)
-    console.log('생성된 URL:', finalUrl);
-    alert(`생성된 URL: ${finalUrl}`);
-    // 실제 이동하려면 아래 코드 사용
-    // window.location.href = finalUrl;
+    // JSON 파일 로드 및 이미지 표시
+    loadAndDisplayImages(jsonFilePath);
+
+    // 조건이 맞으면 카테고리 섹션 표시
+    mainCategoryContainer.style.display = 'block';
+}
+
+// JSON 파일 로드 및 이미지 렌더링
+function loadAndDisplayImages(jsonFilePath) {
+    const mainCategoryContainer = document.getElementById('mainCategoryContainer');
+    mainCategoryContainer.innerHTML = ''; // 기존 콘텐츠 초기화
+
+    fetch(jsonFilePath)
+        .then(response => response.json())
+        .then(data => {
+            // 데이터를 카테고리별로 그룹화
+            const groupedData = groupByCategory(data);
+
+            // 카테고리별 슬라이더 생성
+            for (const [category, items] of Object.entries(groupedData)) {
+                createHorizontalSlider(category, items);
+            }
+        })
+        .catch(error => console.error('JSON 파일 로드 에러:', error));
+}
+
+// 카테고리별로 데이터를 그룹화
+function groupByCategory(data) {
+    return data.reduce((acc, item) => {
+        if (!acc[item.category]) {
+            acc[item.category] = [];
+        }
+        acc[item.category].push(item);
+        return acc;
+    }, {});
+}
+
+// 가로로 정렬된 카테고리 슬라이더 생성
+function createHorizontalSlider(category, items) {
+    const mainCategoryContainer = document.getElementById('mainCategoryContainer');
+
+    const categoryWrapper = document.createElement('div');
+    categoryWrapper.className = 'category-wrapper';
+
+    const categoryTitle = document.createElement('h3');
+    categoryTitle.textContent = category;
+    categoryWrapper.appendChild(categoryTitle);
+
+    const sliderContainer = document.createElement('div');
+    sliderContainer.className = 'horizontal-slider-container';
+
+    const slider = document.createElement('div');
+    slider.className = 'horizontal-slider';
+
+    items.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+        img.className = 'category-image';
+
+        link.appendChild(img);
+        slider.appendChild(link);
+    });
+
+    sliderContainer.appendChild(slider);
+    categoryWrapper.appendChild(sliderContainer);
+    mainCategoryContainer.appendChild(categoryWrapper);
 }
