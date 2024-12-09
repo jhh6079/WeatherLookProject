@@ -747,3 +747,30 @@ function displaySummary(summary) {
         <p>${summary}</p>
     `;
 }
+
+
+function submitWithCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+        alert("위치 정보 사용이 지원되지 않는 브라우저입니다.");
+    }
+}
+
+function success(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    console.log("위도:", lat, "경도:", lon);
+
+    // 숨겨진 필드에 값 설정
+    document.getElementById('latitude').value = lat;
+    document.getElementById('longitude').value = lon;
+
+    // 조회 버튼 클릭 (폼 제출)
+    document.getElementById('searchButton').click();
+}
+
+function error() {
+    alert("위치 정보를 불러올 수 없습니다.");
+}

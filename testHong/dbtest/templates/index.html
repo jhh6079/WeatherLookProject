@@ -28,9 +28,10 @@
     <a href="{{ url_for('main.index') }}">
         <img src="/static/images/weatherlook_black.svg" class="logo"/>
     </a>
-    <form action="/result" method="post">
+    <form id="locationForm" action="/result" method="post">
+        <button type="button" id="currentLocationButton" onclick="submitWithCurrentLocation()">현위치 조회</button>
         <select id="city" name="city" onchange="updateGu()">
-            <option value="">시/도 선택</option>ㅋ
+            <option value="">시/도 선택</option>
         </select>
         <select id="gu" name="gu" onchange="updateDong()">
             <option value="">구/군 선택</option>
@@ -38,6 +39,8 @@
         <select id="dong" name="dong">
             <option value="">읍/면/동 선택</option>
         </select>
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
         <button id="searchButton" type="submit" onclick="handleLoading(event)">조회</button>
     </form>
 </div>

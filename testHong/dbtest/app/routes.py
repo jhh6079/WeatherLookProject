@@ -91,13 +91,36 @@ def signup():
 @bp.route('/result', methods=['POST'])
 def result():
     try:
-        # 입력된 데이터 가져오기
-        city = request.form.get('city')
-        gu = request.form.get('gu')
-        dong = request.form.get('dong')
+        # 위도와 경도 확인
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
 
-        if not city or not gu or not dong:
-            return render_template('error.html', message="모든 주소를 입력하세요."), 400
+        if latitude and longitude:
+            # 좌표를 기반으로 주소 검색
+            url = f"https://dapi.kakao.com/v2/local/geo/coord2address.json?x={longitude}&y={latitude}"
+            headers = {"Authorization": f"KakaoAK {current_app.config['KAKAO_API_KEY']}"}
+            response = requests.get(url, headers=headers)
+
+            if response.status_code != 200:
+                return render_template('error.html', message="위치 데이터를 가져오는 데 실패했습니다."), 500
+
+            documents = response.json().get('documents', [])
+            if not documents:
+                return render_template('error.html', message="현재 위치의 주소를 찾을 수 없습니다."), 404
+
+            address = documents[0].get('address', {})
+            city = address.get('region_1depth_name')
+            gu = address.get('region_2depth_name')
+            dong = address.get('region_3depth_name')
+
+        else:
+            # 입력된 데이터 가져오기
+            city = request.form.get('city')
+            gu = request.form.get('gu')
+            dong = request.form.get('dong')
+
+            if not city or not gu or not dong:
+                return render_template('error.html', message="모든 주소를 입력하세요."), 400
 
         # 주소를 기반으로 좌표 변환
         address = f"{city} {gu} {dong}"
@@ -115,7 +138,7 @@ def result():
         coords = documents[0]
         lat, lon = float(coords['y']), float(coords['x'])
 
-        # 좌표를 기상청 격자로 변환
+        # 이후 기존의 기상청 API 호출 및 날씨 데이터 처리 로직 유지
         nx, ny = convert_to_grid(lat, lon)
 
         # 문제였던 부분 욕나오는 nodata
