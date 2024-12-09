@@ -6,7 +6,6 @@ from flask import Blueprint, render_template, request, jsonify, current_app, red
 import requests
 from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, \
     perceived_temperature
-
 import pymysql
 
 # db = pymysql.connect(host="127.0.0.1",user="root",password="8176",database="weatherlookdb")
@@ -35,6 +34,51 @@ def rank():
     address_data = load_address_data()
     return render_template('rank.html', address_data=address_data)
 
+
+@bp.route('/summarize', methods=['POST'])
+def summarize():
+    try:
+        json_data = request.json.get('jsonData', [])
+        # 데이터를 텍스트로 변환 (LLM에 전달하기 위한 포맷)
+        text_data = "\n".join([str(item) for item in json_data])
+
+        # LLM 요약 요청
+        openai.api_key = current_app.config['OPENAI_API_KEY']
+        response = openai.ChatCompletion.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "요약은 아래의 기준에 따라 작성해줘:\n\n"
+                        " 전체적인 결론:\n"
+                        " 데이터를 분석한 결과를 간략히 정리해 줘.\n\n"
+                        "JSON 데이터는 다음과 같은 형식입니다:\n"
+                        "{\n"
+                        "  \"categories\": [\n"
+                        "    {\"category\": \"상의\", \"items\": [\"티셔츠\", \"셔츠\"]},\n"
+                        "    {\"category\": \"바지\", \"items\": [\"청바지\", \"슬랙스\"]}\n"
+                        "  ]\n"
+                        "}\n\n"
+                        
+                        "결론은 2줄로 해줘"
+                        "문자 같은건 쓰지마 예시로 * # "
+                        "위 기준에 따라 요약을 작성해 주세요."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": text_data
+                }
+            ]
+        )
+
+        summary = response.choices[0].message['content'].strip()
+        return jsonify(summary)
+    except Exception as e:
+        print(f"요약 오류: {e}")
+        return jsonify({"error": "요약 중 오류가 발생했습니다."}), 500
+
 @bp.route('/signup', methods=['GET'])
 def signup():
     # address_data 로드
@@ -47,13 +91,36 @@ def signup():
 @bp.route('/result', methods=['POST'])
 def result():
     try:
-        # 입력된 데이터 가져오기
-        city = request.form.get('city')
-        gu = request.form.get('gu')
-        dong = request.form.get('dong')
+        # 위도와 경도 확인
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
 
-        if not city or not gu or not dong:
-            return render_template('error.html', message="모든 주소를 입력하세요."), 400
+        if latitude and longitude:
+            # 좌표를 기반으로 주소 검색
+            url = f"https://dapi.kakao.com/v2/local/geo/coord2address.json?x={longitude}&y={latitude}"
+            headers = {"Authorization": f"KakaoAK {current_app.config['KAKAO_API_KEY']}"}
+            response = requests.get(url, headers=headers)
+
+            if response.status_code != 200:
+                return render_template('error.html', message="위치 데이터를 가져오는 데 실패했습니다."), 500
+
+            documents = response.json().get('documents', [])
+            if not documents:
+                return render_template('error.html', message="현재 위치의 주소를 찾을 수 없습니다."), 404
+
+            address = documents[0].get('address', {})
+            city = address.get('region_1depth_name')
+            gu = address.get('region_2depth_name')
+            dong = address.get('region_3depth_name')
+
+        else:
+            # 입력된 데이터 가져오기
+            city = request.form.get('city')
+            gu = request.form.get('gu')
+            dong = request.form.get('dong')
+
+            if not city or not gu or not dong:
+                return render_template('error.html', message="모든 주소를 입력하세요."), 400
 
         # 주소를 기반으로 좌표 변환
         address = f"{city} {gu} {dong}"
@@ -71,7 +138,7 @@ def result():
         coords = documents[0]
         lat, lon = float(coords['y']), float(coords['x'])
 
-        # 좌표를 기상청 격자로 변환
+        # 이후 기존의 기상청 API 호출 및 날씨 데이터 처리 로직 유지
         nx, ny = convert_to_grid(lat, lon)
 
         # 문제였던 부분 욕나오는 nodata
@@ -409,7 +476,7 @@ def ask_question():
                         "\n신발: [추천 내용]"
                         "\n기타: [추천 내용]"
                         "\n"
-                        "각 의류 항목 앞에는 반드시 줄바꿈을 추가하세요. "
+                        "모르는 정보는 대답하지마."
                         "사용자가 더 쉽게 읽을 수 있도록 줄바꿈을 명확히 포함하여 작성해주세요."
                     ),
                 },

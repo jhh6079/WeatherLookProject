@@ -54,7 +54,11 @@
         <script>
             const addressData = {{ address_data | tojson if address_data else "{}" }};
         </script>
-        <!-- 페이지 내용을 여기에 추가 -->
+        <div id="mainCategoryContainer" class="main-category-container">
+            <!-- 동적으로 카테고리별 슬라이더 추가 -->
+        </div>
+        <!-- 검색 버튼 아래에 요약 결과 컨테이너 추가 -->
+        <div id="summaryContainer" class="summary-container"></div>
         <!--스냅샷 컨테이너 -->
         <div class="snapshot-container">
             <button class="scroll-button left" onclick="scrollSnapshot(-1)">&#9664;</button>

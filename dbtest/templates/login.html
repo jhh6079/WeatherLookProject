@@ -12,11 +12,11 @@
 <div id="overlay"></div>
 <div class="container">
     <h1>로그인</h1>
-    <input type="text" id="login_id" placeholder="ID">
-    <input type="text" id="login_ps" placeholder="PASSWORD">
+    <input type="text" id="login_id" placeholder="ID" style="width: 570px;">
+    <input type="text" id="login_ps" placeholder="PASSWORD" style="width: 570px;">
     <button onclick="getLogin()">로그인</button>
     <button onclick="location.href='{{ url_for('main.signup') }}'">회원가입 하러가는 버튼</button>
-    <button onclick="Non_Login()">비회원 홈페이지 이용</button>
+    <button onclick="location.href='{{ url_for('main.main') }}'">비회원 홈페이지 이용</button>
     <div id="result"></div>
 </div>
 </body>

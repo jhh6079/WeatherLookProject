@@ -597,36 +597,180 @@ function toggleCategory(button) {
     }
 }
 
-// 검색 함수
+
+//1209수정
+
+// JSON 파일 경로를 관리하는 객체
+const jsonFilePaths = {
+    all_top_a: '/static/rank_json/all_top_a.json',
+    all_bot_a: '/static/rank_json/all_bot_a.json',
+    all_top_f: '/static/rank_json/all_top_f.json',
+    all_bot_f: '/static/rank_json/all_bot_f.json',
+    all_top_m: '/static/rank_json/all_top_m.json',
+    all_bot_m: '/static/rank_json/all_bot_m.json',
+    str_top_a: '/static/rank_json/str_top_a.json',
+    str_bot_a: '/static/rank_json/str_bot_a.json',
+    str_top_f: '/static/rank_json/str_top_f.json',
+    str_bot_f: '/static/rank_json/str_bot_f.json',
+    str_top_m: '/static/rank_json/str_top_m.json',
+    str_bot_m: '/static/rank_json/str_bot_m.json',
+    ca_top_a: '/static/rank_json/ca_top_a.json',
+    ca_bot_a: '/static/rank_json/ca_bot_a.json',
+    ca_top_f: '/static/rank_json/ca_top_f.json',
+    ca_bot_f: '/static/rank_json/ca_bot_f.json',
+    ca_top_m: '/static/rank_json/ca_top_m.json',
+    ca_bot_m: '/static/rank_json/ca_bot_m.json'
+};
+
+// 검색 버튼 클릭 시 호출
 function search() {
-    // 선택된 성별, 메인 카테고리, 하위 카테고리 가져오기
     const gender = document.querySelector('.gender-category .filter-button.active')?.textContent.trim();
     const mainCategory = document.querySelector('.main-category .filter-button.active')?.textContent.trim();
     const subCategory = document.querySelector('.sub-category .filter-button.active')?.textContent.trim();
 
-    // 하위 카테고리 필수 체크
     if (!subCategory) {
-        alert('하위 카테고리(상의 또는 하의)를 선택해주세요.');
-        return; // 검색 중단
-    }
-
-    // 카테고리 키 생성
-    const categoryKey = `${mainCategory} ${subCategory}`;
-    const baseUrl = categoryUrls[categoryKey];
-
-    // 해당 키에 매핑된 URL이 없으면 알림
-    if (!baseUrl) {
-        alert('선택된 카테고리에 대한 링크가 없습니다.');
+        alert('하위 카테고리(상의 또는 바지)를 선택해주세요.');
+        document.getElementById('mainCategoryContainer').style.display = 'none';
         return;
     }
 
-    // 성별에 따른 URL 생성
-    const genderKey = genderSuffix[gender || "전체"]; // 성별이 없으면 "전체"로 처리
-    const finalUrl = `${baseUrl}&gf=${genderKey}`;
+    // 키 변환: '전체', '남자', '여자' -> 'a', 'm', 'f'
+    const genderKey = gender === '전체' ? 'a' : (gender === '남자' ? 'm' : 'f');
+    // 키 변환: '전체', '스트릿', '캐주얼' -> 'all', 'str', 'ca'
+    const styleKey = mainCategory === '전체' ? 'all' : (mainCategory === '스트릿' ? 'str' : 'ca');
+    // 키 변환: '상의', '바지' -> 'top', 'bot'
+    const itemKey = subCategory === '상의' ? 'top' : 'bot';
 
-    // 링크 출력 (혹은 다른 처리)
-    console.log('생성된 URL:', finalUrl);
-    alert(`생성된 URL: ${finalUrl}`);
-    // 실제 이동하려면 아래 코드 사용
-    // window.location.href = finalUrl;
+    // 파일 키 조합
+    const resultKey = `${styleKey}_${itemKey}_${genderKey}`;
+    const jsonFilePath = jsonFilePaths[resultKey];
+
+    if (!jsonFilePath) {
+        alert('선택된 조건에 맞는 데이터를 찾을 수 없습니다.');
+        document.getElementById('mainCategoryContainer').style.display = 'none';
+        return;
+    }
+
+    // JSON 파일 로드 및 이미지 표시
+    loadAndDisplayImages(jsonFilePath);
+
+    // 조건이 맞으면 카테고리 섹션 표시
+    document.getElementById('mainCategoryContainer').style.display = 'block';
+}
+
+// JSON 파일 로드 및 이미지 렌더링
+function loadAndDisplayImages(jsonFilePath) {
+    const mainCategoryContainer = document.getElementById('mainCategoryContainer');
+    mainCategoryContainer.innerHTML = ''; // 기존 콘텐츠 초기화
+
+    fetch(jsonFilePath)
+        .then(response => response.json())
+        .then(data => {
+            // 데이터를 카테고리별로 그룹화
+            const groupedData = groupByCategory(data);
+
+            // LLM으로 데이터를 요약 요청
+            summarizeDataWithLLM(data);
+
+            // 카테고리별 슬라이더 생성
+            for (const [category, items] of Object.entries(groupedData)) {
+                createHorizontalSlider(category, items);
+            }
+        })
+        .catch(error => console.error('JSON 파일 로드 에러:', error));
+}
+
+// 카테고리별로 데이터를 그룹화
+function groupByCategory(data) {
+    return data.reduce((acc, item) => {
+        if (!acc[item.category]) {
+            acc[item.category] = [];
+        }
+        acc[item.category].push(item);
+        return acc;
+    }, {});
+}
+
+// 가로로 정렬된 카테고리 슬라이더 생성
+function createHorizontalSlider(category, items) {
+    const mainCategoryContainer = document.getElementById('mainCategoryContainer');
+
+    const categoryWrapper = document.createElement('div');
+    categoryWrapper.className = 'category-wrapper';
+
+    const categoryTitle = document.createElement('h3');
+    categoryTitle.textContent = category;
+    categoryWrapper.appendChild(categoryTitle);
+
+    const sliderContainer = document.createElement('div');
+    sliderContainer.className = 'horizontal-slider-container';
+
+    const slider = document.createElement('div');
+    slider.className = 'horizontal-slider';
+
+    items.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+        img.className = 'category-image';
+
+        link.appendChild(img);
+        slider.appendChild(link);
+    });
+
+    sliderContainer.appendChild(slider);
+    categoryWrapper.appendChild(sliderContainer);
+    mainCategoryContainer.appendChild(categoryWrapper);
+}
+
+function summarizeDataWithLLM(data) {
+    fetch('/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jsonData: data })
+    })
+        .then(response => response.json())
+        .then(summary => {
+            displaySummary(summary);
+        })
+        .catch(error => console.error('요약 요청 에러:', error));
+}
+
+function displaySummary(summary) {
+    const summaryContainer = document.getElementById('summaryContainer');
+    summaryContainer.innerHTML = `
+        <h2>요약 결과</h2>
+        <p>${summary}</p>
+    `;
+}
+
+
+function submitWithCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+        alert("위치 정보 사용이 지원되지 않는 브라우저입니다.");
+    }
+}
+
+function success(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    console.log("위도:", lat, "경도:", lon);
+
+    // 숨겨진 필드에 값 설정
+    document.getElementById('latitude').value = lat;
+    document.getElementById('longitude').value = lon;
+
+    // 조회 버튼 클릭 (폼 제출)
+    document.getElementById('searchButton').click();
+}
+
+function error() {
+    alert("위치 정보를 불러올 수 없습니다.");
 }
