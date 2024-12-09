@@ -231,7 +231,7 @@ button:disabled {
     }
 }
 
-/*여기까지*/
+
 .result {
     max-height: 80vh;
     overflow: auto;
@@ -254,6 +254,29 @@ button:disabled {
 .box h2 {
     color: #353535;
     margin-bottom: 18px;
+}
+
+.clothing-images {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.clothing-category {
+    margin-bottom: 20px;
+}
+
+.image-gallery {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.product-image {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 /* Chat Sidebar CSS */
@@ -756,3 +779,8 @@ button:disabled {
 .filter-button.active {
     font-weight: bold; /* 활성화된 버튼 글씨를 굵게 표시 */
 }
+
+
+
+
+

@@ -7,6 +7,9 @@ import requests
 from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, \
     perceived_temperature
 
+from .utils import crawl_fashion_data
+
+
 import pymysql
 
 # db = pymysql.connect(host="127.0.0.1",user="root",password="8176",database="weatherlookdb")
@@ -15,6 +18,7 @@ import pymysql
 # Blueprint 생성
 bp = Blueprint('main', __name__)
 weather_info = {}
+
 
 @bp.route('/')  # 루트 경로
 def index():
@@ -35,13 +39,13 @@ def rank():
     address_data = load_address_data()
     return render_template('rank.html', address_data=address_data)
 
+
 @bp.route('/signup', methods=['GET'])
 def signup():
     # address_data 로드
     address_data = load_address_data()
     # rank.html 렌더링과 함께 address_data 전달
     return render_template('signup.html', address_data=address_data)
-
 
 
 @bp.route('/result', methods=['POST'])
@@ -74,19 +78,32 @@ def result():
         # 좌표를 기상청 격자로 변환
         nx, ny = convert_to_grid(lat, lon)
 
+
+
         # 현재 시간 계산
         from datetime import datetime, timedelta
+
         now = datetime.now()
         base_date = now.strftime("%Y%m%d")
-        if now.hour < 5:
+
+        # 기상청 API 제공 시간 기준으로 base_time 계산
+        if now.hour < 2 or (now.hour == 2 and now.minute < 10):
             base_time = "2300"
             base_date = (now - timedelta(days=1)).strftime("%Y%m%d")
-        elif now.hour < 11:
+        elif now.hour < 5 or (now.hour == 5 and now.minute < 10):
+            base_time = "0200"
+        elif now.hour < 8 or (now.hour == 8 and now.minute < 10):
             base_time = "0500"
-        elif now.hour < 17:
+        elif now.hour < 11 or (now.hour == 11 and now.minute < 10):
+            base_time = "0800"
+        elif now.hour < 14 or (now.hour == 14 and now.minute < 10):
             base_time = "1100"
-        elif now.hour < 23:
+        elif now.hour < 17 or (now.hour == 17 and now.minute < 10):
+            base_time = "1400"
+        elif now.hour < 20 or (now.hour == 20 and now.minute < 10):
             base_time = "1700"
+        elif now.hour < 23 or (now.hour == 23 and now.minute < 10):
+            base_time = "2000"
         else:
             base_time = "2300"
 
@@ -185,7 +202,7 @@ def result():
             temp, wind_speed, sky_status_str, precipitation_probability,
             current_app.config['OPENAI_API_KEY']
         )
-        # 2024-11-28 추가 수정!!!!!!!!!! (final_status로 변경)
+
         recommendation = get_clothing_recommendation(
             temp, wind_speed, final_status, precipitation_probability,
             current_app.config['OPENAI_API_KEY'], perceived_temp
@@ -208,8 +225,16 @@ def result():
             "clothing_recommendation": recommendation,
             "hourly_data": filtered_data,
             "weather_icon_url": weather_icon_url,
-            "perceived_temp": perceived_temp
+            "perceived_temp": perceived_temp,
         }
+
+        from .utils import extract_keywords
+
+        categories = ["상의", "하의", "신발", "기타"]
+        fashion_data = {}  # 카테고리별 크롤링 결과 저장
+        for category in categories:
+            keyword = extract_keywords(recommendation, category)  # 해당 항목의 키워드 추출
+            fashion_data[category] = crawl_fashion_data(keyword)  # 크롤링 수행
 
         return render_template(
             'result.html',
@@ -235,43 +260,49 @@ def result():
         return render_template('error.html', message="서버 오류가 발생했습니다."), 500
 
 
+
+
+
 @bp.route('/login', methods=['GET', 'POST'])
 def get_login():
     if request.method == 'GET':
         address_data = load_address_data()
         return render_template('login.html', address_data=address_data)
-    
+
     if request.method == 'POST':
         data = request.get_json()
         login_id = data.get('login_id')
         login_ps = data.get('login_ps')
 
         if not login_id or not login_ps:
-            return jsonify({"message":"ID 또는 비밀번호가 입력되지 않음"}), 400
-        
+            return jsonify({"message": "ID 또는 비밀번호가 입력되지 않음"}), 400
+
         try:  # 데이터베이스 연결합니다
             conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                                password="20020414", database="weatherlookdb")
+                                   password="20020414", database="weatherlookdb")
             cursor = conn.cursor()
 
-            cursor.execute("select username, password, nickname from weatherlookdb_user where username = %s AND password = %s", (login_id, login_ps))
+            cursor.execute(
+                "select username, password, nickname from weatherlookdb_user where username = %s AND password = %s",
+                (login_id, login_ps))
             user = cursor.fetchone()
 
             if user:
                 username, password, nickname = user
-                #세션에 사용자 정보 저장
+                # 세션에 사용자 정보 저장
                 session['username'] = username
                 session['password'] = password
                 session['nickname'] = nickname
-                return jsonify({"message" : f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
+                return jsonify({"message": f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
             else:
-                return jsonify({"message" : "ID와 비밀번호를 확인바랍니다"}), 401
-            
+                return jsonify({"message": "ID와 비밀번호를 확인바랍니다"}), 401
+
         except pymysql.MySQLError as err:
             print(f"DB 에러: {err}")
             return jsonify({"message": "데이터베이스 오류 발생"}), 500
 
-#사용자 확인 특정 라우트에서 사용자가 로그인했는지 확인하려면 session 데이터를 참조
+
+# 사용자 확인 특정 라우트에서 사용자가 로그인했는지 확인하려면 session 데이터를 참조
 @bp.route('/dashboard')
 def dashboard():
     if 'username' in session:
@@ -279,11 +310,13 @@ def dashboard():
     else:
         return "로그인이 필요합니다.", 401
 
+
 # 로그아웃 처리 사용자가 로그아웃할 때 session 데이터를 삭제
 @bp.route('/logout')
 def logout():
     session.clear()  # 모든 세션 데이터 삭제
     return jsonify({"message": "로그아웃 성공!"}), 200
+
 
 @bp.route('/register', methods=['GET', 'POST'])
 def get_register():
@@ -291,7 +324,7 @@ def get_register():
         # GET 요청 시 회원가입 양식 페이지 렌더링
         address_data = load_address_data()
         return render_template('signup.html', address_data=address_data)
-    
+
     if request.method == 'POST':
         # POST 요청 시 데이터 처리
         data = request.get_json()
@@ -304,7 +337,7 @@ def get_register():
 
         try:  # 데이터베이스 연결합니다
             conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                                password="20020414", database="weatherlookdb")
+                                   password="20020414", database="weatherlookdb")
             cursor = conn.cursor()
 
             # 중복체크
@@ -314,7 +347,7 @@ def get_register():
 
             # 회원가입 데이터 삽입부분
             cursor.execute("INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
-                        (signup_id, signup_ps, signup_name))
+                           (signup_id, signup_ps, signup_name))
             conn.commit()
 
             return jsonify({'message': '회원가입 성공! 축하'}), 201
@@ -345,6 +378,7 @@ def get_coords():
     except Exception as e:
         print(f"오류 발생: {e}")
         return jsonify({'error': '서버 오류가 발생했습니다.'}), 500
+
 
 # 2024-11-28 추가 수정!!
 @bp.route('/ask_question', methods=['POST'])
@@ -410,7 +444,7 @@ def ask_question():
         print(f"오류 발생: {e}")
         return jsonify({"error": "서버 오류가 발생했습니다."}), 500
 
-# 여기까지@@:)
+
 
 @bp.route('/save_clothing', methods=['POST'])
 def save_clothing():
@@ -455,3 +489,5 @@ def save_clothing():
     except Exception as e:
         print(f"오류 발생: {e}")
         return jsonify({"error": "출력 중 오류가 발생했습니다."}), 500
+
+
