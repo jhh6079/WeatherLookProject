@@ -1,3 +1,6 @@
+import os
+import json
+import time
 from threading import local, Event, Thread
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from selenium import webdriver
@@ -6,13 +9,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import time
-import json
-
 
 # 스레드별 WebDriver를 유지하기 위한 thread-local 객체
 thread_local = local()
-
 
 def get_webdriver():
     """
@@ -25,7 +24,6 @@ def get_webdriver():
         options.add_argument("--disable-dev-shm-usage")
         thread_local.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     return thread_local.driver
-
 
 def extract_main_data(driver, url, start_div, end_div, shared_data, data_ready_event):
     """
@@ -74,7 +72,6 @@ def extract_main_data(driver, url, start_div, end_div, shared_data, data_ready_e
     print("Main data extraction complete. Notifying second thread.")
     data_ready_event.set()
 
-
 def fetch_category(item, css_selector, alternative_css_selector):
     """
     단일 링크에서 카테고리 데이터를 추출
@@ -110,7 +107,6 @@ def fetch_category(item, css_selector, alternative_css_selector):
         print(f"Error fetching category for {item['name']}: {e}")
         return None
 
-
 def parallel_category_extraction(shared_data, css_selector, alternative_css_selector, data_ready_event):
     """
     병렬로 카테고리 데이터를 추출
@@ -136,7 +132,6 @@ def parallel_category_extraction(shared_data, css_selector, alternative_css_sele
             except Exception as e:
                 print(f"Error during parallel category extraction for {item['name']}: {e}")
 
-
 def cleanup_webdrivers():
     """
     모든 스레드의 WebDriver를 종료
@@ -145,66 +140,79 @@ def cleanup_webdrivers():
         thread_local.driver.quit()
         del thread_local.driver
 
-
-def save_data_to_json_file(data, filename="str_top.json"):
+def create_folder(folder_name):
     """
-    추출된 데이터를 JSON 파일로 저장
+    폴더가 없으면 생성
     """
-    with open(filename, "w", encoding="utf-8") as json_file:
-        json.dump(data, json_file, ensure_ascii=False, indent=4)
-    print(f"Data saved to {filename}")
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
 
+def save_to_file(folder_name, file_name, data):
+    """
+    데이터를 JSON 파일로 저장
+    """
+    create_folder(folder_name)
+    file_path = os.path.join(folder_name, file_name)
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False, indent=4)
 
-def main(R_url):
-    url = R_url
-    start_div = 2
-    end_div = 30
-    css_selector = "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(3) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button"
-    alternative_css_selector = "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(4) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button"
+def main():
+    base_url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa"
 
-    # WebDriver 초기화
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+    styles = {
+        "all": "199",
+        "str": "203",
+        "ca": "202"
+    }
 
-    driver1 = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    genders = {
+        "a": "A",
+        "m": "M",
+        "f": "F"
+    }
 
-    shared_data = []
-    data_ready_event = Event()
+    folder_name = "musinsa_data"
+    all_extracted_data = {}
 
-    # 메인 데이터 추출 스레드
-    thread1 = Thread(target=extract_main_data, args=(driver1, url, start_div, end_div, shared_data, data_ready_event))
+    for style_name, section_id in styles.items():
+        for category_name in ["top", "bot"]:
+            for gender_name, gender_code in genders.items():
+                category_code = "001000" if style_name == "all" and category_name == "top" else "003000" if style_name == "all" and category_name == "bot" else "001" if category_name == "top" else "003"
+                url = f"{base_url}&sectionId={section_id}&categoryCode={category_code}&gf={gender_code}"
+                print(f"Processing URL: {url}")
 
-    start_time = time.time()
-    thread1.start()
+                try:
+                    options = webdriver.ChromeOptions()
+                    options.add_argument("--headless")
+                    options.add_argument("--no-sandbox")
+                    options.add_argument("--disable-dev-shm-usage")
 
-    # 카테고리 병렬 추출
-    parallel_category_extraction(shared_data, css_selector, alternative_css_selector, data_ready_event)
+                    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-    thread1.join()
+                    shared_data = []
+                    data_ready_event = Event()
 
-    driver1.quit()
+                    thread1 = Thread(target=extract_main_data, args=(driver, url, 2, 30, shared_data, data_ready_event))
 
-    # 모든 WebDriver 종료
-    cleanup_webdrivers()
+                    start_time = time.time()
+                    thread1.start()
 
-    end_time = time.time()
-    print("Extracted Data:")
-    for item in shared_data:
-        print(f"Name: {item['name']}")
-        print(f"Link: {item['link']}")
-        print(f"Image: {item['image']}")
-        print(f"Category: {item['category']}\n")
+                    parallel_category_extraction(shared_data, "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(3) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button", "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(4) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button", data_ready_event)
 
-    # JSON 파일로 저장
-    save_data_to_json_file(shared_data)
+                    thread1.join()
+                    driver.quit()
 
-    print(f"Total items extracted: {len(shared_data)}")
-    print(f"Time taken: {end_time - start_time:.2f} seconds")
+                    file_name = f"{style_name}_{category_name}_{gender_name}.json"
+                    save_to_file(folder_name, file_name, shared_data)
 
+                    all_extracted_data[file_name] = shared_data
+
+                    end_time = time.time()
+                    print(f"Processed {file_name} in {end_time - start_time:.2f} seconds")
+                except Exception as e:
+                    print(f"Error processing {style_name} {category_name} {gender_name}: {e}")
+
+    # save_to_file(folder_name, "all_data.json", all_extracted_data)
 
 if __name__ == "__main__":
-    url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa&sectionId=203&categoryCode=001&gf=A"
-
-    main(url)
+    main()

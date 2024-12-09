@@ -1,12 +1,14 @@
 /*전체 배경*/
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    flex-direction: column; /* 수직 정렬 */
+    justify-content: center; /* 컨텐츠가 상단부터 시작 */
+    align-items: center; /* 가로 중앙 정렬 */
+    min-height: 100vh; /* 화면 높이를 최소 높이로 설정 */
     margin: 0;
     font-family: 'Arial', sans-serif;
     background: #C2C2C2;
+    overflow-y: auto; /* 세로 스크롤 허용 */
 }
 
 body.blurred .container {
@@ -704,7 +706,7 @@ button:disabled {
 /*카테고리 css*/
 /* 메인 카테고리 컨테이너 */
 .main-category-container {
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
     margin-bottom: 20px;
     padding: 10px;
@@ -787,4 +789,24 @@ button:disabled {
         width: 120px;
         height: 120px; /* 모바일 이미지 크기 축소 */
     }
+}
+
+.summary-container {
+    margin: 20px;
+    /*padding: 16px;*/
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.summary-container h2 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.summary-container p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.6;
 }
