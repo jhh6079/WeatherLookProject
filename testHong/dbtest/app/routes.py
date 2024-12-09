@@ -6,7 +6,6 @@ from flask import Blueprint, render_template, request, jsonify, current_app, red
 import requests
 from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, \
     perceived_temperature
-
 import pymysql
 
 # db = pymysql.connect(host="127.0.0.1",user="root",password="8176",database="weatherlookdb")
@@ -34,6 +33,51 @@ def rank():
     # address_data 로드
     address_data = load_address_data()
     return render_template('rank.html', address_data=address_data)
+
+
+@bp.route('/summarize', methods=['POST'])
+def summarize():
+    try:
+        json_data = request.json.get('jsonData', [])
+        # 데이터를 텍스트로 변환 (LLM에 전달하기 위한 포맷)
+        text_data = "\n".join([str(item) for item in json_data])
+
+        # LLM 요약 요청
+        openai.api_key = current_app.config['OPENAI_API_KEY']
+        response = openai.ChatCompletion.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "요약은 아래의 기준에 따라 작성해줘:\n\n"
+                        " 전체적인 결론:\n"
+                        " 데이터를 분석한 결과를 간략히 정리해 줘.\n\n"
+                        "JSON 데이터는 다음과 같은 형식입니다:\n"
+                        "{\n"
+                        "  \"categories\": [\n"
+                        "    {\"category\": \"상의\", \"items\": [\"티셔츠\", \"셔츠\"]},\n"
+                        "    {\"category\": \"바지\", \"items\": [\"청바지\", \"슬랙스\"]}\n"
+                        "  ]\n"
+                        "}\n\n"
+                        
+                        "결론은 2줄로 해줘"
+                        "문자 같은건 쓰지마 예시로 * # "
+                        "위 기준에 따라 요약을 작성해 주세요."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": text_data
+                }
+            ]
+        )
+
+        summary = response.choices[0].message['content'].strip()
+        return jsonify(summary)
+    except Exception as e:
+        print(f"요약 오류: {e}")
+        return jsonify({"error": "요약 중 오류가 발생했습니다."}), 500
 
 @bp.route('/signup', methods=['GET'])
 def signup():

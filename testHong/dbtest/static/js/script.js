@@ -598,52 +598,64 @@ function toggleCategory(button) {
 }
 
 
-
 //1209수정
 
 // JSON 파일 경로를 관리하는 객체
 const jsonFilePaths = {
-    str_top: '/static/rank_json/str_top.json', // 상위 카테고리 JSON 경로
-    str_bot: '/static/rank_json/str_bot.json'  // 하위 카테고리 JSON 경로
+    all_top_a: '/static/rank_json/all_top_a.json',
+    all_bot_a: '/static/rank_json/all_bot_a.json',
+    all_top_f: '/static/rank_json/all_top_f.json',
+    all_bot_f: '/static/rank_json/all_bot_f.json',
+    all_top_m: '/static/rank_json/all_top_m.json',
+    all_bot_m: '/static/rank_json/all_bot_m.json',
+    str_top_a: '/static/rank_json/str_top_a.json',
+    str_bot_a: '/static/rank_json/str_bot_a.json',
+    str_top_f: '/static/rank_json/str_top_f.json',
+    str_bot_f: '/static/rank_json/str_bot_f.json',
+    str_top_m: '/static/rank_json/str_top_m.json',
+    str_bot_m: '/static/rank_json/str_bot_m.json',
+    ca_top_a: '/static/rank_json/ca_top_a.json',
+    ca_bot_a: '/static/rank_json/ca_bot_a.json',
+    ca_top_f: '/static/rank_json/ca_top_f.json',
+    ca_bot_f: '/static/rank_json/ca_bot_f.json',
+    ca_top_m: '/static/rank_json/ca_top_m.json',
+    ca_bot_m: '/static/rank_json/ca_bot_m.json'
 };
 
 // 검색 버튼 클릭 시 호출
 function search() {
-    // 선택된 성별, 메인 카테고리, 하위 카테고리 가져오기
     const gender = document.querySelector('.gender-category .filter-button.active')?.textContent.trim();
     const mainCategory = document.querySelector('.main-category .filter-button.active')?.textContent.trim();
     const subCategory = document.querySelector('.sub-category .filter-button.active')?.textContent.trim();
 
-    // 하위 카테고리 필수 체크
     if (!subCategory) {
-        alert('하위 카테고리(상의 또는 하의)를 선택해주세요.');
-        mainCategoryContainer.style.display = 'none'; // 카테고리 섹션 숨기기
-        return; // 검색 중단
-    }
-
-    // 카테고리 키 생성 (상위, 하위 조건 조합)
-    const categoryKey = `${gender || "전체"} ${mainCategory || "스트릿"} ${subCategory}`;
-    let resultKey;
-
-    // 조건에 따른 JSON 파일 결정
-    if (categoryKey === '전체 스트릿 상의') {
-        resultKey = 'str_top';
-    } else if (categoryKey === '전체 스트릿 바지') {
-        resultKey = 'str_bot';
-    } else {
-        alert('선택된 조건에 맞는 데이터를 찾을 수 없습니다.');
-        mainCategoryContainer.style.display = 'none'; // 카테고리 섹션 숨기기
+        alert('하위 카테고리(상의 또는 바지)를 선택해주세요.');
+        document.getElementById('mainCategoryContainer').style.display = 'none';
         return;
     }
 
-    // 해당 JSON 파일 경로 가져오기
+    // 키 변환: '전체', '남자', '여자' -> 'a', 'm', 'f'
+    const genderKey = gender === '전체' ? 'a' : (gender === '남자' ? 'm' : 'f');
+    // 키 변환: '전체', '스트릿', '캐주얼' -> 'all', 'str', 'ca'
+    const styleKey = mainCategory === '전체' ? 'all' : (mainCategory === '스트릿' ? 'str' : 'ca');
+    // 키 변환: '상의', '바지' -> 'top', 'bot'
+    const itemKey = subCategory === '상의' ? 'top' : 'bot';
+
+    // 파일 키 조합
+    const resultKey = `${styleKey}_${itemKey}_${genderKey}`;
     const jsonFilePath = jsonFilePaths[resultKey];
+
+    if (!jsonFilePath) {
+        alert('선택된 조건에 맞는 데이터를 찾을 수 없습니다.');
+        document.getElementById('mainCategoryContainer').style.display = 'none';
+        return;
+    }
 
     // JSON 파일 로드 및 이미지 표시
     loadAndDisplayImages(jsonFilePath);
 
     // 조건이 맞으면 카테고리 섹션 표시
-    mainCategoryContainer.style.display = 'block';
+    document.getElementById('mainCategoryContainer').style.display = 'block';
 }
 
 // JSON 파일 로드 및 이미지 렌더링
@@ -656,6 +668,9 @@ function loadAndDisplayImages(jsonFilePath) {
         .then(data => {
             // 데이터를 카테고리별로 그룹화
             const groupedData = groupByCategory(data);
+
+            // LLM으로 데이터를 요약 요청
+            summarizeDataWithLLM(data);
 
             // 카테고리별 슬라이더 생성
             for (const [category, items] of Object.entries(groupedData)) {
@@ -710,4 +725,25 @@ function createHorizontalSlider(category, items) {
     sliderContainer.appendChild(slider);
     categoryWrapper.appendChild(sliderContainer);
     mainCategoryContainer.appendChild(categoryWrapper);
+}
+
+function summarizeDataWithLLM(data) {
+    fetch('/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jsonData: data })
+    })
+        .then(response => response.json())
+        .then(summary => {
+            displaySummary(summary);
+        })
+        .catch(error => console.error('요약 요청 에러:', error));
+}
+
+function displaySummary(summary) {
+    const summaryContainer = document.getElementById('summaryContainer');
+    summaryContainer.innerHTML = `
+        <h2>요약 결과</h2>
+        <p>${summary}</p>
+    `;
 }
