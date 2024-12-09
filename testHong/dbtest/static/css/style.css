@@ -812,17 +812,30 @@ button:disabled {
 }
 
 #currentLocationButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #787878;
     color: white;
     border: none;
-    border-radius: 15px;
-    font-size: 16px;
-    padding: 10px 15px;
+    border-radius: 30%; /* 둥근 버튼 */
     cursor: pointer;
     margin-bottom: 15px;
+    width: 45px; /* 버튼 너비 줄임 */
+    height: 45px; /* 버튼 높이 줄임 */
     transition: background-color 0.3s ease;
 }
 
 #currentLocationButton:hover {
     background-color: #646464;
+}
+
+#currentLocationButton svg {
+    fill: white; /* 아이콘 색상 */
+    width: 40px; /* 아이콘 너비 고정 */
+    height: 40px; /* 아이콘 높이 고정 */
+    flex-shrink: 0; /* 버튼 크기에 따라 SVG가 줄어들지 않도록 설정 */
+    margin-left: 3px;
+    margin-top:  3px;
+
 }

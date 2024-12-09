@@ -29,7 +29,11 @@
         <img src="/static/images/weatherlook_black.svg" class="logo"/>
     </a>
     <form id="locationForm" action="/result" method="post">
-        <button type="button" id="currentLocationButton" onclick="submitWithCurrentLocation()">현위치 조회</button>
+        <button type="button" id="currentLocationButton" onclick="submitWithCurrentLocation()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
+                <path d="M13.89 23.01V21a.61.61 0 0 1 1.22 0v2.01a8.533 8.533 0 0 0 7.9-7.9H21a.61.61 0 0 1 0-1.22h2.01a8.533 8.533 0 0 0-7.9-7.9V8a.61.61 0 0 1-1.22 0V5.99a8.533 8.533 0 0 0-7.9 7.9H8a.61.61 0 0 1 0 1.22H5.99a8.533 8.533 0 0 0 7.9 7.9zm10.36-8.51c0 5.385-4.365 9.75-9.75 9.75s-9.75-4.365-9.75-9.75 4.365-9.75 9.75-9.75 9.75 4.365 9.75 9.75zm-9.75 1.625a1.625 1.625 0 1 0 0-3.25 1.625 1.625 0 0 0 0 3.25z"></path>
+            </svg>
+        </button>
         <select id="city" name="city" onchange="updateGu()">
             <option value="">시/도 선택</option>
         </select>
