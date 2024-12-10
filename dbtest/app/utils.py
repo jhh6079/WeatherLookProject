@@ -1,7 +1,19 @@
 # app/utils.py
 import pandas as pd
+import requests
+import random
 import math
 import openai
+import re
+import time
+
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 # 주소 데이터 로드 함수
@@ -67,7 +79,10 @@ def convert_to_grid(lat, lon):
 def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_probability, openai_api_key, perceived_temp):
     prompt = (
         f"현재 온도는 {temp}도이고, 풍속은 {wind_speed} m/s, 날씨는 {final_status}, 강수확률은 {precipitation_probability}%, 체감온도는 {perceived_temp} 입니다."
-        "체감온도와 날씨 상태에 따라 아래 형식으로 간결하게 추천해주세요.:\n"
+        "체감온도와 날씨 상태에 따라 아래 형식으로 간결하게 추천해주세요. 추가로 무조건 한국말로 말해주고 형용사는 제외해주세요:\n"
+        f"현재 온도는 {temp}도이고, 풍속은 {wind_speed} m/s, 날씨는 {final_status}, 강수확률은 {precipitation_probability}%, 체감온도는 {perceived_temp} 입니다."
+        f"상의는 겨울에는 보통 패딩류나 울 자켓류로 추천해주지만 {final_status}에 맞게 추천해줘, 여름에는 반팔티나 나시류를 대부분 추천해주지만 {final_status}에 맞게 추천해주세요.\n"
+        f"하의는 겨울에 맞는 바지를 제시해주고, 대신 겨울이어도 {final_status}에 맞게 추천해줘, 여름에도 똑같이 적용해주세요.\n"
         f"체감온도는 {perceived_temp}°C,\n"
         f"날씨: {final_status}\n"
         "상의: 하의: 신발: 기타:"
@@ -82,6 +97,117 @@ def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_pr
     )
     recommendation = response.choices[0].message['content'].replace("\n", "<br>")
     return response.choices[0].message['content']
+
+# 불필요한 형용사 리스트
+ADJECTIVES = ["따뜻한", "얇은", "두꺼운", "편안한", "멋진","보온성 있는","두툼한"]
+
+def remove_adjectives(text):
+    """
+    텍스트에서 형용사를 제거하는 함수
+    """
+    for adj in ADJECTIVES:
+        text = text.replace(adj, "").strip()  # 형용사를 제거
+    return text
+
+def extract_keywords(recommendation, category):
+    """
+    추천 의류 텍스트에서 지정된 카테고리(상의, 하의, 신발, 기타) 항목을 추출.
+    형용사를 제거하고, '또는'이 포함된 경우 앞이나 뒤 값을 랜덤하게 반환.
+    """
+    pattern = rf"{category}: ([^\n]+)"  # 예: "상의: "로 시작하는 텍스트 패턴
+    match = re.search(pattern, recommendation)  # 카테고리 텍스트 추출
+    if match:
+        raw_text = match.group(1)  # 해당 카테고리의 전체 텍스트
+        cleaned_text = remove_adjectives(raw_text)  # 형용사 제거
+        options = cleaned_text.split("또는")  # "또는" 기준으로 분리
+        if len(options) > 1:
+            # 앞 또는 뒤 값을 랜덤으로 선택하여 반환
+            return random.choice(options).strip()
+        return cleaned_text.split(",")[0].strip()  # 콤마로 구분된 첫 번째 값 반환
+    return category  # 기본값으로 카테고리 이름 반환 (예: "상의")
+
+
+def crawl_fashion_data(keyword, start_div=2, end_div=5, max_attempts=4):
+
+    # 실행 시간 측정 시작
+    start_time = time.time()
+
+    # Selenium WebDriver 설정
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")  # 헤드리스 모드, 디버깅 시 비활성화 가능
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    # Musinsa 페이지 URL
+    url = f"https://www.musinsa.com/search/goods?keyword={keyword}&gf=A"
+    driver.get(url)
+
+    results = []
+
+    try:
+        # 부모-자식 조합 생성 및 섞기
+        parent_child_combinations = [
+            (parent_index, child_index)
+            for parent_index in range(start_div, end_div + 1)
+            for child_index in range(1, 5)
+        ]
+        random.shuffle(parent_child_combinations)  # 순서 섞기
+
+        for parent_index, child_index in parent_child_combinations:
+            try:
+                # 링크 XPath
+                link_xpath = (
+                    f"//*[@id='commonLayoutContents']/div/div[contains(@class, 'sc-x7dw99-2')]/div/div/div/div[{parent_index}]/div/div[{child_index}]/div/div[contains(@class, 'sc-fLseNd')]/div/a"
+                )
+                link_element = WebDriverWait(driver, 0.1).until(
+                    EC.presence_of_element_located((By.XPATH, link_xpath))
+                )
+                link = link_element.get_attribute("href")
+
+                # 이미지 및 이름 XPath
+                image_xpath = f"{link_xpath}/div/img"
+
+                # 이미지 로드 확인 및 스크롤 시도
+                for attempt in range(max_attempts):
+                    try:
+                        image_element = driver.find_element(By.XPATH, image_xpath)
+                        name = image_element.get_attribute("alt")
+                        image_src = image_element.get_attribute("src")
+
+                        # 이미지가 None일 경우 예외 처리
+                        if image_src is None:
+                            raise ValueError("Image not loaded")
+
+                        # 결과 저장
+                        results.append({
+                            "name": name,
+                            "link": link,
+                            "image": image_src
+                        })
+                        break  # 성공하면 루프 탈출
+                    except Exception:
+                        print(f"Attempt {attempt + 1}: Scrolling to load image...")
+                        driver.execute_script("window.scrollBy(0, 1000);")  # 스크롤 다운
+                        time.sleep(0.01)  # 잠시 대기
+                else:
+                    print(f"Image not loaded for parent {parent_index}, child {child_index}")
+
+            except Exception as e:
+                print(f"Error at parent {parent_index}, child {child_index}: {e}")
+                continue
+    finally:
+        driver.quit()
+
+    # 실행 시간 측정 종료
+    end_time = time.time()
+
+    # 실행 시간 출력
+    elapsed_time = end_time - start_time
+    print(f"Time taken: {elapsed_time:.2f} seconds")
+
+    return results
 
 
 def perceived_temperature(temp, wind_speed, sky_status, precipitation_probability, openai_api_key):

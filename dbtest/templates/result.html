@@ -87,12 +87,66 @@
     <!-- 추천 의류 -->
     <div class="box">
         <h2>추천 의류</h2>
-        <!--        2024-11-28 추가 수정-->
+
         <p style="white-space: pre-line;">{{ clothing_recommendation | safe }}</p>
+
+    <!-- 상의 -->
+    <div class="clothing-category">
+        <h3>상의</h3>
+    <div class="image-gallery">
+        {% for item in fashion_data["상의"] %}
+            <div class="card">
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="product-image">
+                <div class="card-content">
+                    <p class="item-name">{{ item.name }}</p>
+                    <a href="{{ item.link }}" target="_blank" class="view-button">상품 보기</a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
+        <h3>하의</h3>
+    <div class="image-gallery">
+        {% for item in fashion_data["하의"] %}
+            <div class="card">
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="product-image">
+                <div class="card-content">
+                    <p class="item-name">{{ item.name }}</p>
+                    <a href="{{ item.link }}" target="_blank" class="view-button">상품 보기</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+        <h3>신발</h3>
+    <div class="image-gallery">
+        {% for item in fashion_data["신발"] %}
+            <div class="card">
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="product-image">
+                <div class="card-content">
+                    <p class="item-name">{{ item.name }}</p>
+                    <a href="{{ item.link }}" target="_blank" class="view-button">상품 보기</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+        <h3>기타</h3>
+    <div class="image-gallery">
+        {% for item in fashion_data["기타"] %}
+            <div class="card">
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="product-image">
+                <div class="card-content">
+                    <p class="item-name">{{ item.name }}</p>
+                    <a href="{{ item.link }}" target="_blank" class="view-button">상품 보기</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+     </div>
 
 
+    </div>
 </div>
 
 <!-- 채팅 사이드바 -->

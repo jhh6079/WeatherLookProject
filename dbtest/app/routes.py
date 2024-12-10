@@ -6,6 +6,10 @@ from flask import Blueprint, render_template, request, jsonify, current_app, red
 import requests
 from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, \
     perceived_temperature
+
+from .utils import crawl_fashion_data
+from .utils import extract_keywords
+
 import pymysql
 
 # db = pymysql.connect(host="127.0.0.1",user="root",password="8176",database="weatherlookdb")
@@ -17,7 +21,7 @@ weather_info = {}
 
 @bp.route('/')  # 루트 경로
 def index():
-    return redirect(url_for('main.main'))  # '/main'으로 리디렉션
+    return redirect(url_for('main.get_login'))  # '/main'으로 리디렉션
 
 
 # 메인 페이지 라우트
@@ -141,7 +145,6 @@ def result():
         # 이후 기존의 기상청 API 호출 및 날씨 데이터 처리 로직 유지
         nx, ny = convert_to_grid(lat, lon)
 
-        # 문제였던 부분 욕나오는 nodata
         # 현재 시간 계산
         from datetime import datetime, timedelta
 
@@ -168,9 +171,6 @@ def result():
             base_time = "2000"
         else:
             base_time = "2300"
-
-#여기까지
-
 
     # 기상청 API 호출
         weather_url = f"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
@@ -293,6 +293,13 @@ def result():
             "perceived_temp": perceived_temp
         }
 
+        categories = ["상의", "하의", "신발", "기타"]
+        fashion_data = {}  # 카테고리별 크롤링 결과 저장
+
+        for category in categories:
+            keyword = extract_keywords(recommendation, category)  # 해당 항목의 키워드 추출
+            fashion_data[category] = crawl_fashion_data(keyword)  # 크롤링 수행
+
         return render_template(
             'result.html',
             city=city,
@@ -308,6 +315,7 @@ def result():
             humidity=humidity,
             clothing_recommendation=recommendation,
             hourly_data=filtered_data,
+            fashion_data=fashion_data,
             weather_icon_url=weather_icon_url,
             perceived_temp=perceived_temp
         )
@@ -347,7 +355,7 @@ def get_login():
                 session['nickname'] = nickname
                 return jsonify({"message" : f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
             else:
-                return jsonify({"message" : "ID와 비밀번호를 확인바랍니다"}), 401
+                return jsonify({"message" : "ID와 비밀번호를 확인바랍니다."}), 401
 
         except pymysql.MySQLError as err:
             print(f"DB 에러: {err}")
@@ -392,18 +400,18 @@ def get_register():
             # 중복체크
             cursor.execute("select username from weatherlookdb_user where username = %s", (signup_id,))
             if cursor.fetchone():
-                return jsonify({'message': '아이디가 이미 존재...'}), 409
+                return jsonify({'message': '아이디가 이미 존재합니다.'}), 409
 
             # 회원가입 데이터 삽입부분
             cursor.execute("INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
                            (signup_id, signup_ps, signup_name))
             conn.commit()
 
-            return jsonify({'message': '회원가입 성공! 축하'}), 201
+            return jsonify({'message': '회원가입 성공하였습니다! 축하합니다.!'}), 201
 
         except pymysql.connect.Error as err:
-            print(f'아이 X발 에러났어: {err}')
-            return jsonify({'message': 'db 오류났다능... 킹받는당'}), 500
+            print(f'데이터베이스가 에러났습니다. 오류를 확인해주세요....: {err}')
+            return jsonify({'message': '데이터베이스가 에러났습니다. 오류를 확인해주세요....'}), 500
 
 
 @bp.route('/get_coords', methods=['POST'])
