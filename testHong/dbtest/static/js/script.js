@@ -751,11 +751,7 @@ function displaySummary(summary) {
 
 function submitWithCurrentLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error, {
-            enableHighAccuracy: true, // 고정밀 모드 활성화
-            timeout: 3000,          // 타임아웃 설정 (10초)
-            maximumAge: 0            // 캐시된 위치 데이터 사용 안 함
-        });
+        navigator.geolocation.getCurrentPosition(success, error);
     } else {
         alert("위치 정보 사용이 지원되지 않는 브라우저입니다.");
     }

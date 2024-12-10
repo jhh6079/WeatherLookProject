@@ -9,9 +9,14 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from threading import Lock
+
+# Lock 객체 생성
+data_lock = Lock()
 
 # 스레드별 WebDriver를 유지하기 위한 thread-local 객체
 thread_local = local()
+
 
 def get_webdriver():
     """
@@ -24,6 +29,7 @@ def get_webdriver():
         options.add_argument("--disable-dev-shm-usage")
         thread_local.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     return thread_local.driver
+
 
 def extract_main_data(driver, url, start_div, end_div, shared_data, data_ready_event):
     """
@@ -72,10 +78,8 @@ def extract_main_data(driver, url, start_div, end_div, shared_data, data_ready_e
     print("Main data extraction complete. Notifying second thread.")
     data_ready_event.set()
 
+
 def fetch_category(item, css_selector, alternative_css_selector):
-    """
-    단일 링크에서 카테고리 데이터를 추출
-    """
     driver = get_webdriver()
     try:
         driver.get(item['link'])
@@ -107,30 +111,39 @@ def fetch_category(item, css_selector, alternative_css_selector):
         print(f"Error fetching category for {item['name']}: {e}")
         return None
 
+
 def parallel_category_extraction(shared_data, css_selector, alternative_css_selector, data_ready_event):
-    """
-    병렬로 카테고리 데이터를 추출
-    """
     print("Waiting for main data to be ready...")
     data_ready_event.wait()
     print("Main data is ready. Starting parallel category extraction.")
 
-    with ThreadPoolExecutor(max_workers=5) as executor:  # 병렬 작업 개수 제한
+    with ThreadPoolExecutor(max_workers=5) as executor:
         futures = [
-            executor.submit(fetch_category, item, css_selector, alternative_css_selector)
+            executor.submit(fetch_category_and_update, item, css_selector, alternative_css_selector)
             for item in shared_data
         ]
 
-        for future, item in zip(as_completed(futures), shared_data):
+        for future in as_completed(futures):
             try:
-                category_name = future.result()
-                item['category'] = category_name
-                if category_name:
-                    print(f"Extracted category: {category_name} for {item['name']}")
-                else:
-                    print(f"Failed to extract category for {item['name']}")
+                future.result()
             except Exception as e:
-                print(f"Error during parallel category extraction for {item['name']}: {e}")
+                print(f"Error during parallel category extraction: {e}")
+
+
+def fetch_category_and_update(item, css_selector, alternative_css_selector):
+    """
+    카테고리를 추출하고 공유 데이터에 안전하게 업데이트
+    """
+    category_name = fetch_category(item, css_selector, alternative_css_selector)
+
+    # 데이터 업데이트를 보호
+    with data_lock:
+        item['category'] = category_name
+        if category_name:
+            print(f"Extracted category: {category_name} for {item['name']}")
+        else:
+            print(f"Failed to extract category for {item['name']}")
+
 
 def cleanup_webdrivers():
     """
@@ -140,12 +153,14 @@ def cleanup_webdrivers():
         thread_local.driver.quit()
         del thread_local.driver
 
+
 def create_folder(folder_name):
     """
     폴더가 없으면 생성
     """
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
+
 
 def save_to_file(folder_name, file_name, data):
     """
@@ -156,13 +171,14 @@ def save_to_file(folder_name, file_name, data):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
+
 def main():
     base_url = "https://www.musinsa.com/main/musinsa/ranking?skip_bf=Y&storeCode=musinsa"
 
     styles = {
         "all": "199",
         "str": "203",
-        "ca": "202"
+        # "ca": "202"
     }
 
     genders = {
@@ -197,7 +213,10 @@ def main():
                     start_time = time.time()
                     thread1.start()
 
-                    parallel_category_extraction(shared_data, "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(3) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button", "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(4) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button", data_ready_event)
+                    parallel_category_extraction(shared_data,
+                                                 "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(3) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button",
+                                                 "#root > div.sc-1f8zq2z-0.SRIds > div.sc-ysl0re-0.UluGl > div:nth-child(4) > div > span:nth-child(2) > a.sc-147svlx-2.hTQFMT.gtm-click-button",
+                                                 data_ready_event)
 
                     thread1.join()
                     driver.quit()
@@ -213,6 +232,7 @@ def main():
                     print(f"Error processing {style_name} {category_name} {gender_name}: {e}")
 
     # save_to_file(folder_name, "all_data.json", all_extracted_data)
+
 
 if __name__ == "__main__":
     main()

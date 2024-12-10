@@ -1,110 +1,8 @@
 [
     {
-        "name": "토피 퍼티그 비조 캔버스 코튼 팬츠 (BROWN) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4318326",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240812/4318326/4318326_17255032477103_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "그라미치 가젯 팬츠 Olive 상품 이미지",
-        "link": "https://www.musinsa.com/products/2341127",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20220204/2341127/2341127_17249800053578_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
         "name": "토피 모어 와이드 데님 팬츠 (WASHED RAW BLACK) 상품 이미지",
         "link": "https://www.musinsa.com/products/3663072",
         "image": "https://image.msscdn.net/thumbnails/images/goods_img/20231027/3663072/3663072_16988871011427_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "엑스컨테이너 빈티지 워시드 와이드 데님 팬츠 (SAND BROWN) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4342050",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240819/4342050/4342050_17255965450722_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "엑스컨테이너 딥 워싱 와이드 데님 팬츠 (WASHED BLACK) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4336570",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240816/4336570/4336570_17243097432006_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 시티 레저 CN 와이드 벨티드 파라슈트 팬츠 [블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3404705",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230712/3404705/3404705_17134029927665_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "아크시 루즈 워시드 벌룬핏 와이드 데님 팬츠 유니섹스 (블랙/블루) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4506373",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241011/4506373/4506373_17286071266028_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 빅 브러쉬 엑스트라 와이드 데님 팬츠 [러스티 블루] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3859521",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240208/3859521/3859521_17115946344528_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 KIPAS 와이드 데님 팬츠 [딥 인디고] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3051669",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230201/3051669/3051669_16895869804842_500.jpg?w=780",
-        "category": "기타 하의"
-    },
-    {
-        "name": "위캔더스 DWARF DENIM PANTS (BLACK) 상품 이미지",
-        "link": "https://www.musinsa.com/products/3576618",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230920/3576618/3576618_17115954547587_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 빅 브러쉬 와이드 데님 팬츠 [블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4089377",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240426/4089377/4089377_17171128770877_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "데케트 Balloon Wide Jeans DCPT055YLBlackB 상품 이미지",
-        "link": "https://www.musinsa.com/products/4300665",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240806/4300665/4300665_17328584913880_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "스켈리웩 스윙 벌룬핏 데님[블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4381625",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240828/4381625/4381625_17254452744985_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "어반드레스 Side Big Cargo Pants CAMO 상품 이미지",
-        "link": "https://www.musinsa.com/products/3575430",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230919/3575430/3575430_17193814879269_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "아워데이즈 [S사이즈 추가] 웨이비 커브드 와이드 데님 팬츠 [BLUE] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3794791",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240115/3794791/3794791_17055461443384_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "포트너스 Wide Straight Crack Washed Jeans (Vintage Blue) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4302223",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240806/4302223/4302223_17234512122682_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "필루미네이트 데미지 워시드 데님 팬츠-스카이블루 상품 이미지",
-        "link": "https://www.musinsa.com/products/4095000",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240429/4095000/4095000_17156616314608_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "낫포너드 Extra Wide Balloon Pants - Deep Blue 상품 이미지",
-        "link": "https://www.musinsa.com/products/3206723",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230405/3206723/3206723_17296519870646_500.jpg?w=780",
         "category": "데님 팬츠"
     },
     {
@@ -114,9 +12,93 @@
         "category": "데님 팬츠"
     },
     {
+        "name": "인템포무드 레이지보이 벌룬 핏 데님_딥블루 상품 이미지",
+        "link": "https://www.musinsa.com/products/3054701",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230202/3054701/3054701_16949983126730_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "엑스컨테이너 빈티지 워시드 와이드 데님 팬츠 (SAND BROWN) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4342050",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240819/4342050/4342050_17255965450722_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "아크시 루즈 워시드 벌룬핏 와이드 데님 팬츠 유니섹스 (블랙/블루) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4506373",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241011/4506373/4506373_17286071266028_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "굿라이프웍스 (기모옵션추가) 와이드 절개 벌룬팬츠 코튼 카키 상품 이미지",
+        "link": "https://www.musinsa.com/products/2060759",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20210812/2060759/2060759_17080505871544_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "무신사 스탠다드 시티 레저 CN 와이드 벨티드 파라슈트 팬츠 [블랙] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3404705",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230712/3404705/3404705_17134029927665_500.jpg?w=780",
+        "category": "기타 하의"
+    },
+    {
+        "name": "스탠다드에러 87-STAN047 벌룬핏 워싱 와이드 데님팬츠 빈티지 블랙 상품 이미지",
+        "link": "https://www.musinsa.com/products/3902778",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240227/3902778/3902778_17159383404032_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "엑스컨테이너 딥 워싱 와이드 데님 팬츠 (WASHED BLACK) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4336570",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240816/4336570/4336570_17243097432006_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "굿라이프웍스 (기모옵션추가) 이지 와이드 데님 팬츠 블랙 상품 이미지",
+        "link": "https://www.musinsa.com/products/2092849",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20210826/2092849/2092849_17086549514914_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "스켈리웩 스윙 벌룬핏 데님[블랙] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4381625",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240828/4381625/4381625_17254452744985_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "언탭트 스튜디오 빈티지 프론트 워싱 와이드 청바지 데님 팬츠 상품 이미지",
+        "link": "https://www.musinsa.com/products/4164429",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240529/4164429/4164429_17201609421486_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "테이크이지 [스토퍼버전 추가] 립스탑 카모포켓 카고팬츠(카모카키) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3222295",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230411/3222295/3222295_16818801797589_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "아워데이즈 [S사이즈 추가] 웨이비 커브드 와이드 데님 팬츠 [BLUE] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3794791",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240115/3794791/3794791_17055461443384_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
         "name": "모덴아르더 뉴트로 투턱 와이드 데님팬츠(블랙) 상품 이미지",
         "link": "https://www.musinsa.com/products/3183173",
         "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230327/3183173/3183173_17309395811558_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "어반디타입 커브드 벌룬 워싱 데님 팬츠_블루 상품 이미지",
+        "link": "https://www.musinsa.com/products/4238757",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240708/4238757/4238757_17235299034264_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "포스센스티브 FST WIDE DENIM BL 상품 이미지",
+        "link": "https://www.musinsa.com/products/4478833",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240930/4478833/4478833_17288841689793_500.jpg?w=780",
         "category": "데님 팬츠"
     },
     {
@@ -126,315 +108,33 @@
         "category": "데님 팬츠"
     },
     {
-        "name": "하프보일드 Mummy Pants 상품 이미지",
-        "link": "https://www.musinsa.com/products/4375997",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240827/4375997/4375997_17248320979722_500.png?w=780",
+        "name": "어널러코드 헤링본 도밍고 데님팬츠 (진청) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4309389",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240808/4309389/4309389_17278415464574_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "마틴플랜 Cut Out Straight Jeans - BLUE 상품 이미지",
+        "link": "https://www.musinsa.com/products/2208910",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20211101/2208910/2208910_17159376473827_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "데케트 [2PACK]Deep Pleats Wide Jeans DCPT030 상품 이미지",
+        "link": "https://www.musinsa.com/products/3839241",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240201/3839241/3839241_17302672963296_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "이알에스코 레오파드 배기 트라우져스_카키 상품 이미지",
+        "link": "https://www.musinsa.com/products/4390137",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240830/4390137/4390137_17250081422288_500.jpg?w=780",
         "category": "코튼 팬츠"
     },
     {
-        "name": "위캔더스 VINTAGE WASH DENIM PANTS (D.BLACK) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4465575",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240926/4465575/4465575_17288886830740_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "트래블 카펜터 데님 팬츠 블랙 상품 이미지",
-        "link": "https://www.musinsa.com/products/3048710",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230131/3048710/3048710_16765889313450_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "말렌 유니섹스 루프 벌룬팬츠 브라운 상품 이미지",
-        "link": "https://www.musinsa.com/products/1642022",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20201009/1642022/1642022_2_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "로어링라드 플레어 워시드 데님 팬츠 블루 상품 이미지",
-        "link": "https://www.musinsa.com/products/4299420",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240806/4299420/4299420_17267953901138_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "누디진 씬핀 Back 2 Black 112431 상품 이미지",
-        "link": "https://www.musinsa.com/products/4069736",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240419/4069736/4069736_17156724737706_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "51퍼센트 Banding cargo pants 상품 이미지",
-        "link": "https://www.musinsa.com/products/3574881",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230919/3574881/3574881_17290437767043_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "앵글런 Lap Pleated Washed Denim Pants - Deep Blue 상품 이미지",
-        "link": "https://www.musinsa.com/products/4562352",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241027/4562352/4562352_17306445814545_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "선데이후르츠마켓 SUN LEOPARD CARGO PANT 상품 이미지",
-        "link": "https://www.musinsa.com/products/4557820",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241025/4557820/4557820_17299145618419_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "에즈카톤 스모크 와이드 데님 팬츠 빈티지블랙 KMLP6669 상품 이미지",
-        "link": "https://www.musinsa.com/products/2967461",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20221201/2967461/2967461_1_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "필루미네이트 데미지 워시드 데님 팬츠-블랙 상품 이미지",
-        "link": "https://www.musinsa.com/products/3791990",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240112/3791990/3791990_17249823197140_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "아이돈워너셀 Pryer Cargo Denim Pants Indigo 상품 이미지",
-        "link": "https://www.musinsa.com/products/3823115",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240125/3823115/3823115_17126534943983_500.png?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "일꼬르소 원 턱 패널 데님 팬츠 블루 IEPA4G112B2 상품 이미지",
-        "link": "https://www.musinsa.com/products/3089215",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230216/3089215/3089215_17113485279602_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "51퍼센트 TUNNEL LINING TROUSER (DENIM) - Washed Black 상품 이미지",
-        "link": "https://www.musinsa.com/products/2848392",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20221007/2848392/2848392_16970754176965_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "주앙옴므 DIRTY WASHED DENIM PANTS (BLUE) 상품 이미지",
-        "link": "https://www.musinsa.com/products/3448086",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230807/3448086/3448086_16994972574765_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 와이드 데님 팬츠 [딥 인디고] 상품 이미지",
-        "link": "https://www.musinsa.com/products/1720144",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20201211/1720144/1720144_17224114327760_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "디앤에스알 시그니처 와이드 데님 팬츠 블랙 상품 이미지",
-        "link": "https://www.musinsa.com/products/3522011",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230901/3522011/3522011_17331280733159_500.jpg?w=780",
-        "category": "트레이닝/조거 팬츠"
-    },
-    {
-        "name": "노드 Stone Washed Cargo pants (Black) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4508809",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241011/4508809/4508809_17290507678259_500.jpg?w=780",
-        "category": "기타 하의"
-    },
-    {
-        "name": "디미트리블랙 VLAD 원턱 피그먼트 페이드 워싱 스웻 팬츠_핑크 상품 이미지",
-        "link": "https://www.musinsa.com/products/4308185",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240808/4308185/4308185_17242027188432_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "비엘알 Embossed Wave Washing Wide Denim Pants Black 상품 이미지",
-        "link": "https://www.musinsa.com/products/4353857",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240821/4353857/4353857_17261040378546_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "엑스컨테이너 더블니 카펜터 가먼트 다잉 팬츠 (GREIGE) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4336576",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240816/4336576/4336576_17243976945397_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "브랜디드 1702 BLACK WARRIOR JEANS [MAX WIDE STRAIGHT] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3551144",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230912/3551144/3551144_16947419803626_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "비긴202 Veneta Two Tuck Denim Pants [Vintage Black] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4316839",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240809/4316839/4316839_17231984044278_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "플레이버리즘 타이다이 워시드 카펜터 데님 팬츠 (TP0037) 상품 이미지",
-        "link": "https://www.musinsa.com/products/1779198",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20210205/1779198/1779198_17248171816264_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "트릴리온 사이드 턱 스냅 버튼 와이드 데님 팬츠 (BLACK) 상품 이미지",
-        "link": "https://www.musinsa.com/products/3461113",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230811/3461113/3461113_17151525342161_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "감마갤러리 와이드 더블니 카펜터 팬츠 [VINTAGE BEIGE] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3868455",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240214/3868455/3868455_17091758558503_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "커스텀어클락 커브드 밴딩 데님 팬츠 5 COLOR COOSPT237 상품 이미지",
-        "link": "https://www.musinsa.com/products/3816988",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240123/3816988/3816988_17171271417251_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "미니멀프로젝트 퍼티그 벌룬 코듀로이 팬츠 MPT110 / 5color 상품 이미지",
-        "link": "https://www.musinsa.com/products/2164657",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20211006/2164657/2164657_17332049259749_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "신앤리 언피니쉬드 와이드 코튼 팬츠 블랙 상품 이미지",
-        "link": "https://www.musinsa.com/products/4013145",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240402/4013145/4013145_17119889676074_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "젠사이 다트 커브드 실루엣 벌룬핏 팬츠 그레이 상품 이미지",
-        "link": "https://www.musinsa.com/products/4458906",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240924/4458906/4458906_17271651649379_500.jpg?w=780",
-        "category": "기타 하의"
-    },
-    {
-        "name": "기철 BASIC BALLOON DENIM PANTS (BLACK) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4336994",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240816/4336994/4336994_17259349744185_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "레큘리 와이드 벌룬 배기팬츠 Khaki 상품 이미지",
-        "link": "https://www.musinsa.com/products/4521375",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241016/4521375/4521375_17290982062786_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "비바스튜디오 WIDE DENIM PANTS [BLACK] 상품 이미지",
-        "link": "https://www.musinsa.com/products/2712970",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20220811/2712970/2712970_17096912789631_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "다이브인 WIDE CURVERD DENIM PANTS (WASHED DARK BLUE) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4441674",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240917/4441674/4441674_17319145618503_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "율러 플레어 더티 퍼들 카고팬츠_턱 버전 [라이트 그레이] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4491348",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241007/4491348/4491348_17324621993473_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "위캔더스 VINTAGE WASH DENIM PANTS (DENIM) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4465576",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240926/4465576/4465576_17283798105248_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "노티카 [JP Line]가먼트 블리치워시드 히든로고 스웻팬츠 상품 이미지",
-        "link": "https://www.musinsa.com/products/4614456",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241114/4614456/4614456_17326959703656_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "노이어 핸드 페인팅 스트레이트 데님 팬츠 (페인팅블루) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4456388",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240924/4456388/4456388_17271467754730_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 빅 브러쉬 엑스트라 와이드 데님 팬츠 [러스티 블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3859520",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240208/3859520/3859520_17297462396501_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "엑스컨테이너 빈티지 워시드 와이드 데님 팬츠 (DEEP INDIGO) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4342052",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240819/4342052/4342052_17256000902371_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "어게인스트 올 오즈 와이드 빅포켓 코튼 카고 밴딩 팬츠 [블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3469995",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230817/3469995/3469995_17259445831408_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "아워데이즈 [S사이즈 추가] 웨이비 커브드 와이드 데님 팬츠 [BLACK] 상품 이미지",
-        "link": "https://www.musinsa.com/products/3794792",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240115/3794792/3794792_17055462440206_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "디키즈 더블니 카펜터 데님 팬츠 Black 상품 이미지",
-        "link": "https://www.musinsa.com/products/3909349",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240228/3909349/3909349_17192728119736_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "엑스트라오디너리 CARGO RIPSTOP PANTS  WOODLAND CAMO 상품 이미지",
-        "link": "https://www.musinsa.com/products/2373541",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20220221/2373541/2373541_17114174841034_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "더콜디스트모먼트 TCM starfish chino pants (black) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4293032",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240802/4293032/4293032_17231900851488_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "메종미네드 BIKER DENIM TROUSERS BLUE 상품 이미지",
-        "link": "https://www.musinsa.com/products/1431479",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20200506/1431479/1431479_5_500.jpg?w=780",
-        "category": "트레이닝/조거 팬츠"
-    },
-    {
-        "name": "디서먼트 멀티 라지 데님 팬츠 [블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4631174",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241122/4631174/4631174_17322594967583_500.jpeg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "바운더리 슈퍼 와이드 항아리핏 벌룬팬츠 [블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4087003",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240425/4087003/4087003_17140787451709_500.jpg?w=780",
-        "category": "코튼 팬츠"
-    },
-    {
-        "name": "굿라이프웍스 (기모옵션추가) 이지 와이드 데님 팬츠 블랙 상품 이미지",
-        "link": "https://www.musinsa.com/products/2092849",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20210826/2092849/2092849_17086549514914_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "메인부스 LAB.017 Balloon Denim Pants(INDIGO) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4373554",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240827/4373554/4373554_17300949262953_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 피그먼트 와이드 데님 팬츠 [차콜 그레이] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4368611",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240826/4368611/4368611_17278335454366_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "엘무드 슬래시 플레어 데님 트루블루 상품 이미지",
-        "link": "https://www.musinsa.com/products/3406361",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230712/3406361/3406361_16917219475112_500.jpg?w=780",
+        "name": "디스펑트 DYSFUNCT KEY RING WASHING DENIM PANTS 상품 이미지",
+        "link": "https://www.musinsa.com/products/4072132",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240422/4072132/4072132_17137526006998_500.jpg?w=780",
         "category": "데님 팬츠"
     },
     {
@@ -444,22 +144,256 @@
         "category": "데님 팬츠"
     },
     {
-        "name": "무신사 스탠다드 플레어 데님 팬츠 [다크 블루] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4225255",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240701/4225255/4225255_17333861981731_500.jpg?w=780",
+        "name": "브랜디드 1702 BLACK WARRIOR JEANS [MAX WIDE STRAIGHT] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3551144",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230912/3551144/3551144_16947419803626_500.jpg?w=780",
         "category": "데님 팬츠"
     },
     {
-        "name": "기철 DEEP OIL WASHED BALLOON DENIM PANTS (BLUE) 상품 이미지",
-        "link": "https://www.musinsa.com/products/4336997",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240816/4336997/4336997_17282691009397_500.jpg?w=780",
+        "name": "무신사 스탠다드 빅 브러쉬 엑스트라 와이드 데님 팬츠 [러스티 블루] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3859521",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240208/3859521/3859521_17115946344528_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "메인부스 LAB.017 Balloon Denim Pants(INDIGO) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4373554",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240827/4373554/4373554_17300949262953_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "디앤에스알 투페이스 멀티 카고 팬츠 상품 이미지",
+        "link": "https://www.musinsa.com/products/3521724",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230901/3521724/3521724_16935433551449_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "데케트 Balloon Wide Jeans DCPT055Black 상품 이미지",
+        "link": "https://www.musinsa.com/products/4300655",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240806/4300655/4300655_17253261354167_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "브랜디드 1701 INDIGO WARRIOR JEANS [MAX WIDE STRAIGHT] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3468143",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230816/3468143/3468143_16926679621747_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "낫포너드 Cargo Pocket Pants - Black 상품 이미지",
+        "link": "https://www.musinsa.com/products/896650",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20181101/896650/896650_9_500.jpg?w=780",
         "category": "코튼 팬츠"
     },
     {
-        "name": "발루트 CARPENTER SIDE TUCK PANTS (BLUE WASED) 상품 이미지",
-        "link": "https://www.musinsa.com/products/3809961",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240119/3809961/3809961_17056510840131_500.jpg?w=780",
+        "name": "바운더리 빈티지워싱 벌룬핏 롱 데님팬츠 [Washed Black] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4340609",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240819/4340609/4340609_17243893208945_500.jpg?w=780",
         "category": "데님 팬츠"
+    },
+    {
+        "name": "르아르 샌드 워싱 벌룬 데님 팬츠 [인디고 블루] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4315529",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240809/4315529/4315529_17246780171649_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "엔피스튜디오 빈티지 네츄럴 워싱 와이드 데님 팬츠 진청 상품 이미지",
+        "link": "https://www.musinsa.com/products/4557878",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241025/4557878/4557878_17298222739238_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "트래블 절개 워싱 데님 팬츠 인디고 블루 상품 이미지",
+        "link": "https://www.musinsa.com/products/3440143",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230801/3440143/3440143_16928489889098_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "감마갤러리 13.5oz 빈티지 워싱 더블니 카펜터 팬츠 [BLACK] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4327829",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240813/4327829/4327829_17271579561424_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "위캔더스 DWARF DENIM PANTS (DENIM) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3576613",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230920/3576613/3576613_17115955538486_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "트릴리온 프론트 워싱 와이드 데님 팬츠 (DEEP GREEN) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3539080",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230907/3539080/3539080_16941492039660_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "디키즈 스케이트 더블니 트윌 팬츠 Green 상품 이미지",
+        "link": "https://www.musinsa.com/products/4288248",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240801/4288248/4288248_17246379284310_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "언더오프 융기모 히트 루즈핏 워싱 데님 인디고 상품 이미지",
+        "link": "https://www.musinsa.com/products/4602375",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241111/4602375/4602375_17312846041042_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "지크립 핀턱 벌룬핏 와이드 데님팬츠 상품 이미지",
+        "link": "https://www.musinsa.com/products/4460296",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240925/4460296/4460296_17272223661448_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "알에스에스씨 KNEE STRING CARGO DENIM PANTS - DENIM 상품 이미지",
+        "link": "https://www.musinsa.com/products/3878363",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240218/3878363/3878363_17090973663634_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "리메인세컨드 원턱 와이드 코듀로이 밴딩 팬츠 [카키] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4274087",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240725/4274087/4274087_17326038195369_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "트릴리온 프론트 워싱 와이드 데님 팬츠 (YELLOW BLACK) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3124490",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230306/3124490/3124490_16784156237192_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "오더아카이브 One Pintuck wide 04 - Rusty black 상품 이미지",
+        "link": "https://www.musinsa.com/products/3489096",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230823/3489096/3489096_16927567822315_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "지크립 기모 핀턱 벌룬 핏 와이드 데님팬츠 [Black] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4564639",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241028/4564639/4564639_17301815104433_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "낫포너드 Oxford Fatigue Baggy Pants - Black 상품 이미지",
+        "link": "https://www.musinsa.com/products/4433874",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240911/4433874/4433874_17278424349010_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "아캄 Needlework Carpenter Denim Pants (Blue) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4461189",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240925/4461189/4461189_17273286091908_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "아워데이즈 [S사이즈 추가] 웨이비 커브드 와이드 데님 팬츠 [BLACK] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3794792",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240115/3794792/3794792_17055462440206_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "무신사 스탠다드 빅 브러쉬 와이드 데님 팬츠 [블랙] 상품 이미지",
+        "link": "https://www.musinsa.com/products/4089377",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240426/4089377/4089377_17171128770877_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "낫포너드 Extra Wide Balloon Pants - Deep Blue 상품 이미지",
+        "link": "https://www.musinsa.com/products/3206723",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230405/3206723/3206723_17296519870646_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "낫포너드 Cut Off Curved Denim Pants - Black 상품 이미지",
+        "link": "https://www.musinsa.com/products/3840937",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240201/3840937/3840937_17083068789627_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "어반드레스 Coinlet Wide Denim Pants VINTAGE BLUE 상품 이미지",
+        "link": "https://www.musinsa.com/products/4283232",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240730/4283232/4283232_17231874007729_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "아티스트웨어 [ATW x HOOLIGAN] 로고 와이드밴딩 팬츠 상품 이미지",
+        "link": "https://www.musinsa.com/products/3568898",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230918/3568898/3568898_16950179190582_500.jpg?w=780",
+        "category": "트레이닝/조거 팬츠"
+    },
+    {
+        "name": "어반드레스 Side Big Cargo Pants CAMO 상품 이미지",
+        "link": "https://www.musinsa.com/products/3575430",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230919/3575430/3575430_17193814879269_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "유쓰배쓰 SQUARE STICKER DENIM PANTS_BLUE 상품 이미지",
+        "link": "https://www.musinsa.com/products/3600378",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20231003/3600378/3600378_16971735319415_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "트래블 밀 데님 리벳 벌룬 팬츠 블랙 상품 이미지",
+        "link": "https://www.musinsa.com/products/3440122",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230801/3440122/3440122_16928444071876_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "낫포너드 Banding One Tuck Wide Denim Pants - Pink 상품 이미지",
+        "link": "https://www.musinsa.com/products/3840865",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240201/3840865/3840865_17083078277832_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "인템포무드 에어본 패러슈트 팬츠_블랙 상품 이미지",
+        "link": "https://www.musinsa.com/products/4470640",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240927/4470640/4470640_17282626147173_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "데케트 Double Knee Fatigue Wide Jeans DCPT052BlackA 상품 이미지",
+        "link": "https://www.musinsa.com/products/4300631",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240806/4300631/4300631_17255015474230_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "어반스터프 빈티지 워시드 롱 벌룬 팬츠 (블랙) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3992634",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240326/3992634/3992634_17289518329177_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "토피 버티컬 워시드 와이드 데님 팬츠 (DARK GREY) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3790052",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240111/3790052/3790052_17068562313866_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "낫포너드 Banding One Tuck Wide Denim Pants - Deep Blue 상품 이미지",
+        "link": "https://www.musinsa.com/products/2184087",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20211018/2184087/2184087_3_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "쿠어 더티 엠보 레귤러 워싱 진스 (라이트블루) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4382957",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240829/4382957/4382957_17252775592074_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "그라미치 가젯 팬츠 Olive 상품 이미지",
+        "link": "https://www.musinsa.com/products/2341127",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20220204/2341127/2341127_17249800053578_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "트릴리온 (겨울원단) 사이드 턱 스냅 버튼 와이드 슬랙스 (BLACK) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3851967",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240206/3851967/3851967_17079886411692_500.jpg?w=780",
+        "category": "슈트 팬츠/슬랙스"
     },
     {
         "name": "무신사 스탠다드 엑스트라 와이드 데님 팬츠 [크림] 상품 이미지",
@@ -468,33 +402,99 @@
         "category": "데님 팬츠"
     },
     {
-        "name": "유니폼브릿지 distressed wide denim pants indigo washed 상품 이미지",
-        "link": "https://www.musinsa.com/products/3437150",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230801/3437150/3437150_16925967991009_500.jpg?w=780",
+        "name": "노드유 세미 와이드 인디고 데님 팬츠 상품 이미지",
+        "link": "https://www.musinsa.com/products/3878577",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240219/3878577/3878577_17096752633507_500.jpg?w=780",
         "category": "데님 팬츠"
     },
     {
-        "name": "엑스톤즈 XP127 셔링 카고 팬츠 (BLACK) 상품 이미지",
-        "link": "https://www.musinsa.com/products/2789091",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20220914/2789091/2789091_16993175597624_500.jpg?w=780",
+        "name": "기철 DEEP OIL WASHED BALLOON DENIM PANTS (BLUE) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4336997",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240816/4336997/4336997_17282691009397_500.jpg?w=780",
         "category": "데님 팬츠"
     },
     {
-        "name": "마틴플랜 Billowy Gradation Denim - L/BLUE 상품 이미지",
-        "link": "https://www.musinsa.com/products/2703599",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20220808/2703599/2703599_16764267171848_500.jpg?w=780",
+        "name": "엘무드 사무라이 와이드 데님 러스티블루 상품 이미지",
+        "link": "https://www.musinsa.com/products/4278877",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240729/4278877/4278877_17248098327878_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "트릴리온 라운드 포켓 벌룬핏 워싱 데님 팬츠 (YELLOW BLACK) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4111303",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240507/4111303/4111303_17156495980817_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "알에스에스씨 INCISION JACQUARD MIXED PANTS - KHAKI 상품 이미지",
+        "link": "https://www.musinsa.com/products/4317585",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240811/4317585/4317585_17233762122291_500.jpg?w=780",
+        "category": "코튼 팬츠"
+    },
+    {
+        "name": "누디진 씬핀 Dry Ecru Embo 110268 상품 이미지",
+        "link": "https://www.musinsa.com/products/4069107",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240419/4069107/4069107_17156713758468_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "플랙 스티즈 051B 라이트 그레이 상품 이미지",
+        "link": "https://www.musinsa.com/products/3066908",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230208/3066908/3066908_16781771508131_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "브랜디드 51073 HISHITOMO UNTIDY SOUL JEANS [SUPER WIDE STRAIGHT] 상품 이미지",
+        "link": "https://www.musinsa.com/products/3478545",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230821/3478545/3478545_16928811026040_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "우드먼 에센셜 와이드 데님 / 라이트 블루 상품 이미지",
+        "link": "https://www.musinsa.com/products/4488398",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241004/4488398/4488398_17280370663298_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "데케트 Balloon Wide Jeans DCPT055YLBlackB 상품 이미지",
+        "link": "https://www.musinsa.com/products/4300665",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240806/4300665/4300665_17328584913880_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "토피 페어리 와이드 데님 팬츠 (WASHED INDIGO) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4319557",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240812/4319557/4319557_17242861583002_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "모드나인 Black Inferno - MOD7w 상품 이미지",
+        "link": "https://www.musinsa.com/products/2952100",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20221121/2952100/2952100_1_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "도프제이슨 [유니섹스] 와이드핏 빈티지 워시드 데님 팬츠 INDIGO 상품 이미지",
+        "link": "https://www.musinsa.com/products/3042017",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20230126/3042017/3042017_16763602519062_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "쿠어 스트레이트레그 디스트로이드 진스 (워시드블루) 상품 이미지",
+        "link": "https://www.musinsa.com/products/3871566",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240215/3871566/3871566_17080534801179_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "무신사 스탠다드 와이드 데님 팬츠 [딥 인디고] 상품 이미지",
+        "link": "https://www.musinsa.com/products/1720144",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20201211/1720144/1720144_17224114327760_500.jpg?w=780",
+        "category": "데님 팬츠"
+    },
+    {
+        "name": "위캔더스 LEOPARD EASY PANTS (BROWN) 상품 이미지",
+        "link": "https://www.musinsa.com/products/4483406",
+        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20241002/4483406/4483406_17297499353972_500.jpg?w=780",
         "category": "트레이닝/조거 팬츠"
-    },
-    {
-        "name": "무신사 스탠다드 데님 파라슈트 카고 팬츠 [워시드 블랙] 상품 이미지",
-        "link": "https://www.musinsa.com/products/4312708",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240809/4312708/4312708_17283556722691_500.jpg?w=780",
-        "category": "데님 팬츠"
-    },
-    {
-        "name": "딥센스 워싱 벌룬 와이드 밴딩 데님 D627 - 4COLOR 상품 이미지",
-        "link": "https://www.musinsa.com/products/4341161",
-        "image": "https://image.msscdn.net/thumbnails/images/goods_img/20240819/4341161/4341161_17253457589265_500.jpg?w=780",
-        "category": "데님 팬츠"
     }
 ]
