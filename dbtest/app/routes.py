@@ -21,7 +21,7 @@ weather_info = {}
 
 @bp.route('/')  # 루트 경로
 def index():
-    return redirect(url_for('main.get_login'))  # '/main'으로 리디렉션
+    return redirect(url_for('main.main'))  # '/main'으로 리디렉션
 
 
 # 메인 페이지 라우트
@@ -293,7 +293,7 @@ def result():
             "perceived_temp": perceived_temp
         }
 
-        categories = ["상의", "하의", "신발", "기타"]
+        categories = ["상의", "하의"]
         fashion_data = {}  # 카테고리별 크롤링 결과 저장
 
         for category in categories:
@@ -499,47 +499,3 @@ def ask_question():
         print(f"오류 발생: {e}")
         return jsonify({"error": "서버 오류가 발생했습니다."}), 500
 
-
-@bp.route('/save_clothing', methods=['POST'])
-def save_clothing():
-    try:
-        data = request.json
-        clothing = data.get('clothing', '')
-        response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": (
-                    "다음과 같은 지문에서 의류 부분만 골라서 저장해줘.\n\n"
-                    "예시 입력:\n"
-                    "\"체감 온도가 약 7도 정도로 예상되므로, 더 따뜻하게 입고 싶으시다면 다음과 같은 추가 의류를 고려해보세요:\n"
-                    "- 두꺼운 스웨터나 후드티\n"
-                    "- 보온성이 높은 패딩 조끼 추가\n"
-                    "- 기모가 있는 바지 또는 두꺼운 층의 바지\n"
-                    "- 두꺼운 장갑이나 털 장갑으로 손 보호\n"
-                    "- 목도리나 머플러를 추가하여 목 부위 보온\"\n\n"
-
-                    "예시 출력:\n"
-                    "상의 : 두꺼운 스웨터, 후드티, 패딩 조끼\n"
-                    "하의 : 기모 바지, 두꺼운 바지\n"
-                    "기타 : 장갑, 목도리, 머플러\n\n"
-                    "추가 조건: \"기모가 있는 긴 바지\"라는 항목이 있다면,  '기모 바지' 만 남겨줘.\n"
-                    ". '두꺼운 외투'처럼 너무 넓은 범위의 의류 항목은 제외해줘.\n"
-                    "\"따뜻한 머플러\"라면 '따뜻한' 같은 형용사도 제외하고 '머플러'만 남겨줘.\n\n"
-                    "위와 같은 형식으로 의류 부분만 추출해서 출력해줘    ."
-
-                )},
-                {"role": "user", "content": f"{clothing}"},
-            ]
-        )
-
-        answer = response.choices[0].message['content'].strip()
-
-        if answer:
-            # 의류 추천을 저장하지 않고 출력만 하는 부분
-            print(f"저장된 의류 추천: \n{answer}")
-            return jsonify({"message": "의류 추천이 출력되었습니다."})
-        else:
-            return jsonify({"message": "출력할 의류 추천이 없습니다."}), 400
-    except Exception as e:
-        print(f"오류 발생: {e}")
-        return jsonify({"error": "출력 중 오류가 발생했습니다."}), 500

@@ -117,32 +117,6 @@
             </div>
         {% endfor %}
     </div>
-
-        <h3>신발</h3>
-    <div class="image-gallery">
-        {% for item in fashion_data["신발"] %}
-            <div class="card">
-                <img src="{{ item.image }}" alt="{{ item.name }}" class="product-image">
-                <div class="card-content">
-                    <p class="item-name">{{ item.name }}</p>
-                    <a href="{{ item.link }}" target="_blank" class="view-button">상품 보기</a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-        <h3>기타</h3>
-    <div class="image-gallery">
-        {% for item in fashion_data["기타"] %}
-            <div class="card">
-                <img src="{{ item.image }}" alt="{{ item.name }}" class="product-image">
-                <div class="card-content">
-                    <p class="item-name">{{ item.name }}</p>
-                    <a href="{{ item.link }}" target="_blank" class="view-button">상품 보기</a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
      </div>
 
 

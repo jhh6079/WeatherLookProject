@@ -83,6 +83,7 @@ def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_pr
         f"현재 온도는 {temp}도이고, 풍속은 {wind_speed} m/s, 날씨는 {final_status}, 강수확률은 {precipitation_probability}%, 체감온도는 {perceived_temp} 입니다."
         f"상의는 겨울에는 보통 패딩류나 울 자켓류로 추천해주지만 {final_status}에 맞게 추천해줘, 여름에는 반팔티나 나시류를 대부분 추천해주지만 {final_status}에 맞게 추천해주세요.\n"
         f"하의는 겨울에 맞는 바지를 제시해주고, 대신 겨울이어도 {final_status}에 맞게 추천해줘, 여름에도 똑같이 적용해주세요.\n"
+        f"상,하의를 추천해줄 때 두 개 이상을 추천해주게 되면 '또는' 이라는 말만 사용해줘!\n"
         f"체감온도는 {perceived_temp}°C,\n"
         f"날씨: {final_status}\n"
         "상의: 하의: 신발: 기타:"
@@ -127,7 +128,7 @@ def extract_keywords(recommendation, category):
     return category  # 기본값으로 카테고리 이름 반환 (예: "상의")
 
 
-def crawl_fashion_data(keyword, start_div=2, end_div=5, max_attempts=4):
+def crawl_fashion_data(keyword, start_div=2, end_div=3, max_attempts=3):
 
     # 실행 시간 측정 시작
     start_time = time.time()
@@ -151,7 +152,7 @@ def crawl_fashion_data(keyword, start_div=2, end_div=5, max_attempts=4):
         parent_child_combinations = [
             (parent_index, child_index)
             for parent_index in range(start_div, end_div + 1)
-            for child_index in range(1, 5)
+            for child_index in range(1, 3)
         ]
         random.shuffle(parent_child_combinations)  # 순서 섞기
 
