@@ -1,14 +1,14 @@
-/*전체 배경*/
+/* 전체 배경 부분 CSS */
 body {
     display: flex;
-    flex-direction: column; /* 수직 정렬 */
-    justify-content: center; /* 컨텐츠가 상단부터 시작 */
-    align-items: center; /* 가로 중앙 정렬 */
-    min-height: 100vh; /* 화면 높이를 최소 높이로 설정 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     margin: 0;
     font-family: 'Arial', sans-serif;
     background: #C2C2C2;
-    overflow-y: auto; /* 세로 스크롤 허용 */
+    overflow-y: auto;
 }
 
 body.blurred .container {
@@ -41,7 +41,7 @@ body.blurred .container {
 }
 
 .modal-content {
-    position: relative; /* 내부 요소의 위치를 조정하기 위한 기준 설정 */
+    position: relative;
     background: white;
     padding: 20px;
     border-radius: 10px;
@@ -52,24 +52,24 @@ body.blurred .container {
 
 .close {
     position: absolute;
-    top: 10px; /* 박스 안쪽 위에서 10px */
-    right: 10px; /* 박스 안쪽 오른쪽에서 10px */
+    top: 10px;
+    right: 10px;
     cursor: pointer;
     font-size: 24px;
-    color: #555; /* 닫기 버튼 색상 */
+    color: #555;
     transition: color 0.3s ease;
 }
 
 .close:hover {
-    color: #ff0000; /* 호버 시 색상 */
+    color: #ff0000;
 }
 
 
 .hourly-weather-wrapper {
     display: flex;
     align-items: center;
-    position: relative; /* 버튼 위치를 잡기 위해 상대 위치 지정 */
-    overflow: hidden; /* 버튼 외부로 내용이 넘치지 않도록 설정 */
+    position: relative;
+    overflow: hidden;
 }
 
 .hourly-weather-row {
@@ -77,9 +77,9 @@ body.blurred .container {
     justify-content: space-between;
     align-items: center;
     overflow-x: auto;
-    scroll-behavior: smooth; /* 부드러운 스크롤 */
+    scroll-behavior: smooth;
     padding: 10px;
-    gap: 10px; /* 각 아이템 간격 */
+    gap: 10px;
 }
 
 .hourly-weather-card {
@@ -88,7 +88,7 @@ body.blurred .container {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    min-width: 120px; /* 카드 최소 너비 */
+    min-width: 120px;
     text-align: center;
     font-size: 14px;
     transition: transform 0.3s ease;
@@ -99,54 +99,54 @@ body.blurred .container {
 }
 
 .scroll-button {
-    background-color: #f7f7f7; /* 버튼 배경색 */
-    border: 1px solid #ccc; /* 테두리 색상 */
-    color: #333; /* 화살표 색상 */
-    padding: 10px; /* 버튼 안쪽 여백 */
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 10px;
     cursor: pointer;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    font-size: 1.2rem; /* 화살표 크기 */
-    border-radius: 50%; /* 둥근 버튼 */
-    width: 40px; /* 버튼 너비 */
-    height: 40px; /* 버튼 높이 */
+    font-size: 1.2rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scroll-button:hover {
-    background-color: #eee; /* 호버 시 버튼 배경색 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 */
+    background-color: #eee;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .scroll-button.left {
-    left: 5px; /* 왼쪽 버튼 위치 */
-    padding-left: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    left: 5px;
+    padding-left: 9px;
     padding-top: 11px;
 }
 
 .scroll-button.right {
-    right: 5px; /* 오른쪽 버튼 위치 */
-    padding-right: 9px; /* 텍스트를 약간 왼쪽으로 이동 */
+    right: 5px;
+    padding-right: 9px;
     padding-top: 11px;
 }
 
 .weather-info {
     display: flex;
-    flex-direction: column; /* 세로 방향 정렬 */
-    align-items: center; /* 중앙 정렬 */
-    gap: 5px; /* 텍스트와 아이콘 간격 */
-    margin: 10px 0; /* 상하 여백 */
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0;
 }
 
 .weather-info-icon {
-    width: 30px; /* 아이콘 크기 */
-    height: 30px; /* 아이콘 크기 */
+    width: 30px;
+    height: 30px;
 }
 
 .hourly-weather-card p {
@@ -156,7 +156,7 @@ body.blurred .container {
 
 .container {
     text-align: center;
-    background-color: #F7F7F7; /*<<수정*/
+    background-color: #F7F7F7;
     padding: 30px;
     border-radius: 30px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -167,25 +167,26 @@ body.blurred .container {
 
 /*로고 사이즈*/
 .logo {
-    max-width: 40%; /* 부모 요소 크기에 맞게 조정 */
-    height: auto; /* 비율 유지 */
+    max-width: 40%;
+    height: auto;
 }
 
 .logo-result {
-    max-width: 30%; /* 부모 요소 크기에 맞게 조정 */
-    height: auto; /* 비율 유지 */
+    max-width: 30%;
+    height: auto;
     padding: 10px;
 }
 
-/*로고 사이즈*/
+
 .logo-rank {
-    max-width: 40%; /* 부모 요소 크기에 맞게 조정 */
-    height: auto; /* 비율 유지 */
+    max-width: 40%;
+    height: auto;
     padding-bottom: 30px;
 
 }
 
-/*텍스트 박스*/
+/* 텍스트 박스 */
+
 select, button, input[type="text"] {
     margin: 10px 0;
     width: 100%;
@@ -196,7 +197,8 @@ select, button, input[type="text"] {
     transition: box-shadow 0.3s ease;
 }
 
-/*버튼*/
+/* 버튼 */
+
 button {
     background-color: #787878;
     color: white;
@@ -206,17 +208,19 @@ button {
 }
 
 /*버튼 위에 커서*/
+
 button:hover {
     background-color: #646464;
 }
 
-/*버튼 클릭시 조회 중*/
+/*버튼 클릭 시 조회 중...*/
+
 button:disabled {
     background-color: #BDBDBD;
     cursor: not-allowed;
 }
 
-/*2024-11-20 추가 수정함*/
+
 .loading-spinner {
     display: inline-block;
     width: 20px;
@@ -235,29 +239,29 @@ button:disabled {
 }
 
 .image-gallery {
-    display: flex; /* 가로로 이미지 정렬 */
-    gap: 20px; /* 각 이미지 간 간격 */
-    overflow-x: auto; /* 가로 스크롤 활성화 */
-    padding: 10px 0; /* 상하 여백 추가 */
-    scroll-behavior: smooth; /* 부드러운 스크롤 */
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scroll-behavior: smooth;
 }
 
 .image-gallery::-webkit-scrollbar {
-    height: 8px; /* 스크롤바 높이 설정 */
+    height: 8px;
 }
 
 .image-gallery::-webkit-scrollbar-thumb {
-    background-color: #ccc; /* 스크롤바 색상 */
-    border-radius: 4px; /* 스크롤바 둥글게 */
+    background-color: #ccc;
+    border-radius: 4px;
 }
 
 .image-gallery::-webkit-scrollbar-track {
-    background: #f0f0f0; /* 스크롤바 배경 */
+    background: #f0f0f0;
 }
 
 .card {
-    flex: 0 0 auto; /* 카드 크기를 고정하여 가로로 나열 */
-    width: 150px; /* 카드 너비 */
+    flex: 0 0 auto;
+    width: 150px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -273,38 +277,38 @@ button:disabled {
 
 
 .product-image {
-    max-width: 100%; /* 이미지가 카드 크기를 초과하지 않도록 */
+    max-width: 100%;
     height: auto;
-    border-radius: 8px; /* 둥근 이미지 */
-    object-fit: cover; /* 이미지 비율 유지 */
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 .card-content {
-    margin-top: 10px; /* 내용 위쪽 여백 */
+    margin-top: 10px;
 }
 
 .item-name {
-    font-size: 14px; /* 글자 크기 */
-    font-weight: bold; /* 굵은 글씨 */
-    color: #333; /* 진한 회색 */
-    margin: 10px 0; /* 위아래 여백 */
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
 }
 
 .view-button {
-    display: inline-block; /* 버튼 크기 맞춤 */
-    padding: 8px 12px; /* 버튼 내부 여백 */
-    font-size: 12px; /* 버튼 글자 크기 */
-    font-weight: bold; /* 굵은 글씨 */
-    color: white; /* 흰색 글씨 */
-    background-color: #787878; /* 회색 배경 */
-    border: none; /* 테두리 없음 */
-    border-radius: 5px; /* 둥근 모서리 */
-    text-decoration: none; /* 밑줄 제거 */
-    transition: background-color 0.3s ease; /* 색상 변화 효과 */
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    background-color: #787878;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
 }
 
 .view-button:hover {
-    background-color: #646464; /* 호버 시 어두운 회색 */
+    background-color: #646464;
 }
 
 .result {
@@ -325,13 +329,14 @@ button:disabled {
     margin-bottom: 10px;
 }
 
-/*h2에 해당하는 box의 css*/
+
 .box h2 {
     color: #353535;
     margin-bottom: 18px;
 }
 
-/* Chat Sidebar CSS */
+/* 채팅 사이드 바 CSS */
+
 .chat-sidebar {
     position: fixed;
     top: 5%;
@@ -347,7 +352,8 @@ button:disabled {
     z-index: 1000;
 }
 
-/*챗봇 버튼*/
+/* 챗봇 버튼 생성 CSS */
+
 .open-chat-btn {
     position: fixed;
     bottom: 20px;
@@ -369,13 +375,15 @@ button:disabled {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/*챗봇 버튼 호버*/
+/* 챗봇 버튼 불러오는 CSS */
+
 .open-chat-btn:hover {
     background-color: #646464;
     transform: scale(1.1);
 }
 
-/*챗봇 컨테이너*/
+/* 챗봇 컨테이너 */
+
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -383,7 +391,8 @@ button:disabled {
     padding: 10px;
 }
 
-/*=====챗봇 내 질문 및 답변부분=====*/
+/*=====챗봇 내 질문 및 답변 부분=====*/
+
 .chat-response {
     flex: 1;
     overflow-y: auto;
@@ -427,6 +436,7 @@ button:disabled {
 }
 
 /* 버튼 컨테이너 설정 */
+
 #responseButtons {
     display: flex;
     justify-content: space-between;
@@ -436,7 +446,8 @@ button:disabled {
     margin-top: -50px;
 }
 
-/* 공통 버튼 스타일 */
+/* 공통 버튼 부분 CSS */
+
 #responseButtons button {
     padding: 12px 20px;
     font-size: 14px;
@@ -450,14 +461,15 @@ button:disabled {
     opacity: 1;
 }
 
-/* 호버 시 효과 */
+/* 챗봇에서 응답 버튼 호버 시 효과 CSS */
+
 #responseButtons button:hover {
     background-color: rgba(120, 120, 120, 0.2);
     border: 2px solid rgba(120, 120, 120, 0.2);
     color: rgba(60, 60, 60, 1);
     transform: scale(1.05);
 }
-/*챗봇 유저 입력창*/
+/* 챗봇 사용자 입력창 CSS */
 .chat-input {
     display: flex;
     flex-direction: column;
@@ -466,6 +478,7 @@ button:disabled {
 }
 
 /* 채팅박스 안의 버튼 스타일 */
+
 .chat-input button {
     padding: 12px 15px;
     font-size: 16px;
@@ -483,11 +496,13 @@ button:disabled {
 }
 
 /* 버튼 간의 간격 조정 */
+
 .chat-input button:not(:last-child) {
     margin-bottom: 5px;
 }
 
-/*챗봇 유저 입력창*/
+/* 챗봇 유저 입력창 */
+
 .chat-input input[type="text"] {
     padding: 15px;
     font-size: 14px;
@@ -512,18 +527,18 @@ button:disabled {
 
 #saveClothingButton {
     display: none;
-    background-color: #DDA0DD; /* 연보라색 */
-    color: white; /* 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    cursor: pointer; /* 클릭 가능하도록 커서 변경 */
-    padding: 12px 15px; /* 여백 */
-    font-size: 16px; /* 글자 크기 */
-    border-radius: 20px; /* 둥근 모서리 */
-    transition: background-color 0.3s ease; /* 색상 변경 애니메이션 */
+    background-color: #DDA0DD;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
 }
 
 #saveClothingButton:hover {
-    background-color: #BA55D3; /* 호버 시 더 진한 연보라색 */
+    background-color: #BA55D3;
 }
 
 .chat-input button:hover {
@@ -532,40 +547,42 @@ button:disabled {
 
 
 /* ======= 추천 / 랭킹 네비게이션 바 스타일 ======= */
+
 .navbar {
-    background-color: #F7F7F7; /* 네비게이션 바 배경색  <<수정 */
-    padding: 10px 0; /* 위아래 여백 */
-    text-align: center; /* 텍스트 중앙 정렬 */
+    background-color: #F7F7F7;
+    padding: 10px 0;
+    text-align: center;
 }
 
-/*마진 수정*/
+
 .navbar-menu {
-    list-style: none; /* 리스트 스타일 제거 */
-    margin: 0; /* 외부 여백 제거 */
-    padding: 0; /* 내부 여백 제거 */
-    display: inline-flex; /* 수평 정렬 */
-    gap: 100px; /* 항목 간 간격 << 수정 */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    gap: 100px;
     margin-bottom: 20px
 }
 
 .navbar-menu li {
-    display: inline; /* 리스트 항목을 한 줄로 */
+    display: inline;
 }
 
 .navbar-menu a {
-    text-decoration: none; /* 밑줄 제거 */
-    color: #000; /* 글자색 */
-    font-size: 16px; /* 글자 크기 */
-    padding: 5px 10px; /* 텍스트 내부 여백 */
-    transition: color 0.3s ease; /* 색상 변경 애니메이션 */
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
 }
 
 .navbar-menu a:hover {
-    color: #f39c12; /* 마우스를 올렸을 때 글자색 변경 */
+    color: #f39c12;
 }
 
 
 /*======날씨 정보칸======*/
+
 .weather-box {
     text-align: center;
     background-color: white;
@@ -588,21 +605,23 @@ button:disabled {
     margin-right: 10px;
 }
 
-/*현재 날씨 글자 색*/
+
 .temperature {
     font-size: 36px;
     font-weight: bold;
     color: #353535;
 }
 
-/*날씨 상태(흐림, 맑음 등등)*/
+/* 날씨 상태(흐림, 맑음 등등) */
+
 .sky-status {
     font-size: 18px;
     color: #5D5D5D;
     margin-bottom: 15px;
 }
 
-/*습도 풍속 강수확률 체감온도*/
+/* 습도,풍속,강수 확률, 체감 온도 부분 CSS */
+
 .weather-details {
     display: flex;
     justify-content: space-around;
@@ -611,6 +630,7 @@ button:disabled {
 }
 
 /*=====습도 풍속 강수확률의 디테일 설정=====*/
+
 .detail {
     text-align: center;
 }
@@ -640,41 +660,41 @@ button:disabled {
 .snapshot-images {
     display: flex;
     transition: transform 0.3s ease-in-out; /* 슬라이더 애니메이션 */
-    will-change: transform; /* 성능 최적화 */
+    will-change: transform;
 }
 
 .snapshot-slider {
     display: flex;
     width: 100%;
-    position: relative; /* 위치 상대 설정 */
+    position: relative;
 }
 
 .snapshot-images {
     display: flex;
-    transition: transform 0.3s ease-in-out; /* 부드러운 이동 */
-    will-change: transform; /* 성능 최적화 */
-    user-select: none; /* 드래그 방지 */
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+    user-select: none;
 }
 
 .snapshot-image {
     width: 150px;
     height: 150px;
-    margin: 0 10px; /* 이미지 간격 약간 확대 */
+    margin: 0 10px;
     object-fit: cover;
-    border-radius: 10px; /* 둥근 모서리 */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* 이미지에 그림자 추가 */
-    transition: transform 0.2s ease-in-out; /* hover 효과 부드럽게 적용 */
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out;
 }
 
 .snapshot-image:hover {
-    transform: scale(1.1); /* 확대 효과 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* hover 시 그림자 확대 */
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .scroll-button {
-    background-color: #f0f0f0; /* 버튼 기본 배경색 */
-    border: none; /* 테두리 제거 */
-    color: #333; /* 텍스트 색상 */
+    background-color: #f0f0f0;
+    border: none;
+    color: #333;
     padding: 10px;
     cursor: pointer;
     position: absolute;
@@ -688,13 +708,13 @@ button:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 버튼 그림자 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scroll-button:hover {
-    background-color: #e0e0e0; /* hover 시 밝은 배경 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* hover 시 그림자 확대 */
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .scroll-button.left {
@@ -709,111 +729,115 @@ button:disabled {
     padding-top: 11px;
 }
 
-/*11월 28일 수정*/
-/* ===== 공통 버튼 스타일 ===== */
+
 .filter-button {
-    padding: 5px 15px; /* 기본 버튼 여백 */
-    margin: 5px; /* 버튼 간 기본 간격 */
-    border: 1px solid #ccc; /* 테두리 기본 색상 */
-    background-color: #e7e7e7; /* 기본 배경색 */
-    color: #888888; /* 기본 글자색 */
-    cursor: pointer; /* 포인터 스타일 */
-    font-size: 14px; /* 글자 크기 */
-    border-radius: 20px; /* 둥근 모서리 */
-    transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
-    width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
-    white-space: nowrap; /* 긴 글자도 한 줄로 표시 */
-    display: inline-block; /* 버튼 정렬 */
+    padding: 5px 15px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background-color: #e7e7e7;
+    color: #888888;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: auto;
+    white-space: nowrap;
+    display: inline-block;
 }
 
-/* ===== 버튼 활성화 상태 ===== */
+/*===== 버튼 활성화 상태 =====*/
+
 .filter-button.active {
-    font-weight: bold; /* 활성화된 버튼 글씨 굵게 표시 */
-    background-color: #d0d0d0; /* 활성화된 버튼 배경 */
-    color: #000000; /* 활성화된 버튼 글자색 */
-    border-color: #bfbfbf; /* 활성화된 버튼 테두리 */
+    font-weight: bold;
+    background-color: #d0d0d0;
+    color: #000000; /
+    border-color: #bfbfbf;
 }
 
 /* ===== 버튼 호버 스타일 ===== */
+
 .filter-button:hover {
-    background-color: #c7c7c7; /* 호버 시 배경색 */
-    color: #000000; /* 호버 시 글자색 */
+    background-color: #c7c7c7; /
+    color: #000000;
 }
 
 /* ===== 버튼 그룹 스타일 ===== */
+
 .gender-category,
 .main-category {
-    display: flex; /* 버튼을 수평 정렬 */
-    justify-content: center; /* 버튼을 중앙 정렬 */
-    /*gap: 5px; !* 버튼 간 간격 *!*/
-    margin-bottom: 3px; /* 그룹 간 간격 */
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3px;
 }
 
 .gender-category .filter-button {
-    margin: 0 10px; /* 성별 버튼 간 간격 */
+    margin: 0 10px;
 }
 
 /* ===== 하위 카테고리 스타일 ===== */
+
 .sub-category {
-    position: relative; /* 검색 버튼 위치 고정 */
-    flex-direction: row; /* 버튼을 가로로 배치 */
-    /*gap: 20px; !* 버튼 간 간격 *!*/
-    margin-bottom: 20px; /* 스냅샷 카테고리와 간격 */
-    align-items: flex-start; /* 버튼을 왼쪽 정렬 */
+    position: relative;
+    flex-direction: row;
+
+    margin-bottom: 20px;
+    align-items: flex-start;
 }
 
 /* ===== 검색 버튼 전용 스타일 ===== */
+
 .sub-category .search-button {
-    position: absolute; /* 검색 버튼 고정 위치 */
-    border: 1px solid #ccc; /* 테두리 기본 색상 */
-    background-color: #e7e7e7; /* 기본 배경색 */
-    color: #000000; /* 기본 글자색 */
-    font-size: 14px; /* 글자 크기 */
-    top: -6px; /* 상단 위치 조정 */
-    padding: 5px 10px; /* 검색 버튼 여백 */
-    width: auto; /* 글자 크기에 맞게 버튼 크기 조정 */
+    position: absolute;
+    border: 1px solid #ccc;
+    background-color: #e7e7e7;
+    color: #000000;
+    font-size: 14px;
+    top: -6px;
+    padding: 5px 10px;
+    width: auto;
     margin-left: 50px;
 }
 
-/*카테고리 css*/
-/* 메인 카테고리 컨테이너 */
+/* 카테고리 부분 CSS */
+
+/* 메인 카테고리 부분 컨테이너 */
 .main-category-container {
     max-height: 400px;
     overflow-y: auto;
     margin-bottom: 20px;
     padding: 10px;
-    border: none; /* 테두리 제거 */
+    border: none;
     background-color: #F7F7F7;
 }
 
-/* 각 카테고리 섹션 */
+
 .category-wrapper {
     margin-bottom: 20px;
     padding: 10px;
-    border: none; /* 테두리 제거 */
+    border: none;
     background-color: #fafafa;
-    box-shadow: none; /* 그림자 제거 */
+    box-shadow: none;
 }
 
 .category-wrapper h3 {
     font-size: 1.2em;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: #333; /* 제목 색상 */
+    color: #333;
     font-weight: bold;
 }
 
-/* 슬라이더 컨테이너 */
+
 .horizontal-slider-container {
     position: relative;
-    overflow-x: auto; /* 가로 스크롤 활성화 */
-    white-space: nowrap; /* 한 줄에 배치 */
+    overflow-x: auto;
+    white-space: nowrap;
     padding-bottom: 10px;
 }
 
-/* 스크롤바 스타일링 */
+
 .horizontal-slider-container::-webkit-scrollbar {
-    height: 8px; /* 가로 스크롤 높이 */
+    height: 8px;
 }
 
 .horizontal-slider-container::-webkit-scrollbar-thumb {
@@ -825,41 +849,41 @@ button:disabled {
     background-color: #f0f0f0;
 }
 
-/* 슬라이더 내부 아이템 정렬 */
+
 .horizontal-slider {
     display: inline-flex;
-    gap: 10px; /* 이미지 간 간격 */
+    gap: 10px;
 }
 
-/* 카테고리 이미지 스타일 */
+/* 카테고리 이미지 스타일 CSS */
+
 .category-image {
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border: none; /* 테두리 제거 */
+    border: none;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* 그림자 유지 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease-in-out;
 }
 
 .category-image:hover {
-    transform: scale(1.1); /* 마우스 오버 시 확대 효과 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* 그림자 강화 */
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* 모바일 반응형 처리 */
 @media (max-width: 768px) {
     .main-category-container {
-        max-height: 200px; /* 모바일 화면에서 최대 높이 축소 */
+        max-height: 200px;
     }
 
     .category-wrapper h3 {
-        font-size: 1em; /* 제목 크기 축소 */
+        font-size: 1em;
     }
 
     .category-image {
         width: 120px;
-        height: 120px; /* 모바일 이미지 크기 축소 */
+        height: 120px;
     }
 }
 
@@ -890,11 +914,11 @@ button:disabled {
     background-color: #787878;
     color: white;
     border: none;
-    border-radius: 30%; /* 둥근 버튼 */
+    border-radius: 30%;
     cursor: pointer;
     margin-bottom: 15px;
-    width: 45px; /* 버튼 너비 줄임 */
-    height: 45px; /* 버튼 높이 줄임 */
+    width: 45px;
+    height: 45px;
     transition: background-color 0.3s ease;
 }
 
@@ -903,10 +927,10 @@ button:disabled {
 }
 
 #currentLocationButton svg {
-    fill: white; /* 아이콘 색상 */
-    width: 40px; /* 아이콘 너비 고정 */
-    height: 40px; /* 아이콘 높이 고정 */
-    flex-shrink: 0; /* 버튼 크기에 따라 SVG가 줄어들지 않도록 설정 */
+    fill: white;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
     margin-left: 3px;
     margin-top:  3px;
 

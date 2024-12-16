@@ -4,49 +4,41 @@ from typing import final
 import openai
 from flask import Blueprint, render_template, request, jsonify, current_app, redirect, url_for, session, Flask
 import requests
-from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, \
-    perceived_temperature
 
+from .utils import load_address_data, convert_to_grid, get_clothing_recommendation, get_weather_icon, perceived_temperature
 from .utils import crawl_fashion_data
 from .utils import extract_keywords
-
 import pymysql
 
-# db = pymysql.connect(host="127.0.0.1",user="root",password="8176",database="weatherlookdb")
-# cursor = db.cursor()
+bp = Blueprint('main', __name__)  # Flask Blueprint 생성
+weather_info = {}  # 전역 변수로 날씨 정보를 저장
 
-# Blueprint 생성
-bp = Blueprint('main', __name__)
-weather_info = {}
-
-@bp.route('/')  # 루트 경로
+# 홈 경로: main으로 다시 보냄.
+@bp.route('/')
 def index():
-    return redirect(url_for('main.main'))  # '/main'으로 리디렉션
+    return redirect(url_for('main.main'))
 
-
-# 메인 페이지 라우트
+# 메인 페이지 렌더링
 @bp.route('/main', methods=['GET'])
 def main():
-    address_data = load_address_data()
+    address_data = load_address_data()  # 주소 데이터 로드
     return render_template('index.html', address_data=address_data)
 
-
-# 랭킹 페이지 라우트
+# 랭킹 페이지 렌더링
 @bp.route('/rank', methods=['GET'])
 def rank():
-    # address_data 로드
-    address_data = load_address_data()
+    address_data = load_address_data()  # 주소 데이터 로드
     return render_template('rank.html', address_data=address_data)
 
-
+# LLM 기반 요약 API
 @bp.route('/summarize', methods=['POST'])
 def summarize():
     try:
+        # 클라이언트에서 받은 JSON 데이터를 텍스트로 변환
         json_data = request.json.get('jsonData', [])
-        # 데이터를 텍스트로 변환 (LLM에 전달하기 위한 포맷)
         text_data = "\n".join([str(item) for item in json_data])
 
-        # LLM 요약 요청
+        # OpenAI API를 통해 요약 처리
         openai.api_key = current_app.config['OPENAI_API_KEY']
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
@@ -64,7 +56,6 @@ def summarize():
                         "    {\"category\": \"바지\", \"items\": [\"청바지\", \"슬랙스\"]}\n"
                         "  ]\n"
                         "}\n\n"
-                        
                         "결론은 2줄로 해줘"
                         "문자 같은건 쓰지마 예시로 * # "
                         "위 기준에 따라 요약을 작성해 주세요."
@@ -76,36 +67,59 @@ def summarize():
                 }
             ]
         )
-
-        summary = response.choices[0].message['content'].strip()
-        return jsonify(summary)
+        summary = response.choices[0].message['content'].strip()  # 요약 결과 가져오기
+        return jsonify(summary)  # JSON 형태로 반환
     except Exception as e:
         print(f"요약 오류: {e}")
         return jsonify({"error": "요약 중 오류가 발생했습니다."}), 500
 
+# 회원가입 페이지 렌더링
 @bp.route('/signup', methods=['GET'])
 def signup():
-    # address_data 로드
-    address_data = load_address_data()
-    # rank.html 렌더링과 함께 address_data 전달
+    address_data = load_address_data()  # 주소 데이터 로드
     return render_template('signup.html', address_data=address_data)
 
+@bp.route('/get_coords', methods=['POST'])
+def get_coords():
+    try:
+        # 카카오 API를 사용해 주소를 위도/경도로 변환
+        data = request.json
+        address = f"{data['city']} {data['gu']} {data['dong']}"
+        url = f"https://dapi.kakao.com/v2/local/search/address.json?query={address}"
+        headers = {"Authorization": f"KakaoAK {current_app.config['KAKAO_API_KEY']}"}
+        response = requests.get(url, headers=headers)
 
+        if response.status_code == 200:
+            # API 응답 처리
+            documents = response.json().get('documents', [])
+            if documents:
+                coords = documents[0]
+                return jsonify({'lat': coords['y'], 'lon': coords['x']})
+            else:
+                return jsonify({'error': f'주소를 찾을 수 없습니다: {address}'}), 404
+        else:
+            # API 오류 처리
+            return jsonify({'error': f'Kakao API 오류: {response.status_code}'}), 500
+    except Exception as e:
+        # 서버 오류 처리
+        print(f"오류 발생: {e}")
+        return jsonify({'error': '서버 오류가 발생했습니다.'}), 500
 
+# 날씨 정보 처리 및 결과 페이지 렌더링
 @bp.route('/result', methods=['POST'])
 def result():
     try:
-        # 위도와 경도 확인
+        # 클라이언트에서 위도와 경도 수신
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
 
         if latitude and longitude:
-            # 좌표를 기반으로 주소 검색
+            # Kakao API를 이용해 위도/경도를 주소로 변환
             url = f"https://dapi.kakao.com/v2/local/geo/coord2address.json?x={longitude}&y={latitude}"
             headers = {"Authorization": f"KakaoAK {current_app.config['KAKAO_API_KEY']}"}
             response = requests.get(url, headers=headers)
 
-            if response.status_code != 200:
+            if response.status_code != 200:  # API 응답 실패 시 처리
                 return render_template('error.html', message="위치 데이터를 가져오는 데 실패했습니다."), 500
 
             documents = response.json().get('documents', [])
@@ -113,12 +127,12 @@ def result():
                 return render_template('error.html', message="현재 위치의 주소를 찾을 수 없습니다."), 404
 
             address = documents[0].get('address', {})
-            city = address.get('region_1depth_name')
-            gu = address.get('region_2depth_name')
-            dong = address.get('region_3depth_name')
+            city = address.get('region_1depth_name')  # 시/도 이름
+            gu = address.get('region_2depth_name')    # 구 이름
+            dong = address.get('region_3depth_name')  # 동 이름
 
         else:
-            # 입력된 데이터 가져오기
+            # 입력된 주소 데이터 확인
             city = request.form.get('city')
             gu = request.form.get('gu')
             dong = request.form.get('dong')
@@ -126,28 +140,28 @@ def result():
             if not city or not gu or not dong:
                 return render_template('error.html', message="모든 주소를 입력하세요."), 400
 
-        # 주소를 기반으로 좌표 변환
+        # 주소로 좌표 검색
         address = f"{city} {gu} {dong}"
         url = f"https://dapi.kakao.com/v2/local/search/address.json?query={address}"
         headers = {"Authorization": f"KakaoAK {current_app.config['KAKAO_API_KEY']}"}
         response = requests.get(url, headers=headers)
 
-        if response.status_code != 200:
+        if response.status_code != 200:  # API 응답 실패 시 처리
             return render_template('error.html', message="주소 데이터를 가져오는 데 실패했습니다."), 500
 
         documents = response.json().get('documents', [])
-        if not documents:
+        if not documents:  # 주소를 찾을 수 없는 경우
             return render_template('error.html', message=f"주소를 찾을 수 없습니다: {address}"), 404
 
         coords = documents[0]
-        lat, lon = float(coords['y']), float(coords['x'])
+        lat, lon = float(coords['y']), float(coords['x'])  # 좌표 변환
 
-        # 이후 기존의 기상청 API 호출 및 날씨 데이터 처리 로직 유지
+        # 위,경도를 기상청 격자로 변환
         nx, ny = convert_to_grid(lat, lon)
 
-        # 현재 시간 계산
         from datetime import datetime, timedelta
 
+        # 현재 시간 기준으로 기상청 API 요청 시간 계산
         now = datetime.now()
         base_date = now.strftime("%Y%m%d")
 
@@ -172,11 +186,11 @@ def result():
         else:
             base_time = "2300"
 
-    # 기상청 API 호출
+        # 기상청 API 호출
         weather_url = f"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
         params = {
             "serviceKey": current_app.config['WEATHER_API_KEY'],
-            "numOfRows": 300,  # 충분한 데이터 확보를 위해 큰 값 설정
+            "numOfRows": 300,
             "pageNo": 1,
             "dataType": "JSON",
             "base_date": base_date,
@@ -184,35 +198,36 @@ def result():
             "nx": nx,
             "ny": ny
         }
-
         weather_response = requests.get(weather_url, params=params)
+
         if weather_response.status_code != 200:
             return render_template('error.html', message="날씨 데이터를 가져오는 데 실패했습니다."), 500
 
-        # 날씨 데이터 처리
+        # 날씨 데이터 파싱
         weather_data = weather_response.json()
         items = weather_data['response']['body']['items']['item']
 
-        temp = next(item['fcstValue'] for item in items if item['category'] == 'TMP')
-        wind_speed = next(item['fcstValue'] for item in items if item['category'] == 'WSD')
-        sky_status = next(item['fcstValue'] for item in items if item['category'] == 'SKY')
-        precipitation_type = next(item['fcstValue'] for item in items if item['category'] == 'PTY')
-        precipitation_probability = next(item['fcstValue'] for item in items if item['category'] == 'POP')
-        humidity = next(item['fcstValue'] for item in items if item['category'] == 'REH')
+        temp = next(item['fcstValue'] for item in items if item['category'] == 'TMP')  # 온도
+        wind_speed = next(item['fcstValue'] for item in items if item['category'] == 'WSD')  # 풍속
+        sky_status = next(item['fcstValue'] for item in items if item['category'] == 'SKY')  # 하늘 상태
+        precipitation_type = next(item['fcstValue'] for item in items if item['category'] == 'PTY')  # 강수 형태
+        precipitation_probability = next(item['fcstValue'] for item in items if item['category'] == 'POP')  # 강수 확률
+        humidity = next(item['fcstValue'] for item in items if item['category'] == 'REH')  # 습도
 
-        # 데이터 매핑
+        # 실시간 하늘 상태와 강수 형태를 매핑
         sky_status_map = {'1': "맑음", '3': "구름 많음", '4': "흐림"}
         precipitation_type_map = {'0': "없음", '1': "비", '2': "비/눈", '3': "눈", '4': "소나기"}
 
         sky_status_str = sky_status_map.get(sky_status, "알 수 없음")
         precipitation_type_str = precipitation_type_map.get(precipitation_type, "알 수 없음")
 
-        # 최종 날씨 상태 및 아이콘 결정
+        # 매핑된 날씨 상태를 최종적으로 결정
         if precipitation_type in ['1', '2', '3', '4']:
             final_status = precipitation_type_str
         else:
             final_status = sky_status_str
 
+        # 아이콘 URL 가져오기
         weather_icon_url = get_weather_icon(final_status)
 
         # 현재 시간 및 24시간 이후 시간 계산
@@ -263,18 +278,20 @@ def result():
 
         filtered_data.sort(key=lambda x: (x['date'], x['time']))
 
+        # 체감 온도 계산
         perceived_temp = perceived_temperature(
             temp, wind_speed, sky_status_str, precipitation_probability,
             current_app.config['OPENAI_API_KEY']
         )
 
+        # 의류 추천 계산
         recommendation = get_clothing_recommendation(
             temp, wind_speed, sky_status_str, precipitation_probability,
             current_app.config['OPENAI_API_KEY'], perceived_temp
         )
-        global weather_info  # 전역 변수 접근
 
-        # 데이터를 전역 변수에 저장
+        # 전역 변수에 날씨 데이터 저장
+        global weather_info
         weather_info = {
             "city": city,
             "gu": gu,
@@ -293,13 +310,15 @@ def result():
             "perceived_temp": perceived_temp
         }
 
-        categories = ["상의", "하의"]
-        fashion_data = {}  # 카테고리별 크롤링 결과 저장
+        # 카테고리별 패션 데이터 크롤링
+        categories = ["상의", "하의", "신발"]
+        fashion_data = {}
 
         for category in categories:
-            keyword = extract_keywords(recommendation, category)  # 해당 항목의 키워드 추출
-            fashion_data[category] = crawl_fashion_data(keyword)  # 크롤링 수행
+            keyword = extract_keywords(recommendation, category)
+            fashion_data[category] = crawl_fashion_data(keyword)
 
+        # 결과 페이지 렌더링
         return render_template(
             'result.html',
             city=city,
@@ -319,134 +338,137 @@ def result():
             weather_icon_url=weather_icon_url,
             perceived_temp=perceived_temp
         )
-
     except Exception as e:
         print(f"오류 발생: {e}")
         return render_template('error.html', message="서버 오류가 발생했습니다."), 500
 
+# 로그인 및 회원가입 구현 코드
+# @bp.route('/login', methods=['GET', 'POST'])
+# def get_login():
+#     # GET 요청 처리: 로그인 페이지 렌더링
+#     if request.method == 'GET':
+#         address_data = load_address_data()
+#         return render_template('login.html', address_data=address_data)
+#
+#     # POST 요청 처리: 로그인 인증
+#     if request.method == 'POST':
+#         data = request.get_json()
+#         login_id = data.get('login_id')
+#         login_ps = data.get('login_ps')
+#
+#         # 로그인 실패 시 처리 메세지
+#         if not login_id or not login_ps:
+#             return jsonify({"message":"ID 또는 비밀번호가 입력되지 않음"}), 400
+#
+#         try:
+#             # MYSQL 데이터베이스에 연결
+#             conn = pymysql.connect(
+#                 host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com",
+#                 user="root",
+#                 password="20020414",
+#                 database="weatherlookdb"
+#             )
+#             cursor = conn.cursor()
+#
+#             # 사용자 인증
+#             cursor.execute(
+#                 "select username, password, nickname from weatherlookdb_user where username = %s AND password = %s",
+#                 (login_id, login_ps)
+#             )
+#             user = cursor.fetchone()
+#
+#             if user:
+#                 # 세션 설정
+#                 username, password, nickname = user
+#                 session['username'] = username
+#                 session['password'] = password
+#                 session['nickname'] = nickname
+#                 return jsonify({"message" : f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
+#             else:
+#
+#                 return jsonify({"message" : "ID와 비밀번호를 확인바랍니다."}), 401
+#
+#         except pymysql.MySQLError as err:
+#             # DB 에러 처리
+#             print(f"DB 에러: {err}")
+#             return jsonify({"message": "데이터베이스 오류 발생"}), 500
+#
+# @bp.route('/dashboard')
+# def dashboard():
+#     # 세션 체크 후 Dashboard에 접근
+#     if 'username' in session:
+#         return f"안녕하세요, {session['nickname']} 님! 대시보드에 오신 것을 환영합니다."
+#     else:
+#         return "로그인이 필요합니다.", 401
+#
+# @bp.route('/logout')
+# def logout():
+#     # 세션 초기화 및 로그아웃 처리
+#     session.clear()
+#     return jsonify({"message": "로그아웃 성공!"}), 200
+#
+# @bp.route('/register', methods=['GET', 'POST'])
+# def get_register():
+#     # GET 요청 처리: 회원가입 페이지 렌더링
+#     if request.method == 'GET':
+#         address_data = load_address_data()
+#         return render_template('signup.html', address_data=address_data)
+#
+#     # POST 요청 처리: 회원가입 처리
+#     if request.method == 'POST':
+#         data = request.get_json()
+#         signup_id = data.get('signup_id')
+#         signup_ps = data.get('signup_ps')
+#         signup_name = data.get('signup_name')
+#
+#
+#         if not signup_id or not signup_ps or not signup_name:
+#             return jsonify({"message": "ID, PS, 이름 전부 입력바람"}), 400
+#
+#         try:
+#             # MYSQL 데이터베이스에 연결
+#             conn = pymysql.connect(
+#                 host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com",
+#                 user="root",
+#                 password="20020414",
+#                 database="weatherlookdb"
+#             )
+#             cursor = conn.cursor()
+#
+#             # 중복 확인
+#             cursor.execute("select username from weatherlookdb_user where username = %s", (signup_id,))
+#             if cursor.fetchone():
+#                 return jsonify({'message': '아이디가 이미 존재합니다.'}), 409
+#
+#             # 회원가입에 저장된 사용자 등록
+#             cursor.execute(
+#                 "INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
+#                 (signup_id, signup_ps, signup_name)
+#             )
+#             conn.commit()
+#
+#             return jsonify({'message': '회원가입 성공하였습니다! 축하합니다.!'}), 201
+#
+#         except pymysql.connect.Error as err:
+#
+#             print(f'데이터베이스가 에러났습니다. 오류를 확인해주세요....: {err}')
+#             return jsonify({'message': '데이터베이스가 에러났습니다. 오류를 확인해주세요....'}), 500
 
-@bp.route('/login', methods=['GET', 'POST'])
-def get_login():
-    if request.method == 'GET':
-        address_data = load_address_data()
-        return render_template('login.html', address_data=address_data)
-
-    if request.method == 'POST':
-        data = request.get_json()
-        login_id = data.get('login_id')
-        login_ps = data.get('login_ps')
-
-        if not login_id or not login_ps:
-            return jsonify({"message":"ID 또는 비밀번호가 입력되지 않음"}), 400
-
-        try:  # 데이터베이스 연결합니다
-            conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                                   password="20020414", database="weatherlookdb")
-            cursor = conn.cursor()
-
-            cursor.execute("select username, password, nickname from weatherlookdb_user where username = %s AND password = %s", (login_id, login_ps))
-            user = cursor.fetchone()
-
-            if user:
-                username, password, nickname = user
-                #세션에 사용자 정보 저장
-                session['username'] = username
-                session['password'] = password
-                session['nickname'] = nickname
-                return jsonify({"message" : f"로그인 성공, 축하드립니다 {nickname} 님."}), 200
-            else:
-                return jsonify({"message" : "ID와 비밀번호를 확인바랍니다."}), 401
-
-        except pymysql.MySQLError as err:
-            print(f"DB 에러: {err}")
-            return jsonify({"message": "데이터베이스 오류 발생"}), 500
-
-#사용자 확인 특정 라우트에서 사용자가 로그인했는지 확인하려면 session 데이터를 참조
-@bp.route('/dashboard')
-def dashboard():
-    if 'username' in session:
-        return f"안녕하세요, {session['nickname']} 님! 대시보드에 오신 것을 환영합니다."
-    else:
-        return "로그인이 필요합니다.", 401
-
-# 로그아웃 처리 사용자가 로그아웃할 때 session 데이터를 삭제
-@bp.route('/logout')
-def logout():
-    session.clear()  # 모든 세션 데이터 삭제
-    return jsonify({"message": "로그아웃 성공!"}), 200
-
-@bp.route('/register', methods=['GET', 'POST'])
-def get_register():
-    if request.method == 'GET':
-        # GET 요청 시 회원가입 양식 페이지 렌더링
-        address_data = load_address_data()
-        return render_template('signup.html', address_data=address_data)
-
-    if request.method == 'POST':
-        # POST 요청 시 데이터 처리
-        data = request.get_json()
-        signup_id = data.get('signup_id')
-        signup_ps = data.get('signup_ps')
-        signup_name = data.get('signup_name')
-
-        if not signup_id or not signup_ps or not signup_name:
-            return jsonify({"message": "ID, PS, 이름 전부 입력바람"}), 400
-
-        try:  # 데이터베이스 연결합니다
-            conn = pymysql.connect(host="db-weatherlook-builder.ctwe8sgos8o8.us-east-2.rds.amazonaws.com", user="root",
-                                   password="20020414", database="weatherlookdb")
-            cursor = conn.cursor()
-
-            # 중복체크
-            cursor.execute("select username from weatherlookdb_user where username = %s", (signup_id,))
-            if cursor.fetchone():
-                return jsonify({'message': '아이디가 이미 존재합니다.'}), 409
-
-            # 회원가입 데이터 삽입부분
-            cursor.execute("INSERT INTO weatherlookdb_user (username, password, nickname) VALUES (%s, %s, %s)",
-                           (signup_id, signup_ps, signup_name))
-            conn.commit()
-
-            return jsonify({'message': '회원가입 성공하였습니다! 축하합니다.!'}), 201
-
-        except pymysql.connect.Error as err:
-            print(f'데이터베이스가 에러났습니다. 오류를 확인해주세요....: {err}')
-            return jsonify({'message': '데이터베이스가 에러났습니다. 오류를 확인해주세요....'}), 500
-
-
-@bp.route('/get_coords', methods=['POST'])
-def get_coords():
-    try:
-        data = request.json
-        address = f"{data['city']} {data['gu']} {data['dong']}"
-        url = f"https://dapi.kakao.com/v2/local/search/address.json?query={address}"
-        headers = {"Authorization": f"KakaoAK {current_app.config['KAKAO_API_KEY']}"}
-        response = requests.get(url, headers=headers)
-
-        if response.status_code == 200:
-            documents = response.json().get('documents', [])
-            if documents:
-                coords = documents[0]
-                return jsonify({'lat': coords['y'], 'lon': coords['x']})
-            else:
-                return jsonify({'error': f'주소를 찾을 수 없습니다: {address}'}), 404
-        else:
-            return jsonify({'error': f'Kakao API 오류: {response.status_code}'}), 500
-    except Exception as e:
-        print(f"오류 발생: {e}")
-        return jsonify({'error': '서버 오류가 발생했습니다.'}), 500
 
 @bp.route('/ask_question', methods=['POST'])
 def ask_question():
-    global weather_info
+    global weather_info  # 날씨 정보 변수 사용
     try:
+        # 질문 데이터 처리
         data = request.json
         question = data['question']
 
+        # 추가 정보 생성
         additional_info = ""
         hourly_data = weather_info.get("hourly_data", [])
 
         if hourly_data:
+            # 시간별에 따른 날씨 데이터 요약 생성
             hourly_summaries = [
                 f"{hour['time'][:2]}:{hour['time'][2:]}: {hour['temperature']}°C, {hour['sky']}"
                 for hour in hourly_data[:5]
@@ -455,6 +477,7 @@ def ask_question():
             additional_info += f"시간별 요약:<br>{hourly_summary_text}.<br>"
 
         if weather_info:
+            # 현재 날씨에 대한 정보 추가
             temperature = weather_info['temperature']
             description = weather_info['sky_status']
             wind_speed = weather_info['wind_speed']
@@ -467,6 +490,7 @@ def ask_question():
                 f"추천 의류: {clothing_recommendation}.<br>"
             )
 
+        # OpenAI GPT 모델 호출 및 메세지 전달
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
             messages=[
@@ -492,10 +516,12 @@ def ask_question():
             ]
         )
 
+        # 답변 반환
         answer = response.choices[0].message['content'].strip()
         return jsonify({"answer": answer})
 
     except Exception as e:
+        # 서버 오류 처리
         print(f"오류 발생: {e}")
         return jsonify({"error": "서버 오류가 발생했습니다."}), 500
 

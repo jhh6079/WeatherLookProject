@@ -1,11 +1,12 @@
 // static/js/script.js
 
-let clothingRecommendation = "";
-let lastAnswer = "";
+let clothingRecommendation = ""; // 의류 추천 정보를 저장하는 변수
+let lastAnswer = ""; // 마지막 응답 데이터를 저장하는 변수
 
+// 시/도를 선택했을 때 구/군 리스트를 업데이트하는 함수
 function updateGu() {
-    const city = document.getElementById("city").value;
-    const guSelect = document.getElementById("gu");
+    const city = document.getElementById("city").value; // 선택된 시/도 값 가져오기
+    const guSelect = document.getElementById("gu"); // 구/군 선택 값 가져오기
     guSelect.innerHTML = "<option value=''>구/군 선택</option>";
 
     if (addressData[city]) {
@@ -35,29 +36,31 @@ function updateDong() {
     }
 }
 
+// 조회 버튼 클릭 시 로딩 상태를 처리하는 함수
 function handleLoading(event) {
-    event.preventDefault(); // 폼 제출 기본 동작 방지
-    const button = document.getElementById('searchButton');
+    event.preventDefault();
+    const button = document.getElementById('searchButton'); // 조회 버튼 가져오기
 
     // 버튼 비활성화 및 텍스트 변경
     button.disabled = true;
     button.textContent = '조회 중...';
 
-    // 로딩 스피너 추가
+    // 로딩 스피너 (로딩 작동 화면) 추가
     const spinner = document.createElement('div');
     spinner.className = 'loading-spinner';
     button.appendChild(spinner);
 
-    // 서버 요청 로직 추가 (예시: 폼 제출 시 실제 작업 처리)
+
     setTimeout(() => {
         document.querySelector('form').submit(); // 폼 제출
     }, 1000); // 요청 지연 시뮬레이션
 }
 
+// 날씨 정보를 가져오는 비동기 함수
 async function getWeather() {
-    const city = document.getElementById("city").value;
-    const gu = document.getElementById("gu").value;
-    const dong = document.getElementById("dong").value;
+    const city = document.getElementById("city").value;  // 선택된 시/도 값 가져오기
+    const gu = document.getElementById("gu").value; // 선택된 구/군 값 가져오기
+    const dong = document.getElementById("dong").value; // 선택된 읍/면/동 값 가져오기
 
     if (!city || !gu || !dong) {
         alert("모든 항목을 선택해 주세요.");
@@ -71,13 +74,13 @@ async function getWeather() {
     try {
         const coordsResponse = await fetch('/get_coords', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({city, gu, dong})
+            headers: {'Content-Type': 'application/json'},  // JSON 요청 헤더 설정
+            body: JSON.stringify({city, gu, dong}) // 요청 데이터 전송
         });
 
         const coordsData = await coordsResponse.json();
         if (coordsResponse.ok) {
-            const {lat, lon} = coordsData;
+            const {lat, lon} = coordsData; // 위도와 경도 데이터 추출
             const weatherResponse = await fetch('/get_weather', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -145,11 +148,12 @@ function displayHourlyWeather(hourlyData) {
 }
 
 function filterFutureWeather(hourlyData) {
-    const now = new Date(); // 현재 시각
+    // 현재 시각을 HHMM 형식으로 변환하여 비교
+    const now = new Date();
     const currentHour = now.getHours(); // 현재 시간 (24시간 형식)
     const currentMinute = now.getMinutes(); // 현재 분
 
-    // 현재 시각을 HHMM 형식으로 변환
+    // 현재 시각을 HHMM 형식으로 변환(30분 기준으로 반올림)
     const currentTime = `${currentHour.toString().padStart(2, '0')}${currentMinute >= 30 ? '30' : '00'}`;
 
     // 현재 시각 이후의 데이터만 필터링
@@ -220,6 +224,7 @@ function displayResult(city, gu, dong, lat, lon, weatherData) {
 
 }
 
+// 채팅 사이드바 함수
 function toggleChat() {
     const chatSidebar = document.getElementById("chatSidebar");
     const chatButton = document.querySelector(".open-chat-btn");
@@ -239,6 +244,7 @@ function toggleChat() {
     }
 }
 
+// 사용자의 응답 요청에 대한 함수
 async function askQuestion() {
     const userQuestion = document.getElementById("userQuestion").value;
     const chatResponse = document.getElementById("chatResponse");
@@ -280,9 +286,6 @@ async function askQuestion() {
     chatResponse.scrollTop = chatResponse.scrollHeight;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// 2024-11-28 추가 수정
 
 function createRecommendationButtons() {
     const chatResponse = document.getElementById("chatResponse");
@@ -335,16 +338,16 @@ window.onload = function () {
     createRecommendationButtons();
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+// 시간별 의류 추천 요청 함수
 function requestHourlyRecommendation() {
     const chatResponse = document.getElementById("chatResponse");
+
+    // 사용자 입력 메시지 생성 및 추가
     const userBubble = document.createElement("p");
     userBubble.className = "user";
     userBubble.innerHTML = `<span>시간별 의류 추천을 보여줘.</span>`;
     chatResponse.appendChild(userBubble);
+// 서버에 요청 전송
 
     fetch('/ask_question', {
         method: 'POST',
@@ -367,6 +370,7 @@ function requestHourlyRecommendation() {
         });
 }
 
+// 현재 날씨에 따른 의류 추천 요청 함수
 function requestCurrentRecommendation() {
     const chatResponse = document.getElementById("chatResponse");
     const userBubble = document.createElement("p");
@@ -513,7 +517,6 @@ function initInfiniteScroll(originalLength) {
     document.querySelector(".scroll-button.right").onclick = () => scrollSnapshot(1);
 }
 
-// 11월 28일 수정
 // 성별 카테고리 변경
 function changeGenderCategory(gender) {
     const genderButtons = document.querySelectorAll('.gender-category .filter-button');
@@ -596,9 +599,6 @@ function toggleCategory(button) {
         button.classList.add('active');
     }
 }
-
-
-//1209수정
 
 // JSON 파일 경로를 관리하는 객체
 const jsonFilePaths = {

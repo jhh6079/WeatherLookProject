@@ -14,6 +14,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from concurrent.futures import ThreadPoolExecutor
+
 
 
 # 주소 데이터 로드 함수
@@ -36,7 +38,7 @@ def load_address_data():
     return address_dict
 
 
-# 좌표 변환 함수
+# 격좌 좌표 변환 함수 (그리드 형식)
 def convert_to_grid(lat, lon):
     RE = 6371.00877
     GRID = 5.0
@@ -75,7 +77,7 @@ def convert_to_grid(lat, lon):
     return nx, ny
 
 
-# 의류 추천 함수
+# 의류 추천 함수 ('의류를 추천' 하는 부분에 해당됨)
 def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_probability, openai_api_key, perceived_temp):
     prompt = (
         f"현재 온도는 {temp}도이고, 풍속은 {wind_speed} m/s, 날씨는 {final_status}, 강수확률은 {precipitation_probability}%, 체감온도는 {perceived_temp} 입니다."
@@ -84,9 +86,10 @@ def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_pr
         f"상의는 겨울에는 보통 패딩류나 울 자켓류로 추천해주지만 {final_status}에 맞게 추천해줘, 여름에는 반팔티나 나시류를 대부분 추천해주지만 {final_status}에 맞게 추천해주세요.\n"
         f"하의는 겨울에 맞는 바지를 제시해주고, 대신 겨울이어도 {final_status}에 맞게 추천해줘, 여름에도 똑같이 적용해주세요.\n"
         f"상,하의를 추천해줄 때 두 개 이상을 추천해주게 되면 '또는' 이라는 말만 사용해줘!\n"
-        f"체감온도는 {perceived_temp}°C,\n"
-        f"날씨: {final_status}\n"
-        "상의: 하의: 신발: 기타:"
+        
+        f"체감온도: {perceived_temp}°C,\n"
+         "현재기온: {temp}\n"
+         "상의: 하의: 신발: 기타:"
     )
     openai.api_key = openai_api_key
     response = openai.ChatCompletion.create(
@@ -99,9 +102,11 @@ def get_clothing_recommendation(temp, wind_speed, final_status, precipitation_pr
     recommendation = response.choices[0].message['content'].replace("\n", "<br>")
     return response.choices[0].message['content']
 
-# 불필요한 형용사 리스트
-ADJECTIVES = ["따뜻한", "얇은", "두꺼운", "편안한", "멋진","보온성 있는","두툼한"]
 
+# 불필요한 형용사 리스트
+ADJECTIVES = ["따뜻한", "얇은", "두꺼운", "편안한", "멋진","보온성 있는","두툼한", "두터운"]
+
+# 텍스트에서 형용사를 제거하는 함수
 def remove_adjectives(text):
     """
     텍스트에서 형용사를 제거하는 함수
@@ -110,23 +115,23 @@ def remove_adjectives(text):
         text = text.replace(adj, "").strip()  # 형용사를 제거
     return text
 
+# 추천 의류 텍스트에서 지정된 카테고리(상의, 하의, 신발, 기타) 항목을 추출하는 함수
 def extract_keywords(recommendation, category):
     """
     추천 의류 텍스트에서 지정된 카테고리(상의, 하의, 신발, 기타) 항목을 추출.
     형용사를 제거하고, '또는'이 포함된 경우 앞이나 뒤 값을 랜덤하게 반환.
     """
-    pattern = rf"{category}: ([^\n]+)"  # 예: "상의: "로 시작하는 텍스트 패턴
-    match = re.search(pattern, recommendation)  # 카테고리 텍스트 추출
+    pattern = rf"{category}: ([^\n]+)"
+    match = re.search(pattern, recommendation)  # 카테고리별 텍스트를 추출
     if match:
-        raw_text = match.group(1)  # 해당 카테고리의 전체 텍스트
+        raw_text = match.group(1)
         cleaned_text = remove_adjectives(raw_text)  # 형용사 제거
         options = cleaned_text.split("또는")  # "또는" 기준으로 분리
         if len(options) > 1:
-            # 앞 또는 뒤 값을 랜덤으로 선택하여 반환
+            # <추천된 값> 또는 <추천된 값> 둘 중 값을 랜덤으로 선택하여 반환
             return random.choice(options).strip()
-        return cleaned_text.split(",")[0].strip()  # 콤마로 구분된 첫 번째 값 반환
-    return category  # 기본값으로 카테고리 이름 반환 (예: "상의")
-
+        return cleaned_text.split(",")[0].strip()  # 콤마(",")로 구분하여 분리
+    return category
 
 def crawl_fashion_data(keyword, start_div=2, end_div=3, max_attempts=3):
 
@@ -135,82 +140,92 @@ def crawl_fashion_data(keyword, start_div=2, end_div=3, max_attempts=3):
 
     # Selenium WebDriver 설정
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")  # 헤드리스 모드, 디버깅 시 비활성화 가능
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--headless")  # 헤드리스 모드 (브라우저를 띄우지 않고 실행)
+    options.add_argument("--no-sandbox")  # 리눅스 환경에서 필요한 옵션
+    options.add_argument("--disable-dev-shm-usage")  # 메모리 부족 문제 방지
 
+    # Chrome WebDriver 초기화
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-    # Musinsa 페이지 URL
+    # Musinsa 페이지 URL 설정 (검색어 기반)
     url = f"https://www.musinsa.com/search/goods?keyword={keyword}&gf=A"
     driver.get(url)
 
+    # 크롤링 결과를 저장할 리스트
     results = []
 
     try:
-        # 부모-자식 조합 생성 및 섞기
+        # 부모 및 자식 인덱스 조합 생성 (지정된 범위 내에서 부모-자식 관계 탐색)
         parent_child_combinations = [
             (parent_index, child_index)
             for parent_index in range(start_div, end_div + 1)
-            for child_index in range(1, 3)
+            for child_index in range(1, 5)
         ]
-        random.shuffle(parent_child_combinations)  # 순서 섞기
+        random.shuffle(parent_child_combinations)  # 탐색 순서를 무작위로 섞음(항상 다른 결과를 나타내기 위함)
 
+        # 부모-자식 인덱스 조합을 순회하며 데이터 추출
         for parent_index, child_index in parent_child_combinations:
             try:
-                # 링크 XPath
+                # 상품 링크의 XPath 지정
                 link_xpath = (
                     f"//*[@id='commonLayoutContents']/div/div[contains(@class, 'sc-x7dw99-2')]/div/div/div/div[{parent_index}]/div/div[{child_index}]/div/div[contains(@class, 'sc-fLseNd')]/div/a"
                 )
-                link_element = WebDriverWait(driver, 0.1).until(
+                # XPath를 통해 상품 링크 요소 대기
+                link_element = WebDriverWait(driver, 0.5).until(
                     EC.presence_of_element_located((By.XPATH, link_xpath))
                 )
-                link = link_element.get_attribute("href")
+                link = link_element.get_attribute("href")  # 링크 추출
 
                 # 이미지 및 이름 XPath
                 image_xpath = f"{link_xpath}/div/img"
 
                 # 이미지 로드 확인 및 스크롤 시도
-                for attempt in range(max_attempts):
+                for attempt in range(max_attempts):  # 최대 시도 횟수만큼 반복
                     try:
+                        # 이미지 요소 가져오기
                         image_element = driver.find_element(By.XPATH, image_xpath)
-                        name = image_element.get_attribute("alt")
-                        image_src = image_element.get_attribute("src")
+                        name = image_element.get_attribute("alt")  # 상품명 추출
+                        image_src = image_element.get_attribute("src")  # 이미지 URL 추출
 
-                        # 이미지가 None일 경우 예외 처리
+
                         if image_src is None:
                             raise ValueError("Image not loaded")
 
                         # 결과 저장
                         results.append({
-                            "name": name,
-                            "link": link,
-                            "image": image_src
+                            "name": name, # 상품명
+                            "link": link,  # 상품 링크
+                            "image": image_src # 상품 이미지
                         })
-                        break  # 성공하면 루프 탈출
+                        break
                     except Exception:
+                        # 실패 시 스크롤을 내려 이미지 로드 시도
                         print(f"Attempt {attempt + 1}: Scrolling to load image...")
                         driver.execute_script("window.scrollBy(0, 1000);")  # 스크롤 다운
-                        time.sleep(0.01)  # 잠시 대기
+                        time.sleep(0.01)  # 0.01초 동안 잠시 대기
                 else:
+
                     print(f"Image not loaded for parent {parent_index}, child {child_index}")
 
             except Exception as e:
+
                 print(f"Error at parent {parent_index}, child {child_index}: {e}")
                 continue
     finally:
+        # 작업 완료 후 WebDriver 종료
         driver.quit()
 
     # 실행 시간 측정 종료
     end_time = time.time()
 
-    # 실행 시간 출력
+
     elapsed_time = end_time - start_time
     print(f"Time taken: {elapsed_time:.2f} seconds")
 
     return results
 
 
+# LLM을 활용하여 체감온도를 알려주는 함수
 def perceived_temperature(temp, wind_speed, sky_status, precipitation_probability, openai_api_key):
     prompt = (
         f"""
@@ -235,8 +250,9 @@ def perceived_temperature(temp, wind_speed, sky_status, precipitation_probabilit
     )
     return response.choices[0].message['content']
 
-
+# 날씨 상태에 따른 아이콘 URL을 반환하는 함수
 def get_weather_icon(sky_status):
+    # 날씨 상태별 아이콘 URL 매핑
     icon_map = {
         "맑음": "https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt1.svg",
         "구름 많음": "https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt5.svg",

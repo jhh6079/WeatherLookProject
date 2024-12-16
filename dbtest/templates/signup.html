@@ -12,7 +12,7 @@
             const signup_id = document.getElementById("signup_id").value;
             const signup_ps = document.getElementById("signup_ps").value;
             const signup_name = document.getElementById("signup_name").value;
-            //플라스크 요청 보내는부분
+            //FLASK 요청 보내는부분
             const response = await fetch('/register', {
                 method: 'POST',
                 headers: {
@@ -20,7 +20,7 @@
                 },
                 body: JSON.stringify({signup_id, signup_ps, signup_name})
             });
-            //결과출력
+
             const result = await response.json();
             document.getElementById("result").innerText=result.message;
         }
